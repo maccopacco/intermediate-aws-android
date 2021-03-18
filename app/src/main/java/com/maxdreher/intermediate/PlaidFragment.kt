@@ -36,7 +36,7 @@ class PlaidFragment : Fragment(R.layout.fragment_plaid) {
                     val builder = StringBuilder()
 
                     val now = Date().time
-                    val startDate = Date(now - TimeUnit.DAYS.toMillis(2))
+                    val startDate = Date(now - TimeUnit.DAYS.toMillis(15))
                     val endDate = Date(now + TimeUnit.DAYS.toMillis(1))
 
                     val response = plaidClient.service()
@@ -50,11 +50,14 @@ class PlaidFragment : Fragment(R.layout.fragment_plaid) {
 
                     response.body()?.transactions?.let { transactions ->
                         for (transaction in transactions) {
-                            transaction.run {
-                                builder.let { b ->
-                                    b.append(date).append("\n")
-                                    b.append(amount).append("\n")
-                                }
+                            transaction.let {
+                                builder.append(
+                                    "%s %10s     %s%n".format(
+                                        it.date,
+                                        it.amount,
+                                        it.name,
+                                    )
+                                )
                             }
                         }
                     } ?: builder.append("No bad transaction")
