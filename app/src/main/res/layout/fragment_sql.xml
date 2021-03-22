@@ -15,26 +15,12 @@
         android:gravity="center">
 
         <Button
-            android:id="@+id/go_to_plaid"
+            android:id="@+id/sql_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Test Plaid Nav" />
-
+            android:text="back"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
     </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center">
-
-        <Button
-            android:id="@+id/go_to_sql"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Test SQL" />
-    </LinearLayout>
-
-
 </LinearLayout>

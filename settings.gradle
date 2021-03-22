@@ -1,2 +1,3 @@
 include ':app'
+include ':android_lib'
 rootProject.name = "intermediate"
