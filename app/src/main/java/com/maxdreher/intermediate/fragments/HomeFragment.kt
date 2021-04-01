@@ -1,9 +1,10 @@
-package com.maxdreher.intermediate
+package com.maxdreher.intermediate.fragments
 
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import com.maxdreher.Util
+import com.maxdreher.intermediate.R
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
 

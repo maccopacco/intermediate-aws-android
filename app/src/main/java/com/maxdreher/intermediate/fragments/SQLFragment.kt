@@ -1,4 +1,4 @@
-package com.maxdreher.intermediate
+package com.maxdreher.intermediate.fragments
 
 import android.os.Bundle
 import android.view.View
@@ -11,6 +11,7 @@ import com.maxdreher.amphelper.AmpHelper
 import com.maxdreher.amphelper.AmpHelperD
 import com.maxdreher.amphelper.AmpHelperQ
 import com.maxdreher.extensions.FragmentBase
+import com.maxdreher.intermediate.R
 import com.maxdreher.intermediate.util.Margin
 import com.maxdreher.table.TableEntry
 import com.maxdreher.table.TableHelper

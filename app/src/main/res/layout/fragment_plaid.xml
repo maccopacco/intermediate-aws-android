@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".PlaidFragment">
+    tools:context=".fragments.PlaidFragment">
 
     <de.codecrafters.tableview.SortableTableView
         android:id="@+id/plaid_table"

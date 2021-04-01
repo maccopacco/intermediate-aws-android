@@ -1,10 +1,9 @@
-package com.maxdreher.intermediate
+package com.maxdreher.intermediate.fragments
 
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import com.amplifyframework.AmplifyException
 import com.amplifyframework.api.aws.AWSApiPlugin
 import com.amplifyframework.core.Amplify
@@ -12,6 +11,7 @@ import com.amplifyframework.datastore.AWSDataStorePlugin
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.maxdreher.extensions.ActivityBase
+import com.maxdreher.intermediate.R
 
 class MainActivity : ActivityBase() {
 

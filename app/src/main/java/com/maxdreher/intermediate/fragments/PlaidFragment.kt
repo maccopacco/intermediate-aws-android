@@ -1,11 +1,12 @@
-package com.maxdreher.intermediate
+package com.maxdreher.intermediate.fragments
 
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
-import androidx.fragment.app.Fragment
 import com.maxdreher.Util
 import com.maxdreher.consumers.ConsumeAndSupply
+import com.maxdreher.extensions.FragmentBase
+import com.maxdreher.intermediate.R
 import com.maxdreher.intermediate.keys.Keys
 import com.maxdreher.intermediate.util.Margin
 import com.maxdreher.table.TableEntry
@@ -22,7 +23,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 
-class PlaidFragment : Fragment(R.layout.fragment_plaid) {
+class PlaidFragment : FragmentBase(R.layout.fragment_plaid) {
 
     var plaidClient: PlaidClient = PlaidClient.newBuilder()
         .clientIdAndSecret(Keys.PLAID_CLIENT_ID, Keys.PLAID_SECRET)
@@ -44,10 +45,11 @@ class PlaidFragment : Fragment(R.layout.fragment_plaid) {
             )
 
             entries = mapOf<String, ConsumeAndSupply<Transaction, String>>(
+//                "Category" to ConsumeAndSupply { it.category.joinToString(separator = ",") },
                 "Date" to ConsumeAndSupply { it.date },
                 "Name" to ConsumeAndSupply { it.name },
                 "Amount" to ConsumeAndSupply { it.amount.toString() },
-                "Pending" to ConsumeAndSupply { if (it.pending) "✓" else "x" }
+                "Pending" to ConsumeAndSupply { if (!it.pending) "✓" else "x" }
             ).map {
                 TableEntry(
                     it.key,
@@ -59,6 +61,7 @@ class PlaidFragment : Fragment(R.layout.fragment_plaid) {
             }
 
             findViewById<Button>(R.id.trigger_plaid).setOnClickListener {
+                toast("Going!")
                 GlobalScope.launch {
                     val now = Date().time
                     val startDate = Date(now - TimeUnit.DAYS.toMillis(15))
@@ -70,9 +73,11 @@ class PlaidFragment : Fragment(R.layout.fragment_plaid) {
                         ).execute()
 
                     withContext(Dispatchers.Main) {
-                        response.body()?.transactions?.let {
-                            TableHelper.updateTable(context, table, it, entries)
-                        }
+                        response.body()?.let { body ->
+                            body.transactions?.let {
+                                TableHelper.updateTable(context, table, it, entries)
+                            } ?: toast("Null transactions")
+                        } ?: toast("Null body")
                     }
                 }
             }

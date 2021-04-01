@@ -1,4 +1,49 @@
 type TestGoal @model {
-  id: ID!
-  content: String!
+    id: ID!
+    content: String!
+}
+
+type PaymentMeta @model {
+    byOrderOf: String
+    payee: String
+    payer: String
+    paymentMethod: String
+    paymentProcessor: String
+    ppdId: String
+    reason: String
+    referenceNumber: String
+}
+
+type Location @model {
+    address: String
+    city: String
+    lat: Float
+    lon: Float
+    region: String
+    storeNumber: String
+    postalCode: String
+    country: String
+}
+
+type Transaction @model {
+    accountId: String
+    amount:    Float!
+    isoCurrencyCode:    String
+    unofficialCurrencyCode:    String
+    category: [String]
+    categoryId:    String
+    date:    String
+    location:    Location @connection
+    merchantName:    String
+    name:    String
+    originalDescription:    String
+    paymentMeta:    PaymentMeta @connection
+    pending:    Boolean
+    pendingTransactionId:    String
+    transactionId:    String
+    transactionType:    String
+    accountOwner:    String
+    authorizedDate:    String
+    transactionCode:    String
+    paymentChannel:    String
 }
