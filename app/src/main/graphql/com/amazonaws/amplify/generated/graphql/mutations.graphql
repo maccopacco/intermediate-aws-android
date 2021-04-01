@@ -1,0 +1,43 @@
+# this is an auto generated file. This will be overwritten
+mutation CreateTestGoal(
+  $input: CreateTestGoalInput!
+  $condition: ModelTestGoalConditionInput
+) {
+  createTestGoal(input: $input, condition: $condition) {
+    id
+    content
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+mutation UpdateTestGoal(
+  $input: UpdateTestGoalInput!
+  $condition: ModelTestGoalConditionInput
+) {
+  updateTestGoal(input: $input, condition: $condition) {
+    id
+    content
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+mutation DeleteTestGoal(
+  $input: DeleteTestGoalInput!
+  $condition: ModelTestGoalConditionInput
+) {
+  deleteTestGoal(input: $input, condition: $condition) {
+    id
+    content
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}

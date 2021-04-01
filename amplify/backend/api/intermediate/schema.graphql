@@ -1,0 +1,4 @@
+type TestGoal @model {
+  id: ID!
+  content: String!
+}

@@ -51,7 +51,6 @@ class PlaidFragment : Fragment(R.layout.fragment_plaid) {
             ).map {
                 TableEntry(
                     it.key,
-                    null,
                     TableEntry.textViewGenerator(
                         it.value,
                         Margin.get(context)

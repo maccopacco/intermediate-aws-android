@@ -20,11 +20,19 @@ android {
     dependencies {
         implementation 'com.plaid.link:sdk-core:3.2.4'
         implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1'
+        testImplementation 'junit:junit:4.+'
         implementation project(':android_lib')
 
 //        implementation 'com.plaid:plaid-java:9.0.0-beta-1'
         implementation 'com.plaid:plaid-java:8.1.0'
-        implementation("mysql:mysql-connector-java:8.0.15")
+
+        // Amplify core dependency
+        implementation 'com.amplifyframework:core:1.17.2'
+        implementation 'com.amplifyframework:aws-datastore:1.17.2'
+        implementation 'com.amplifyframework:aws-api:1.17.1'
+
+        // Support for Java 8 features
+        coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
     }
 
     buildTypes {

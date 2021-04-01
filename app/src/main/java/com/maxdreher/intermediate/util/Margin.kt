@@ -6,7 +6,7 @@ import com.maxdreher.intermediate.R
 
 class Margin {
     companion object {
-        fun get(context: Context): Int {
+        fun get(context: Context?): Int {
             return Util.getDefaultMargin(context, R.dimen.default_margin)
         }
     }
