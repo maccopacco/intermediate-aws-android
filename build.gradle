@@ -1,3 +1,5 @@
+import org.gradle.internal.os.OperatingSystem;
+
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext.kotlin_version = "1.4.31"
@@ -12,8 +14,7 @@ buildscript {
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
 
-        classpath 'com.amplifyframework:amplify-tools-gradle-plugin:1.0.2'
-
+        classpath 'com.amplifyframework:amplify-tools-gradle-plugin:+'
     }
 }
 
@@ -28,5 +29,17 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
+task copyKeys(type: Copy) {
+    def fileName = "/Users/macco/Desktop/"
+    if (OperatingSystem.current().isWindows()) {
+        fileName = "C:" + fileName
+    }
+    println("Filename: $fileName")
+    copy {
+        from(fileName)
+        into("$rootDir/app/src/main/java/com/maxdreher/intermediate/keys/")
+        include("Keys.kt")
+    }
+}
 
 apply plugin: 'com.amplifyframework.amplifytools'
