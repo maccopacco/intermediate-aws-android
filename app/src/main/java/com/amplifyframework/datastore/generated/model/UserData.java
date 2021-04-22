@@ -1,5 +1,7 @@
 package com.amplifyframework.datastore.generated.model;
 
+import com.amplifyframework.core.model.annotations.BelongsTo;
+import com.amplifyframework.core.model.annotations.HasMany;
 
 import java.util.List;
 import java.util.UUID;
@@ -15,25 +17,30 @@ import com.amplifyframework.core.model.query.predicate.QueryField;
 
 import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 
-/** This is an auto generated class representing the TestGoal type in your schema. */
+/** This is an auto generated class representing the UserData type in your schema. */
 @SuppressWarnings("all")
-@ModelConfig(pluralName = "TestGoals")
-public final class TestGoal implements Model {
-  public static final QueryField ID = field("TestGoal", "id");
-  public static final QueryField CONTENT = field("TestGoal", "content");
+@ModelConfig(pluralName = "UserData")
+public final class UserData implements Model {
+  public static final QueryField ID = field("UserData", "id");
+  public static final QueryField USER = field("UserData", "userDataUserId");
   private final @ModelField(targetType="ID", isRequired = true) String id;
-  private final @ModelField(targetType="String") String content;
+  private final @ModelField(targetType="User", isRequired = true) @BelongsTo(targetName = "userDataUserId", type = User.class) User user;
+  private final @ModelField(targetType="TransactionWrapper") @HasMany(associatedWith = "userData", type = TransactionWrapper.class) List<TransactionWrapper> transactions = null;
   public String getId() {
       return id;
   }
   
-  public String getContent() {
-      return content;
+  public User getUser() {
+      return user;
   }
   
-  private TestGoal(String id, String content) {
+  public List<TransactionWrapper> getTransactions() {
+      return transactions;
+  }
+  
+  private UserData(String id, User user) {
     this.id = id;
-    this.content = content;
+    this.user = user;
   }
   
   @Override
@@ -43,9 +50,9 @@ public final class TestGoal implements Model {
       } else if(obj == null || getClass() != obj.getClass()) {
         return false;
       } else {
-      TestGoal testGoal = (TestGoal) obj;
-      return ObjectsCompat.equals(getId(), testGoal.getId()) &&
-              ObjectsCompat.equals(getContent(), testGoal.getContent());
+      UserData userData = (UserData) obj;
+      return ObjectsCompat.equals(getId(), userData.getId()) &&
+              ObjectsCompat.equals(getUser(), userData.getUser());
       }
   }
   
@@ -53,7 +60,7 @@ public final class TestGoal implements Model {
    public int hashCode() {
     return new StringBuilder()
       .append(getId())
-      .append(getContent())
+      .append(getUser())
       .toString()
       .hashCode();
   }
@@ -61,14 +68,14 @@ public final class TestGoal implements Model {
   @Override
    public String toString() {
     return new StringBuilder()
-      .append("TestGoal {")
+      .append("UserData {")
       .append("id=" + String.valueOf(getId()) + ", ")
-      .append("content=" + String.valueOf(getContent()))
+      .append("user=" + String.valueOf(getUser()))
       .append("}")
       .toString();
   }
   
-  public static BuildStep builder() {
+  public static UserStep builder() {
       return new Builder();
   }
   
@@ -81,7 +88,7 @@ public final class TestGoal implements Model {
    * @return an instance of this model with only ID populated
    * @throws IllegalArgumentException Checks that ID is in the proper format
    */
-  public static TestGoal justId(String id) {
+  public static UserData justId(String id) {
     try {
       UUID.fromString(id); // Check that ID is in the UUID format - if not an exception is thrown
     } catch (Exception exception) {
@@ -91,7 +98,7 @@ public final class TestGoal implements Model {
               "creating a new object, use the standard builder method and leave the ID field blank."
       );
     }
-    return new TestGoal(
+    return new UserData(
       id,
       null
     );
@@ -99,30 +106,35 @@ public final class TestGoal implements Model {
   
   public CopyOfBuilder copyOfBuilder() {
     return new CopyOfBuilder(id,
-      content);
+      user);
   }
-  public interface BuildStep {
-    TestGoal build();
-    BuildStep id(String id) throws IllegalArgumentException;
-    BuildStep content(String content);
+  public interface UserStep {
+    BuildStep user(User user);
   }
   
 
-  public static class Builder implements BuildStep {
+  public interface BuildStep {
+    UserData build();
+    BuildStep id(String id) throws IllegalArgumentException;
+  }
+  
+
+  public static class Builder implements UserStep, BuildStep {
     private String id;
-    private String content;
+    private User user;
     @Override
-     public TestGoal build() {
+     public UserData build() {
         String id = this.id != null ? this.id : UUID.randomUUID().toString();
         
-        return new TestGoal(
+        return new UserData(
           id,
-          content);
+          user);
     }
     
     @Override
-     public BuildStep content(String content) {
-        this.content = content;
+     public BuildStep user(User user) {
+        Objects.requireNonNull(user);
+        this.user = user;
         return this;
     }
     
@@ -149,14 +161,14 @@ public final class TestGoal implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String content) {
+    private CopyOfBuilder(String id, User user) {
       super.id(id);
-      super.content(content);
+      super.user(user);
     }
     
     @Override
-     public CopyOfBuilder content(String content) {
-      return (CopyOfBuilder) super.content(content);
+     public CopyOfBuilder user(User user) {
+      return (CopyOfBuilder) super.user(user);
     }
   }
   

@@ -1,6 +1,7 @@
 package com.amplifyframework.datastore.generated.model;
 
 import com.amplifyframework.core.model.annotations.BelongsTo;
+import com.amplifyframework.core.model.annotations.HasOne;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,6 +22,7 @@ import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 @ModelConfig(pluralName = "Transactions")
 public final class Transaction implements Model {
   public static final QueryField ID = field("Transaction", "id");
+  public static final QueryField WRAPPER = field("Transaction", "transactionWrapperId");
   public static final QueryField ACCOUNT_ID = field("Transaction", "accountId");
   public static final QueryField AMOUNT = field("Transaction", "amount");
   public static final QueryField ISO_CURRENCY_CODE = field("Transaction", "isoCurrencyCode");
@@ -28,11 +30,9 @@ public final class Transaction implements Model {
   public static final QueryField CATEGORY = field("Transaction", "category");
   public static final QueryField CATEGORY_ID = field("Transaction", "categoryId");
   public static final QueryField DATE = field("Transaction", "date");
-  public static final QueryField LOCATION = field("Transaction", "transactionLocationId");
   public static final QueryField MERCHANT_NAME = field("Transaction", "merchantName");
   public static final QueryField NAME = field("Transaction", "name");
   public static final QueryField ORIGINAL_DESCRIPTION = field("Transaction", "originalDescription");
-  public static final QueryField PAYMENT_META = field("Transaction", "transactionPaymentMetaId");
   public static final QueryField PENDING = field("Transaction", "pending");
   public static final QueryField PENDING_TRANSACTION_ID = field("Transaction", "pendingTransactionId");
   public static final QueryField TRANSACTION_ID = field("Transaction", "transactionId");
@@ -42,6 +42,7 @@ public final class Transaction implements Model {
   public static final QueryField TRANSACTION_CODE = field("Transaction", "transactionCode");
   public static final QueryField PAYMENT_CHANNEL = field("Transaction", "paymentChannel");
   private final @ModelField(targetType="ID", isRequired = true) String id;
+  private final @ModelField(targetType="TransactionWrapper", isRequired = true) @BelongsTo(targetName = "transactionWrapperId", type = TransactionWrapper.class) TransactionWrapper wrapper;
   private final @ModelField(targetType="String") String accountId;
   private final @ModelField(targetType="Float", isRequired = true) Double amount;
   private final @ModelField(targetType="String") String isoCurrencyCode;
@@ -49,11 +50,11 @@ public final class Transaction implements Model {
   private final @ModelField(targetType="String") List<String> category;
   private final @ModelField(targetType="String") String categoryId;
   private final @ModelField(targetType="String") String date;
-  private final @ModelField(targetType="Location") @BelongsTo(targetName = "transactionLocationId", type = Location.class) Location location;
+  private final @ModelField(targetType="Location") @HasOne(associatedWith = "transaction", type = Location.class) Location location = null;
   private final @ModelField(targetType="String") String merchantName;
   private final @ModelField(targetType="String") String name;
   private final @ModelField(targetType="String") String originalDescription;
-  private final @ModelField(targetType="PaymentMeta") @BelongsTo(targetName = "transactionPaymentMetaId", type = PaymentMeta.class) PaymentMeta paymentMeta;
+  private final @ModelField(targetType="PaymentMeta") @HasOne(associatedWith = "transaction", type = PaymentMeta.class) PaymentMeta paymentMeta = null;
   private final @ModelField(targetType="Boolean") Boolean pending;
   private final @ModelField(targetType="String") String pendingTransactionId;
   private final @ModelField(targetType="String") String transactionId;
@@ -64,6 +65,10 @@ public final class Transaction implements Model {
   private final @ModelField(targetType="String") String paymentChannel;
   public String getId() {
       return id;
+  }
+  
+  public TransactionWrapper getWrapper() {
+      return wrapper;
   }
   
   public String getAccountId() {
@@ -146,8 +151,9 @@ public final class Transaction implements Model {
       return paymentChannel;
   }
   
-  private Transaction(String id, String accountId, Double amount, String isoCurrencyCode, String unofficialCurrencyCode, List<String> category, String categoryId, String date, Location location, String merchantName, String name, String originalDescription, PaymentMeta paymentMeta, Boolean pending, String pendingTransactionId, String transactionId, String transactionType, String accountOwner, String authorizedDate, String transactionCode, String paymentChannel) {
+  private Transaction(String id, TransactionWrapper wrapper, String accountId, Double amount, String isoCurrencyCode, String unofficialCurrencyCode, List<String> category, String categoryId, String date, String merchantName, String name, String originalDescription, Boolean pending, String pendingTransactionId, String transactionId, String transactionType, String accountOwner, String authorizedDate, String transactionCode, String paymentChannel) {
     this.id = id;
+    this.wrapper = wrapper;
     this.accountId = accountId;
     this.amount = amount;
     this.isoCurrencyCode = isoCurrencyCode;
@@ -155,11 +161,9 @@ public final class Transaction implements Model {
     this.category = category;
     this.categoryId = categoryId;
     this.date = date;
-    this.location = location;
     this.merchantName = merchantName;
     this.name = name;
     this.originalDescription = originalDescription;
-    this.paymentMeta = paymentMeta;
     this.pending = pending;
     this.pendingTransactionId = pendingTransactionId;
     this.transactionId = transactionId;
@@ -179,6 +183,7 @@ public final class Transaction implements Model {
       } else {
       Transaction transaction = (Transaction) obj;
       return ObjectsCompat.equals(getId(), transaction.getId()) &&
+              ObjectsCompat.equals(getWrapper(), transaction.getWrapper()) &&
               ObjectsCompat.equals(getAccountId(), transaction.getAccountId()) &&
               ObjectsCompat.equals(getAmount(), transaction.getAmount()) &&
               ObjectsCompat.equals(getIsoCurrencyCode(), transaction.getIsoCurrencyCode()) &&
@@ -186,11 +191,9 @@ public final class Transaction implements Model {
               ObjectsCompat.equals(getCategory(), transaction.getCategory()) &&
               ObjectsCompat.equals(getCategoryId(), transaction.getCategoryId()) &&
               ObjectsCompat.equals(getDate(), transaction.getDate()) &&
-              ObjectsCompat.equals(getLocation(), transaction.getLocation()) &&
               ObjectsCompat.equals(getMerchantName(), transaction.getMerchantName()) &&
               ObjectsCompat.equals(getName(), transaction.getName()) &&
               ObjectsCompat.equals(getOriginalDescription(), transaction.getOriginalDescription()) &&
-              ObjectsCompat.equals(getPaymentMeta(), transaction.getPaymentMeta()) &&
               ObjectsCompat.equals(getPending(), transaction.getPending()) &&
               ObjectsCompat.equals(getPendingTransactionId(), transaction.getPendingTransactionId()) &&
               ObjectsCompat.equals(getTransactionId(), transaction.getTransactionId()) &&
@@ -206,6 +209,7 @@ public final class Transaction implements Model {
    public int hashCode() {
     return new StringBuilder()
       .append(getId())
+      .append(getWrapper())
       .append(getAccountId())
       .append(getAmount())
       .append(getIsoCurrencyCode())
@@ -213,11 +217,9 @@ public final class Transaction implements Model {
       .append(getCategory())
       .append(getCategoryId())
       .append(getDate())
-      .append(getLocation())
       .append(getMerchantName())
       .append(getName())
       .append(getOriginalDescription())
-      .append(getPaymentMeta())
       .append(getPending())
       .append(getPendingTransactionId())
       .append(getTransactionId())
@@ -235,6 +237,7 @@ public final class Transaction implements Model {
     return new StringBuilder()
       .append("Transaction {")
       .append("id=" + String.valueOf(getId()) + ", ")
+      .append("wrapper=" + String.valueOf(getWrapper()) + ", ")
       .append("accountId=" + String.valueOf(getAccountId()) + ", ")
       .append("amount=" + String.valueOf(getAmount()) + ", ")
       .append("isoCurrencyCode=" + String.valueOf(getIsoCurrencyCode()) + ", ")
@@ -242,11 +245,9 @@ public final class Transaction implements Model {
       .append("category=" + String.valueOf(getCategory()) + ", ")
       .append("categoryId=" + String.valueOf(getCategoryId()) + ", ")
       .append("date=" + String.valueOf(getDate()) + ", ")
-      .append("location=" + String.valueOf(getLocation()) + ", ")
       .append("merchantName=" + String.valueOf(getMerchantName()) + ", ")
       .append("name=" + String.valueOf(getName()) + ", ")
       .append("originalDescription=" + String.valueOf(getOriginalDescription()) + ", ")
-      .append("paymentMeta=" + String.valueOf(getPaymentMeta()) + ", ")
       .append("pending=" + String.valueOf(getPending()) + ", ")
       .append("pendingTransactionId=" + String.valueOf(getPendingTransactionId()) + ", ")
       .append("transactionId=" + String.valueOf(getTransactionId()) + ", ")
@@ -259,7 +260,7 @@ public final class Transaction implements Model {
       .toString();
   }
   
-  public static AmountStep builder() {
+  public static WrapperStep builder() {
       return new Builder();
   }
   
@@ -302,13 +303,13 @@ public final class Transaction implements Model {
       null,
       null,
       null,
-      null,
       null
     );
   }
   
   public CopyOfBuilder copyOfBuilder() {
     return new CopyOfBuilder(id,
+      wrapper,
       accountId,
       amount,
       isoCurrencyCode,
@@ -316,11 +317,9 @@ public final class Transaction implements Model {
       category,
       categoryId,
       date,
-      location,
       merchantName,
       name,
       originalDescription,
-      paymentMeta,
       pending,
       pendingTransactionId,
       transactionId,
@@ -330,6 +329,11 @@ public final class Transaction implements Model {
       transactionCode,
       paymentChannel);
   }
+  public interface WrapperStep {
+    AmountStep wrapper(TransactionWrapper wrapper);
+  }
+  
+
   public interface AmountStep {
     BuildStep amount(Double amount);
   }
@@ -344,11 +348,9 @@ public final class Transaction implements Model {
     BuildStep category(List<String> category);
     BuildStep categoryId(String categoryId);
     BuildStep date(String date);
-    BuildStep location(Location location);
     BuildStep merchantName(String merchantName);
     BuildStep name(String name);
     BuildStep originalDescription(String originalDescription);
-    BuildStep paymentMeta(PaymentMeta paymentMeta);
     BuildStep pending(Boolean pending);
     BuildStep pendingTransactionId(String pendingTransactionId);
     BuildStep transactionId(String transactionId);
@@ -360,8 +362,9 @@ public final class Transaction implements Model {
   }
   
 
-  public static class Builder implements AmountStep, BuildStep {
+  public static class Builder implements WrapperStep, AmountStep, BuildStep {
     private String id;
+    private TransactionWrapper wrapper;
     private Double amount;
     private String accountId;
     private String isoCurrencyCode;
@@ -369,11 +372,9 @@ public final class Transaction implements Model {
     private List<String> category;
     private String categoryId;
     private String date;
-    private Location location;
     private String merchantName;
     private String name;
     private String originalDescription;
-    private PaymentMeta paymentMeta;
     private Boolean pending;
     private String pendingTransactionId;
     private String transactionId;
@@ -388,6 +389,7 @@ public final class Transaction implements Model {
         
         return new Transaction(
           id,
+          wrapper,
           accountId,
           amount,
           isoCurrencyCode,
@@ -395,11 +397,9 @@ public final class Transaction implements Model {
           category,
           categoryId,
           date,
-          location,
           merchantName,
           name,
           originalDescription,
-          paymentMeta,
           pending,
           pendingTransactionId,
           transactionId,
@@ -408,6 +408,13 @@ public final class Transaction implements Model {
           authorizedDate,
           transactionCode,
           paymentChannel);
+    }
+    
+    @Override
+     public AmountStep wrapper(TransactionWrapper wrapper) {
+        Objects.requireNonNull(wrapper);
+        this.wrapper = wrapper;
+        return this;
     }
     
     @Override
@@ -454,12 +461,6 @@ public final class Transaction implements Model {
     }
     
     @Override
-     public BuildStep location(Location location) {
-        this.location = location;
-        return this;
-    }
-    
-    @Override
      public BuildStep merchantName(String merchantName) {
         this.merchantName = merchantName;
         return this;
@@ -474,12 +475,6 @@ public final class Transaction implements Model {
     @Override
      public BuildStep originalDescription(String originalDescription) {
         this.originalDescription = originalDescription;
-        return this;
-    }
-    
-    @Override
-     public BuildStep paymentMeta(PaymentMeta paymentMeta) {
-        this.paymentMeta = paymentMeta;
         return this;
     }
     
@@ -554,20 +549,19 @@ public final class Transaction implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String accountId, Double amount, String isoCurrencyCode, String unofficialCurrencyCode, List<String> category, String categoryId, String date, Location location, String merchantName, String name, String originalDescription, PaymentMeta paymentMeta, Boolean pending, String pendingTransactionId, String transactionId, String transactionType, String accountOwner, String authorizedDate, String transactionCode, String paymentChannel) {
+    private CopyOfBuilder(String id, TransactionWrapper wrapper, String accountId, Double amount, String isoCurrencyCode, String unofficialCurrencyCode, List<String> category, String categoryId, String date, String merchantName, String name, String originalDescription, Boolean pending, String pendingTransactionId, String transactionId, String transactionType, String accountOwner, String authorizedDate, String transactionCode, String paymentChannel) {
       super.id(id);
-      super.amount(amount)
+      super.wrapper(wrapper)
+        .amount(amount)
         .accountId(accountId)
         .isoCurrencyCode(isoCurrencyCode)
         .unofficialCurrencyCode(unofficialCurrencyCode)
         .category(category)
         .categoryId(categoryId)
         .date(date)
-        .location(location)
         .merchantName(merchantName)
         .name(name)
         .originalDescription(originalDescription)
-        .paymentMeta(paymentMeta)
         .pending(pending)
         .pendingTransactionId(pendingTransactionId)
         .transactionId(transactionId)
@@ -576,6 +570,11 @@ public final class Transaction implements Model {
         .authorizedDate(authorizedDate)
         .transactionCode(transactionCode)
         .paymentChannel(paymentChannel);
+    }
+    
+    @Override
+     public CopyOfBuilder wrapper(TransactionWrapper wrapper) {
+      return (CopyOfBuilder) super.wrapper(wrapper);
     }
     
     @Override
@@ -614,11 +613,6 @@ public final class Transaction implements Model {
     }
     
     @Override
-     public CopyOfBuilder location(Location location) {
-      return (CopyOfBuilder) super.location(location);
-    }
-    
-    @Override
      public CopyOfBuilder merchantName(String merchantName) {
       return (CopyOfBuilder) super.merchantName(merchantName);
     }
@@ -631,11 +625,6 @@ public final class Transaction implements Model {
     @Override
      public CopyOfBuilder originalDescription(String originalDescription) {
       return (CopyOfBuilder) super.originalDescription(originalDescription);
-    }
-    
-    @Override
-     public CopyOfBuilder paymentMeta(PaymentMeta paymentMeta) {
-      return (CopyOfBuilder) super.paymentMeta(paymentMeta);
     }
     
     @Override

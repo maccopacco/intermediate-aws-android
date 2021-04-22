@@ -1,31 +1,37 @@
 type TestGoal @model {
     id: ID!
-    content: String!
+    content: String
 }
 
-type PaymentMeta @model {
-    byOrderOf: String
-    payee: String
-    payer: String
-    paymentMethod: String
-    paymentProcessor: String
-    ppdId: String
-    reason: String
-    referenceNumber: String
+type Update @model {
+    id: ID!
+    date: String!
 }
 
-type Location @model {
-    address: String
-    city: String
-    lat: Float
-    lon: Float
-    region: String
-    storeNumber: String
-    postalCode: String
-    country: String
+type User @model {
+    id: ID!
+    googleID: String!
+    originalEmail: String!
+    userData: UserData @connection(name: "UserDataConnection")
+}
+
+type UserData @model {
+    id: ID!
+    user: User! @connection(name: "UserDataConnection")
+    transactions: [TransactionWrapper] @connection(name: "UserDataTransactionConnection")
+}
+
+type TransactionWrapper @model {
+    id: ID!
+    transaction: Transaction @connection(name: "TransactionWrapperConnection")
+    userData: UserData! @connection(name: "UserDataTransactionConnection")
+    overrideDescription: String
+    memo: String
 }
 
 type Transaction @model {
+    id: ID!
+    wrapper: TransactionWrapper! @connection(name: "TransactionWrapperConnection")
     accountId: String
     amount:    Float!
     isoCurrencyCode:    String
@@ -33,11 +39,11 @@ type Transaction @model {
     category: [String]
     categoryId:    String
     date:    String
-    location:    Location @connection
+    location:    Location @connection(name: "TransactionLocationConnection")
     merchantName:    String
     name:    String
     originalDescription:    String
-    paymentMeta:    PaymentMeta @connection
+    paymentMeta:    PaymentMeta @connection(name: "TransactionPaymentMetaConnection")
     pending:    Boolean
     pendingTransactionId:    String
     transactionId:    String
@@ -46,4 +52,30 @@ type Transaction @model {
     authorizedDate:    String
     transactionCode:    String
     paymentChannel:    String
+}
+
+type PaymentMeta @model {
+    id: ID!
+    byOrderOf: String
+    payee: String
+    payer: String
+    paymentMethod: String
+    paymentProcessor: String
+    ppdId: String
+    reason: String
+    referenceNumber: String
+    transaction: Transaction! @connection(name: "TransactionPaymentMetaConnection")
+}
+
+type Location @model{
+    id: ID!
+    address: String
+    city: String
+    lat: Float
+    lon: Float
+    region: String
+    storeNumber: String
+    postalCode: String
+    country: String
+    transaction: Transaction! @connection(name: "TransactionLocationConnection")
 }

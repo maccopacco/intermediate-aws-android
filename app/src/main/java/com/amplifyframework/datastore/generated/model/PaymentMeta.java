@@ -1,5 +1,6 @@
 package com.amplifyframework.datastore.generated.model;
 
+import com.amplifyframework.core.model.annotations.BelongsTo;
 
 import java.util.List;
 import java.util.UUID;
@@ -28,6 +29,7 @@ public final class PaymentMeta implements Model {
   public static final QueryField PPD_ID = field("PaymentMeta", "ppdId");
   public static final QueryField REASON = field("PaymentMeta", "reason");
   public static final QueryField REFERENCE_NUMBER = field("PaymentMeta", "referenceNumber");
+  public static final QueryField TRANSACTION = field("PaymentMeta", "paymentMetaTransactionId");
   private final @ModelField(targetType="ID", isRequired = true) String id;
   private final @ModelField(targetType="String") String byOrderOf;
   private final @ModelField(targetType="String") String payee;
@@ -37,6 +39,7 @@ public final class PaymentMeta implements Model {
   private final @ModelField(targetType="String") String ppdId;
   private final @ModelField(targetType="String") String reason;
   private final @ModelField(targetType="String") String referenceNumber;
+  private final @ModelField(targetType="Transaction", isRequired = true) @BelongsTo(targetName = "paymentMetaTransactionId", type = Transaction.class) Transaction transaction;
   public String getId() {
       return id;
   }
@@ -73,7 +76,11 @@ public final class PaymentMeta implements Model {
       return referenceNumber;
   }
   
-  private PaymentMeta(String id, String byOrderOf, String payee, String payer, String paymentMethod, String paymentProcessor, String ppdId, String reason, String referenceNumber) {
+  public Transaction getTransaction() {
+      return transaction;
+  }
+  
+  private PaymentMeta(String id, String byOrderOf, String payee, String payer, String paymentMethod, String paymentProcessor, String ppdId, String reason, String referenceNumber, Transaction transaction) {
     this.id = id;
     this.byOrderOf = byOrderOf;
     this.payee = payee;
@@ -83,6 +90,7 @@ public final class PaymentMeta implements Model {
     this.ppdId = ppdId;
     this.reason = reason;
     this.referenceNumber = referenceNumber;
+    this.transaction = transaction;
   }
   
   @Override
@@ -101,7 +109,8 @@ public final class PaymentMeta implements Model {
               ObjectsCompat.equals(getPaymentProcessor(), paymentMeta.getPaymentProcessor()) &&
               ObjectsCompat.equals(getPpdId(), paymentMeta.getPpdId()) &&
               ObjectsCompat.equals(getReason(), paymentMeta.getReason()) &&
-              ObjectsCompat.equals(getReferenceNumber(), paymentMeta.getReferenceNumber());
+              ObjectsCompat.equals(getReferenceNumber(), paymentMeta.getReferenceNumber()) &&
+              ObjectsCompat.equals(getTransaction(), paymentMeta.getTransaction());
       }
   }
   
@@ -117,6 +126,7 @@ public final class PaymentMeta implements Model {
       .append(getPpdId())
       .append(getReason())
       .append(getReferenceNumber())
+      .append(getTransaction())
       .toString()
       .hashCode();
   }
@@ -133,12 +143,13 @@ public final class PaymentMeta implements Model {
       .append("paymentProcessor=" + String.valueOf(getPaymentProcessor()) + ", ")
       .append("ppdId=" + String.valueOf(getPpdId()) + ", ")
       .append("reason=" + String.valueOf(getReason()) + ", ")
-      .append("referenceNumber=" + String.valueOf(getReferenceNumber()))
+      .append("referenceNumber=" + String.valueOf(getReferenceNumber()) + ", ")
+      .append("transaction=" + String.valueOf(getTransaction()))
       .append("}")
       .toString();
   }
   
-  public static BuildStep builder() {
+  public static TransactionStep builder() {
       return new Builder();
   }
   
@@ -170,6 +181,7 @@ public final class PaymentMeta implements Model {
       null,
       null,
       null,
+      null,
       null
     );
   }
@@ -183,8 +195,14 @@ public final class PaymentMeta implements Model {
       paymentProcessor,
       ppdId,
       reason,
-      referenceNumber);
+      referenceNumber,
+      transaction);
   }
+  public interface TransactionStep {
+    BuildStep transaction(Transaction transaction);
+  }
+  
+
   public interface BuildStep {
     PaymentMeta build();
     BuildStep id(String id) throws IllegalArgumentException;
@@ -199,8 +217,9 @@ public final class PaymentMeta implements Model {
   }
   
 
-  public static class Builder implements BuildStep {
+  public static class Builder implements TransactionStep, BuildStep {
     private String id;
+    private Transaction transaction;
     private String byOrderOf;
     private String payee;
     private String payer;
@@ -222,7 +241,15 @@ public final class PaymentMeta implements Model {
           paymentProcessor,
           ppdId,
           reason,
-          referenceNumber);
+          referenceNumber,
+          transaction);
+    }
+    
+    @Override
+     public BuildStep transaction(Transaction transaction) {
+        Objects.requireNonNull(transaction);
+        this.transaction = transaction;
+        return this;
     }
     
     @Override
@@ -296,9 +323,10 @@ public final class PaymentMeta implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String byOrderOf, String payee, String payer, String paymentMethod, String paymentProcessor, String ppdId, String reason, String referenceNumber) {
+    private CopyOfBuilder(String id, String byOrderOf, String payee, String payer, String paymentMethod, String paymentProcessor, String ppdId, String reason, String referenceNumber, Transaction transaction) {
       super.id(id);
-      super.byOrderOf(byOrderOf)
+      super.transaction(transaction)
+        .byOrderOf(byOrderOf)
         .payee(payee)
         .payer(payer)
         .paymentMethod(paymentMethod)
@@ -306,6 +334,11 @@ public final class PaymentMeta implements Model {
         .ppdId(ppdId)
         .reason(reason)
         .referenceNumber(referenceNumber);
+    }
+    
+    @Override
+     public CopyOfBuilder transaction(Transaction transaction) {
+      return (CopyOfBuilder) super.transaction(transaction);
     }
     
     @Override

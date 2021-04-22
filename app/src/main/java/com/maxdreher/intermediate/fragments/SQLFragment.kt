@@ -19,7 +19,6 @@ import de.codecrafters.tableview.SortableTableView
 
 class SQLFragment : FragmentBase(R.layout.fragment_sql) {
 
-
     private lateinit var table: SortableTableView<TestGoal>
     private lateinit var entries: List<TableEntry<TestGoal>>
 
@@ -48,34 +47,18 @@ class SQLFragment : FragmentBase(R.layout.fragment_sql) {
 
         table = view.findViewById(R.id.sql_query_result)
         table.addDataLongClickListener { _, data ->
-            Amplify.DataStore.delete(data, help.g, help.b)
-            help.afterWait({ toast("Deleted [${data.content}]"); update() },
-                { toast("Could not delete [${data.content}]") })
-            return@addDataLongClickListener true
+            return@addDataLongClickListener deleteFromTable(data)
         }
 
         val submitValue = view.findViewById<EditText>(R.id.sql_value_edittext)
 
         update()
 
-        Util.buttonToAction(view, mapOf(R.id.sql_back to R.id.action_SQLFragment_to_homeFragment))
         Util.buttonToListener(
             view,
             mapOf(
                 R.id.sql_submit to View.OnClickListener {
-                    val t = submitValue.text.toString()
-                    Amplify.DataStore.save(
-                        TestGoal.builder().content(t).build(),
-                        help.g, help.b
-                    )
-                    help.afterWait(
-                        onSuccess = {
-                            toast("Updated")
-                            submitValue.setText("")
-                            update()
-                        },
-                        onFail = { toast("Not updated") })
-
+                    submit(submitValue)
                 },
                 R.id.sql_query to View.OnClickListener {
                     update()
@@ -84,6 +67,32 @@ class SQLFragment : FragmentBase(R.layout.fragment_sql) {
                     delete()
                 })
         )
+    }
+
+    private fun deleteFromTable(data: TestGoal): Boolean {
+        Amplify.DataStore.delete(data, help.g, help.b)
+        help.afterWait({ toast("Deleted [${data.content}]"); update() },
+            { toast("Could not delete [${data.content}]") })
+        return true
+    }
+
+    private fun submit(submitValue: EditText) {
+        val t = submitValue.text.toString()
+        if (t == "") {
+            toast("Cannot save nothing")
+            return
+        }
+        Amplify.DataStore.save(
+            TestGoal.builder().content(t).build(),
+            help.g, help.b
+        )
+        help.afterWait(
+            onSuccess = {
+                toast("Updated")
+                submitValue.setText("")
+                update()
+            },
+            onFail = { toast("Not updated") })
     }
 
     private fun delete() {
@@ -100,5 +109,6 @@ class SQLFragment : FragmentBase(R.layout.fragment_sql) {
             TableHelper.updateTable(requireContext(), table, it, entries)
             toast("Updated")
         }, { toast("This is bad") })
+
     }
 }

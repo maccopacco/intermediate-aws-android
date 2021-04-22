@@ -15,25 +15,25 @@ import com.amplifyframework.core.model.query.predicate.QueryField;
 
 import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 
-/** This is an auto generated class representing the TestGoal type in your schema. */
+/** This is an auto generated class representing the Update type in your schema. */
 @SuppressWarnings("all")
-@ModelConfig(pluralName = "TestGoals")
-public final class TestGoal implements Model {
-  public static final QueryField ID = field("TestGoal", "id");
-  public static final QueryField CONTENT = field("TestGoal", "content");
+@ModelConfig(pluralName = "Updates")
+public final class Update implements Model {
+  public static final QueryField ID = field("Update", "id");
+  public static final QueryField DATE = field("Update", "date");
   private final @ModelField(targetType="ID", isRequired = true) String id;
-  private final @ModelField(targetType="String") String content;
+  private final @ModelField(targetType="String", isRequired = true) String date;
   public String getId() {
       return id;
   }
   
-  public String getContent() {
-      return content;
+  public String getDate() {
+      return date;
   }
   
-  private TestGoal(String id, String content) {
+  private Update(String id, String date) {
     this.id = id;
-    this.content = content;
+    this.date = date;
   }
   
   @Override
@@ -43,9 +43,9 @@ public final class TestGoal implements Model {
       } else if(obj == null || getClass() != obj.getClass()) {
         return false;
       } else {
-      TestGoal testGoal = (TestGoal) obj;
-      return ObjectsCompat.equals(getId(), testGoal.getId()) &&
-              ObjectsCompat.equals(getContent(), testGoal.getContent());
+      Update update = (Update) obj;
+      return ObjectsCompat.equals(getId(), update.getId()) &&
+              ObjectsCompat.equals(getDate(), update.getDate());
       }
   }
   
@@ -53,7 +53,7 @@ public final class TestGoal implements Model {
    public int hashCode() {
     return new StringBuilder()
       .append(getId())
-      .append(getContent())
+      .append(getDate())
       .toString()
       .hashCode();
   }
@@ -61,14 +61,14 @@ public final class TestGoal implements Model {
   @Override
    public String toString() {
     return new StringBuilder()
-      .append("TestGoal {")
+      .append("Update {")
       .append("id=" + String.valueOf(getId()) + ", ")
-      .append("content=" + String.valueOf(getContent()))
+      .append("date=" + String.valueOf(getDate()))
       .append("}")
       .toString();
   }
   
-  public static BuildStep builder() {
+  public static DateStep builder() {
       return new Builder();
   }
   
@@ -81,7 +81,7 @@ public final class TestGoal implements Model {
    * @return an instance of this model with only ID populated
    * @throws IllegalArgumentException Checks that ID is in the proper format
    */
-  public static TestGoal justId(String id) {
+  public static Update justId(String id) {
     try {
       UUID.fromString(id); // Check that ID is in the UUID format - if not an exception is thrown
     } catch (Exception exception) {
@@ -91,7 +91,7 @@ public final class TestGoal implements Model {
               "creating a new object, use the standard builder method and leave the ID field blank."
       );
     }
-    return new TestGoal(
+    return new Update(
       id,
       null
     );
@@ -99,30 +99,35 @@ public final class TestGoal implements Model {
   
   public CopyOfBuilder copyOfBuilder() {
     return new CopyOfBuilder(id,
-      content);
+      date);
   }
-  public interface BuildStep {
-    TestGoal build();
-    BuildStep id(String id) throws IllegalArgumentException;
-    BuildStep content(String content);
+  public interface DateStep {
+    BuildStep date(String date);
   }
   
 
-  public static class Builder implements BuildStep {
+  public interface BuildStep {
+    Update build();
+    BuildStep id(String id) throws IllegalArgumentException;
+  }
+  
+
+  public static class Builder implements DateStep, BuildStep {
     private String id;
-    private String content;
+    private String date;
     @Override
-     public TestGoal build() {
+     public Update build() {
         String id = this.id != null ? this.id : UUID.randomUUID().toString();
         
-        return new TestGoal(
+        return new Update(
           id,
-          content);
+          date);
     }
     
     @Override
-     public BuildStep content(String content) {
-        this.content = content;
+     public BuildStep date(String date) {
+        Objects.requireNonNull(date);
+        this.date = date;
         return this;
     }
     
@@ -149,14 +154,14 @@ public final class TestGoal implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String content) {
+    private CopyOfBuilder(String id, String date) {
       super.id(id);
-      super.content(content);
+      super.date(date);
     }
     
     @Override
-     public CopyOfBuilder content(String content) {
-      return (CopyOfBuilder) super.content(content);
+     public CopyOfBuilder date(String date) {
+      return (CopyOfBuilder) super.date(date);
     }
   }
   

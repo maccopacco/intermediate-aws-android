@@ -1,4 +1,9 @@
 <resources>
     <dimen name="default_margin">5dp</dimen>
+
+    <dimen name="nav_header_top_margin">65dp</dimen>
+    <dimen name="profile_pic">100dp</dimen>
+    <dimen name="profile_pic_round">250dp</dimen>
+
     <dimen name="fab_margin">16dp</dimen>
 </resources>

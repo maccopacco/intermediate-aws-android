@@ -1,5 +1,6 @@
 package com.amplifyframework.datastore.generated.model;
 
+import com.amplifyframework.core.model.annotations.HasOne;
 
 import java.util.List;
 import java.util.UUID;
@@ -15,25 +16,37 @@ import com.amplifyframework.core.model.query.predicate.QueryField;
 
 import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 
-/** This is an auto generated class representing the TestGoal type in your schema. */
+/** This is an auto generated class representing the User type in your schema. */
 @SuppressWarnings("all")
-@ModelConfig(pluralName = "TestGoals")
-public final class TestGoal implements Model {
-  public static final QueryField ID = field("TestGoal", "id");
-  public static final QueryField CONTENT = field("TestGoal", "content");
+@ModelConfig(pluralName = "Users")
+public final class User implements Model {
+  public static final QueryField ID = field("User", "id");
+  public static final QueryField GOOGLE_ID = field("User", "googleID");
+  public static final QueryField ORIGINAL_EMAIL = field("User", "originalEmail");
   private final @ModelField(targetType="ID", isRequired = true) String id;
-  private final @ModelField(targetType="String") String content;
+  private final @ModelField(targetType="String", isRequired = true) String googleID;
+  private final @ModelField(targetType="String", isRequired = true) String originalEmail;
+  private final @ModelField(targetType="UserData") @HasOne(associatedWith = "user", type = UserData.class) UserData userData = null;
   public String getId() {
       return id;
   }
   
-  public String getContent() {
-      return content;
+  public String getGoogleId() {
+      return googleID;
   }
   
-  private TestGoal(String id, String content) {
+  public String getOriginalEmail() {
+      return originalEmail;
+  }
+  
+  public UserData getUserData() {
+      return userData;
+  }
+  
+  private User(String id, String googleID, String originalEmail) {
     this.id = id;
-    this.content = content;
+    this.googleID = googleID;
+    this.originalEmail = originalEmail;
   }
   
   @Override
@@ -43,9 +56,10 @@ public final class TestGoal implements Model {
       } else if(obj == null || getClass() != obj.getClass()) {
         return false;
       } else {
-      TestGoal testGoal = (TestGoal) obj;
-      return ObjectsCompat.equals(getId(), testGoal.getId()) &&
-              ObjectsCompat.equals(getContent(), testGoal.getContent());
+      User user = (User) obj;
+      return ObjectsCompat.equals(getId(), user.getId()) &&
+              ObjectsCompat.equals(getGoogleId(), user.getGoogleId()) &&
+              ObjectsCompat.equals(getOriginalEmail(), user.getOriginalEmail());
       }
   }
   
@@ -53,7 +67,8 @@ public final class TestGoal implements Model {
    public int hashCode() {
     return new StringBuilder()
       .append(getId())
-      .append(getContent())
+      .append(getGoogleId())
+      .append(getOriginalEmail())
       .toString()
       .hashCode();
   }
@@ -61,14 +76,15 @@ public final class TestGoal implements Model {
   @Override
    public String toString() {
     return new StringBuilder()
-      .append("TestGoal {")
+      .append("User {")
       .append("id=" + String.valueOf(getId()) + ", ")
-      .append("content=" + String.valueOf(getContent()))
+      .append("googleID=" + String.valueOf(getGoogleId()) + ", ")
+      .append("originalEmail=" + String.valueOf(getOriginalEmail()))
       .append("}")
       .toString();
   }
   
-  public static BuildStep builder() {
+  public static GoogleIdStep builder() {
       return new Builder();
   }
   
@@ -81,7 +97,7 @@ public final class TestGoal implements Model {
    * @return an instance of this model with only ID populated
    * @throws IllegalArgumentException Checks that ID is in the proper format
    */
-  public static TestGoal justId(String id) {
+  public static User justId(String id) {
     try {
       UUID.fromString(id); // Check that ID is in the UUID format - if not an exception is thrown
     } catch (Exception exception) {
@@ -91,38 +107,59 @@ public final class TestGoal implements Model {
               "creating a new object, use the standard builder method and leave the ID field blank."
       );
     }
-    return new TestGoal(
+    return new User(
       id,
+      null,
       null
     );
   }
   
   public CopyOfBuilder copyOfBuilder() {
     return new CopyOfBuilder(id,
-      content);
+      googleID,
+      originalEmail);
   }
-  public interface BuildStep {
-    TestGoal build();
-    BuildStep id(String id) throws IllegalArgumentException;
-    BuildStep content(String content);
+  public interface GoogleIdStep {
+    OriginalEmailStep googleId(String googleId);
   }
   
 
-  public static class Builder implements BuildStep {
+  public interface OriginalEmailStep {
+    BuildStep originalEmail(String originalEmail);
+  }
+  
+
+  public interface BuildStep {
+    User build();
+    BuildStep id(String id) throws IllegalArgumentException;
+  }
+  
+
+  public static class Builder implements GoogleIdStep, OriginalEmailStep, BuildStep {
     private String id;
-    private String content;
+    private String googleID;
+    private String originalEmail;
     @Override
-     public TestGoal build() {
+     public User build() {
         String id = this.id != null ? this.id : UUID.randomUUID().toString();
         
-        return new TestGoal(
+        return new User(
           id,
-          content);
+          googleID,
+          originalEmail);
     }
     
     @Override
-     public BuildStep content(String content) {
-        this.content = content;
+     public OriginalEmailStep googleId(String googleId) {
+        Objects.requireNonNull(googleId);
+        this.googleID = googleId;
+        return this;
+    }
+    
+    @Override
+     public BuildStep originalEmail(String originalEmail) {
+        Objects.requireNonNull(originalEmail);
+        this.originalEmail = originalEmail;
         return this;
     }
     
@@ -149,14 +186,20 @@ public final class TestGoal implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String content) {
+    private CopyOfBuilder(String id, String googleId, String originalEmail) {
       super.id(id);
-      super.content(content);
+      super.googleId(googleId)
+        .originalEmail(originalEmail);
     }
     
     @Override
-     public CopyOfBuilder content(String content) {
-      return (CopyOfBuilder) super.content(content);
+     public CopyOfBuilder googleId(String googleId) {
+      return (CopyOfBuilder) super.googleId(googleId);
+    }
+    
+    @Override
+     public CopyOfBuilder originalEmail(String originalEmail) {
+      return (CopyOfBuilder) super.originalEmail(originalEmail);
     }
   }
   

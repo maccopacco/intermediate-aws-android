@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".HomeFragment">
+    tools:context=".fragments.SQLFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -80,7 +80,7 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-            <Button
+                <Button
 
                     android:id="@+id/sql_submit"
                     android:layout_width="wrap_content"
@@ -88,11 +88,6 @@
                     android:layout_margin="@dimen/default_margin"
                     android:text="Submit" />
 
-                <Button
-                    android:id="@+id/sql_back"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Back" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

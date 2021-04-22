@@ -23,7 +23,8 @@ android {
         testImplementation 'junit:junit:4.+'
         implementation project(':android_lib')
 
-//        implementation 'com.plaid:plaid-java:9.0.0-beta-1'
+
+        //Plaid
         implementation 'com.plaid:plaid-java:8.1.0'
 
         // Amplify core dependency
@@ -53,4 +54,12 @@ android {
 dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.4'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.4'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.preference:preference:1.1.1'
+
+    implementation 'com.google.android.gms:play-services-auth:19.0.0'
+    implementation('com.google.api-client:google-api-client-android:1.30.10') {
+        exclude group: 'org.apache.httpcomponents'
+    }
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 }

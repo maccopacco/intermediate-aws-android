@@ -41,3 +41,1617 @@ mutation DeleteTestGoal(
     updatedAt
   }
 }
+mutation CreateUpdate(
+  $input: CreateUpdateInput!
+  $condition: ModelUpdateConditionInput
+) {
+  createUpdate(input: $input, condition: $condition) {
+    id
+    date
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+mutation UpdateUpdate(
+  $input: UpdateUpdateInput!
+  $condition: ModelUpdateConditionInput
+) {
+  updateUpdate(input: $input, condition: $condition) {
+    id
+    date
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+mutation DeleteUpdate(
+  $input: DeleteUpdateInput!
+  $condition: ModelUpdateConditionInput
+) {
+  deleteUpdate(input: $input, condition: $condition) {
+    id
+    date
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+mutation CreateUser(
+  $input: CreateUserInput!
+  $condition: ModelUserConditionInput
+) {
+  createUser(input: $input, condition: $condition) {
+    id
+    googleID
+    originalEmail
+    userData {
+      id
+      user {
+        id
+        googleID
+        originalEmail
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      transactions {
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+mutation UpdateUser(
+  $input: UpdateUserInput!
+  $condition: ModelUserConditionInput
+) {
+  updateUser(input: $input, condition: $condition) {
+    id
+    googleID
+    originalEmail
+    userData {
+      id
+      user {
+        id
+        googleID
+        originalEmail
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      transactions {
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+mutation DeleteUser(
+  $input: DeleteUserInput!
+  $condition: ModelUserConditionInput
+) {
+  deleteUser(input: $input, condition: $condition) {
+    id
+    googleID
+    originalEmail
+    userData {
+      id
+      user {
+        id
+        googleID
+        originalEmail
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      transactions {
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+mutation CreateUserData(
+  $input: CreateUserDataInput!
+  $condition: ModelUserDataConditionInput
+) {
+  createUserData(input: $input, condition: $condition) {
+    id
+    user {
+      id
+      googleID
+      originalEmail
+      userData {
+        id
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    transactions {
+      items {
+        id
+        overrideDescription
+        memo
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+mutation UpdateUserData(
+  $input: UpdateUserDataInput!
+  $condition: ModelUserDataConditionInput
+) {
+  updateUserData(input: $input, condition: $condition) {
+    id
+    user {
+      id
+      googleID
+      originalEmail
+      userData {
+        id
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    transactions {
+      items {
+        id
+        overrideDescription
+        memo
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+mutation DeleteUserData(
+  $input: DeleteUserDataInput!
+  $condition: ModelUserDataConditionInput
+) {
+  deleteUserData(input: $input, condition: $condition) {
+    id
+    user {
+      id
+      googleID
+      originalEmail
+      userData {
+        id
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    transactions {
+      items {
+        id
+        overrideDescription
+        memo
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+mutation CreateTransactionWrapper(
+  $input: CreateTransactionWrapperInput!
+  $condition: ModelTransactionWrapperConditionInput
+) {
+  createTransactionWrapper(input: $input, condition: $condition) {
+    id
+    transaction {
+      id
+      wrapper {
+        id
+        overrideDescription
+        memo
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      accountId
+      amount
+      isoCurrencyCode
+      unofficialCurrencyCode
+      category
+      categoryId
+      date
+      location {
+        id
+        address
+        city
+        lat
+        lon
+        region
+        storeNumber
+        postalCode
+        country
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      merchantName
+      name
+      originalDescription
+      paymentMeta {
+        id
+        byOrderOf
+        payee
+        payer
+        paymentMethod
+        paymentProcessor
+        ppdId
+        reason
+        referenceNumber
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      pending
+      pendingTransactionId
+      transactionId
+      transactionType
+      accountOwner
+      authorizedDate
+      transactionCode
+      paymentChannel
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    userData {
+      id
+      user {
+        id
+        googleID
+        originalEmail
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      transactions {
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    overrideDescription
+    memo
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+mutation UpdateTransactionWrapper(
+  $input: UpdateTransactionWrapperInput!
+  $condition: ModelTransactionWrapperConditionInput
+) {
+  updateTransactionWrapper(input: $input, condition: $condition) {
+    id
+    transaction {
+      id
+      wrapper {
+        id
+        overrideDescription
+        memo
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      accountId
+      amount
+      isoCurrencyCode
+      unofficialCurrencyCode
+      category
+      categoryId
+      date
+      location {
+        id
+        address
+        city
+        lat
+        lon
+        region
+        storeNumber
+        postalCode
+        country
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      merchantName
+      name
+      originalDescription
+      paymentMeta {
+        id
+        byOrderOf
+        payee
+        payer
+        paymentMethod
+        paymentProcessor
+        ppdId
+        reason
+        referenceNumber
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      pending
+      pendingTransactionId
+      transactionId
+      transactionType
+      accountOwner
+      authorizedDate
+      transactionCode
+      paymentChannel
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    userData {
+      id
+      user {
+        id
+        googleID
+        originalEmail
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      transactions {
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    overrideDescription
+    memo
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+mutation DeleteTransactionWrapper(
+  $input: DeleteTransactionWrapperInput!
+  $condition: ModelTransactionWrapperConditionInput
+) {
+  deleteTransactionWrapper(input: $input, condition: $condition) {
+    id
+    transaction {
+      id
+      wrapper {
+        id
+        overrideDescription
+        memo
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      accountId
+      amount
+      isoCurrencyCode
+      unofficialCurrencyCode
+      category
+      categoryId
+      date
+      location {
+        id
+        address
+        city
+        lat
+        lon
+        region
+        storeNumber
+        postalCode
+        country
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      merchantName
+      name
+      originalDescription
+      paymentMeta {
+        id
+        byOrderOf
+        payee
+        payer
+        paymentMethod
+        paymentProcessor
+        ppdId
+        reason
+        referenceNumber
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      pending
+      pendingTransactionId
+      transactionId
+      transactionType
+      accountOwner
+      authorizedDate
+      transactionCode
+      paymentChannel
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    userData {
+      id
+      user {
+        id
+        googleID
+        originalEmail
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      transactions {
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    overrideDescription
+    memo
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+mutation CreateTransaction(
+  $input: CreateTransactionInput!
+  $condition: ModelTransactionConditionInput
+) {
+  createTransaction(input: $input, condition: $condition) {
+    id
+    wrapper {
+      id
+      transaction {
+        id
+        accountId
+        amount
+        isoCurrencyCode
+        unofficialCurrencyCode
+        category
+        categoryId
+        date
+        merchantName
+        name
+        originalDescription
+        pending
+        pendingTransactionId
+        transactionId
+        transactionType
+        accountOwner
+        authorizedDate
+        transactionCode
+        paymentChannel
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      userData {
+        id
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      overrideDescription
+      memo
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    accountId
+    amount
+    isoCurrencyCode
+    unofficialCurrencyCode
+    category
+    categoryId
+    date
+    location {
+      id
+      address
+      city
+      lat
+      lon
+      region
+      storeNumber
+      postalCode
+      country
+      transaction {
+        id
+        accountId
+        amount
+        isoCurrencyCode
+        unofficialCurrencyCode
+        category
+        categoryId
+        date
+        merchantName
+        name
+        originalDescription
+        pending
+        pendingTransactionId
+        transactionId
+        transactionType
+        accountOwner
+        authorizedDate
+        transactionCode
+        paymentChannel
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    merchantName
+    name
+    originalDescription
+    paymentMeta {
+      id
+      byOrderOf
+      payee
+      payer
+      paymentMethod
+      paymentProcessor
+      ppdId
+      reason
+      referenceNumber
+      transaction {
+        id
+        accountId
+        amount
+        isoCurrencyCode
+        unofficialCurrencyCode
+        category
+        categoryId
+        date
+        merchantName
+        name
+        originalDescription
+        pending
+        pendingTransactionId
+        transactionId
+        transactionType
+        accountOwner
+        authorizedDate
+        transactionCode
+        paymentChannel
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    pending
+    pendingTransactionId
+    transactionId
+    transactionType
+    accountOwner
+    authorizedDate
+    transactionCode
+    paymentChannel
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+mutation UpdateTransaction(
+  $input: UpdateTransactionInput!
+  $condition: ModelTransactionConditionInput
+) {
+  updateTransaction(input: $input, condition: $condition) {
+    id
+    wrapper {
+      id
+      transaction {
+        id
+        accountId
+        amount
+        isoCurrencyCode
+        unofficialCurrencyCode
+        category
+        categoryId
+        date
+        merchantName
+        name
+        originalDescription
+        pending
+        pendingTransactionId
+        transactionId
+        transactionType
+        accountOwner
+        authorizedDate
+        transactionCode
+        paymentChannel
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      userData {
+        id
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      overrideDescription
+      memo
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    accountId
+    amount
+    isoCurrencyCode
+    unofficialCurrencyCode
+    category
+    categoryId
+    date
+    location {
+      id
+      address
+      city
+      lat
+      lon
+      region
+      storeNumber
+      postalCode
+      country
+      transaction {
+        id
+        accountId
+        amount
+        isoCurrencyCode
+        unofficialCurrencyCode
+        category
+        categoryId
+        date
+        merchantName
+        name
+        originalDescription
+        pending
+        pendingTransactionId
+        transactionId
+        transactionType
+        accountOwner
+        authorizedDate
+        transactionCode
+        paymentChannel
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    merchantName
+    name
+    originalDescription
+    paymentMeta {
+      id
+      byOrderOf
+      payee
+      payer
+      paymentMethod
+      paymentProcessor
+      ppdId
+      reason
+      referenceNumber
+      transaction {
+        id
+        accountId
+        amount
+        isoCurrencyCode
+        unofficialCurrencyCode
+        category
+        categoryId
+        date
+        merchantName
+        name
+        originalDescription
+        pending
+        pendingTransactionId
+        transactionId
+        transactionType
+        accountOwner
+        authorizedDate
+        transactionCode
+        paymentChannel
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    pending
+    pendingTransactionId
+    transactionId
+    transactionType
+    accountOwner
+    authorizedDate
+    transactionCode
+    paymentChannel
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+mutation DeleteTransaction(
+  $input: DeleteTransactionInput!
+  $condition: ModelTransactionConditionInput
+) {
+  deleteTransaction(input: $input, condition: $condition) {
+    id
+    wrapper {
+      id
+      transaction {
+        id
+        accountId
+        amount
+        isoCurrencyCode
+        unofficialCurrencyCode
+        category
+        categoryId
+        date
+        merchantName
+        name
+        originalDescription
+        pending
+        pendingTransactionId
+        transactionId
+        transactionType
+        accountOwner
+        authorizedDate
+        transactionCode
+        paymentChannel
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      userData {
+        id
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      overrideDescription
+      memo
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    accountId
+    amount
+    isoCurrencyCode
+    unofficialCurrencyCode
+    category
+    categoryId
+    date
+    location {
+      id
+      address
+      city
+      lat
+      lon
+      region
+      storeNumber
+      postalCode
+      country
+      transaction {
+        id
+        accountId
+        amount
+        isoCurrencyCode
+        unofficialCurrencyCode
+        category
+        categoryId
+        date
+        merchantName
+        name
+        originalDescription
+        pending
+        pendingTransactionId
+        transactionId
+        transactionType
+        accountOwner
+        authorizedDate
+        transactionCode
+        paymentChannel
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    merchantName
+    name
+    originalDescription
+    paymentMeta {
+      id
+      byOrderOf
+      payee
+      payer
+      paymentMethod
+      paymentProcessor
+      ppdId
+      reason
+      referenceNumber
+      transaction {
+        id
+        accountId
+        amount
+        isoCurrencyCode
+        unofficialCurrencyCode
+        category
+        categoryId
+        date
+        merchantName
+        name
+        originalDescription
+        pending
+        pendingTransactionId
+        transactionId
+        transactionType
+        accountOwner
+        authorizedDate
+        transactionCode
+        paymentChannel
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    pending
+    pendingTransactionId
+    transactionId
+    transactionType
+    accountOwner
+    authorizedDate
+    transactionCode
+    paymentChannel
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+mutation CreatePaymentMeta(
+  $input: CreatePaymentMetaInput!
+  $condition: ModelPaymentMetaConditionInput
+) {
+  createPaymentMeta(input: $input, condition: $condition) {
+    id
+    byOrderOf
+    payee
+    payer
+    paymentMethod
+    paymentProcessor
+    ppdId
+    reason
+    referenceNumber
+    transaction {
+      id
+      wrapper {
+        id
+        overrideDescription
+        memo
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      accountId
+      amount
+      isoCurrencyCode
+      unofficialCurrencyCode
+      category
+      categoryId
+      date
+      location {
+        id
+        address
+        city
+        lat
+        lon
+        region
+        storeNumber
+        postalCode
+        country
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      merchantName
+      name
+      originalDescription
+      paymentMeta {
+        id
+        byOrderOf
+        payee
+        payer
+        paymentMethod
+        paymentProcessor
+        ppdId
+        reason
+        referenceNumber
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      pending
+      pendingTransactionId
+      transactionId
+      transactionType
+      accountOwner
+      authorizedDate
+      transactionCode
+      paymentChannel
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+mutation UpdatePaymentMeta(
+  $input: UpdatePaymentMetaInput!
+  $condition: ModelPaymentMetaConditionInput
+) {
+  updatePaymentMeta(input: $input, condition: $condition) {
+    id
+    byOrderOf
+    payee
+    payer
+    paymentMethod
+    paymentProcessor
+    ppdId
+    reason
+    referenceNumber
+    transaction {
+      id
+      wrapper {
+        id
+        overrideDescription
+        memo
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      accountId
+      amount
+      isoCurrencyCode
+      unofficialCurrencyCode
+      category
+      categoryId
+      date
+      location {
+        id
+        address
+        city
+        lat
+        lon
+        region
+        storeNumber
+        postalCode
+        country
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      merchantName
+      name
+      originalDescription
+      paymentMeta {
+        id
+        byOrderOf
+        payee
+        payer
+        paymentMethod
+        paymentProcessor
+        ppdId
+        reason
+        referenceNumber
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      pending
+      pendingTransactionId
+      transactionId
+      transactionType
+      accountOwner
+      authorizedDate
+      transactionCode
+      paymentChannel
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+mutation DeletePaymentMeta(
+  $input: DeletePaymentMetaInput!
+  $condition: ModelPaymentMetaConditionInput
+) {
+  deletePaymentMeta(input: $input, condition: $condition) {
+    id
+    byOrderOf
+    payee
+    payer
+    paymentMethod
+    paymentProcessor
+    ppdId
+    reason
+    referenceNumber
+    transaction {
+      id
+      wrapper {
+        id
+        overrideDescription
+        memo
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      accountId
+      amount
+      isoCurrencyCode
+      unofficialCurrencyCode
+      category
+      categoryId
+      date
+      location {
+        id
+        address
+        city
+        lat
+        lon
+        region
+        storeNumber
+        postalCode
+        country
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      merchantName
+      name
+      originalDescription
+      paymentMeta {
+        id
+        byOrderOf
+        payee
+        payer
+        paymentMethod
+        paymentProcessor
+        ppdId
+        reason
+        referenceNumber
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      pending
+      pendingTransactionId
+      transactionId
+      transactionType
+      accountOwner
+      authorizedDate
+      transactionCode
+      paymentChannel
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+mutation CreateLocation(
+  $input: CreateLocationInput!
+  $condition: ModelLocationConditionInput
+) {
+  createLocation(input: $input, condition: $condition) {
+    id
+    address
+    city
+    lat
+    lon
+    region
+    storeNumber
+    postalCode
+    country
+    transaction {
+      id
+      wrapper {
+        id
+        overrideDescription
+        memo
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      accountId
+      amount
+      isoCurrencyCode
+      unofficialCurrencyCode
+      category
+      categoryId
+      date
+      location {
+        id
+        address
+        city
+        lat
+        lon
+        region
+        storeNumber
+        postalCode
+        country
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      merchantName
+      name
+      originalDescription
+      paymentMeta {
+        id
+        byOrderOf
+        payee
+        payer
+        paymentMethod
+        paymentProcessor
+        ppdId
+        reason
+        referenceNumber
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      pending
+      pendingTransactionId
+      transactionId
+      transactionType
+      accountOwner
+      authorizedDate
+      transactionCode
+      paymentChannel
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+mutation UpdateLocation(
+  $input: UpdateLocationInput!
+  $condition: ModelLocationConditionInput
+) {
+  updateLocation(input: $input, condition: $condition) {
+    id
+    address
+    city
+    lat
+    lon
+    region
+    storeNumber
+    postalCode
+    country
+    transaction {
+      id
+      wrapper {
+        id
+        overrideDescription
+        memo
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      accountId
+      amount
+      isoCurrencyCode
+      unofficialCurrencyCode
+      category
+      categoryId
+      date
+      location {
+        id
+        address
+        city
+        lat
+        lon
+        region
+        storeNumber
+        postalCode
+        country
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      merchantName
+      name
+      originalDescription
+      paymentMeta {
+        id
+        byOrderOf
+        payee
+        payer
+        paymentMethod
+        paymentProcessor
+        ppdId
+        reason
+        referenceNumber
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      pending
+      pendingTransactionId
+      transactionId
+      transactionType
+      accountOwner
+      authorizedDate
+      transactionCode
+      paymentChannel
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+mutation DeleteLocation(
+  $input: DeleteLocationInput!
+  $condition: ModelLocationConditionInput
+) {
+  deleteLocation(input: $input, condition: $condition) {
+    id
+    address
+    city
+    lat
+    lon
+    region
+    storeNumber
+    postalCode
+    country
+    transaction {
+      id
+      wrapper {
+        id
+        overrideDescription
+        memo
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      accountId
+      amount
+      isoCurrencyCode
+      unofficialCurrencyCode
+      category
+      categoryId
+      date
+      location {
+        id
+        address
+        city
+        lat
+        lon
+        region
+        storeNumber
+        postalCode
+        country
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      merchantName
+      name
+      originalDescription
+      paymentMeta {
+        id
+        byOrderOf
+        payee
+        payer
+        paymentMethod
+        paymentProcessor
+        ppdId
+        reason
+        referenceNumber
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      pending
+      pendingTransactionId
+      transactionId
+      transactionType
+      accountOwner
+      authorizedDate
+      transactionCode
+      paymentChannel
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}

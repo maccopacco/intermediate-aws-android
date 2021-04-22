@@ -4,50 +4,112 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.annotation.DrawableRes
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.amplifyframework.AmplifyException
 import com.amplifyframework.api.aws.AWSApiPlugin
 import com.amplifyframework.core.Amplify
 import com.amplifyframework.datastore.AWSDataStorePlugin
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.navigation.NavigationView
 import com.maxdreher.extensions.ActivityBase
+import com.maxdreher.intermediate.BuildConfig
 import com.maxdreher.intermediate.R
 
-class MainActivity : ActivityBase() {
+class MainActivity : ActivityBase(R.layout.activity_main) {
+
+    private lateinit var appBarConfiguration: AppBarConfiguration
+
+    private val menuItems = mutableListOf<InternalMenuItem>().apply {
+        if (BuildConfig.DEBUG) {
+//            add(InternalMenuItem("Delete all Users") {
+//                AmpHelperD().apply {
+//                    Amplify.DataStore.delete(User::class.java, QueryPredicates.all(), g, b)
+//                    afterWait({ toast("Delteed :) ") }, { error("Ahh!!! ${it.message}") })
+//                }
+//            })
+        }
+//        add(InternalMenuItem("init amp") { AmplifyInitializer.init(this@MainActivity) })
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
-
-        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
 
         try {
             Amplify.addPlugin(AWSDataStorePlugin())
             Amplify.addPlugin(AWSApiPlugin())
-            Amplify.configure(applicationContext)
+            Amplify.configure(this)
             toast("Initialized Amplify")
         } catch (error: AmplifyException) {
             Log.e("MyAmplifyApp", "Could not initialize Amplify", error)
         }
+
+        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
+        val navView: NavigationView = findViewById(R.id.nav_view)
+        val navController = findNavController(R.id.nav_host_fragment)
+
+        if (BuildConfig.DEBUG) {
+            menuItems.add(InternalMenuItem("Admin settings") {
+                navController.navigate(R.id.adminSettings)
+            })
+        }
+
+        appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.settingsFragment, R.id.plaidFragment, R.id.SQLFragment
+            ), drawerLayout
+        )
+
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        navView.setupWithNavController(navController)
     }
 
+    /**
+     * Create [MenuItem] from [InternalMenuItem]s stored in [menuItems]
+     */
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
+        menuItems.forEachIndexed { index, mi ->
+            menu.add(0, index, index, mi.name).let {
+                if (mi.icon != -1) {
+                    it.setIcon(mi.icon)
+                }
+                it.setShowAsAction(mi.showAsAction)
+            }
+        }
         return true
     }
 
+    /**
+     * Call [InternalMenuItem.onClick] if [item] in [menuItems]
+     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
+        return if (item.itemId in 0 until menuItems.size) {
+            menuItems[item.itemId].onClick.invoke()
+            true
+        } else {
+            super.onOptionsItemSelected(item)
         }
     }
+
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.nav_host_fragment)
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    /**
+     * Class with [name], [onClick] function, to be mapped into [menuItems]
+     */
+    private class InternalMenuItem(
+        val name: String, @DrawableRes val icon: Int = -1,
+        val onClick: () -> Unit
+    ) {
+        val showAsAction =
+            if (icon == -1) MenuItem.SHOW_AS_ACTION_NEVER else MenuItem.SHOW_AS_ACTION_IF_ROOM
+    }
+
 }
