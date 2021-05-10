@@ -9,6 +9,8 @@ object Keys {
         get() = throw e
     val PLAID_SECRET: String
         get() = throw e
-    val MY_ACCESS_TOKEN: String
+    val MY_ACCESS_TOKENS: List<InstituteAndID>
         get() = throw e
+
+    class InstituteAndID(val ins: String, val id: String)
 }

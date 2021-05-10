@@ -1,4 +1,5 @@
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory app:title="Google Account">
         <Preference
@@ -9,15 +10,23 @@
             app:title="Sign out" />
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="Intermediate Account">
+    <PreferenceCategory app:title="@string/app_name">
+        <ListPreference
+            app:entries="@array/chooseBankText"
+            app:entryValues="@array/chooseBankValues"
+            app:key="appChooseBank"
+            app:title="Chose bank" />
         <Preference
-            app:key="intermediateDelete"
+            app:key="appShowAccountNumbers"
+            app:title="Show account numbers" />
+        <Preference
+            app:key="appDelete"
             app:title="Delete all Intermediate Data" />
     </PreferenceCategory>
     <PreferenceCategory app:title="Import Data">
         <Preference
-            app:key="importSimple"
-            app:title="Import Simple Data from CSV" />
+            app:key="importSimpleJSON"
+            app:title="Import Simple Data from JSON" />
     </PreferenceCategory>
-    
+
 </PreferenceScreen>

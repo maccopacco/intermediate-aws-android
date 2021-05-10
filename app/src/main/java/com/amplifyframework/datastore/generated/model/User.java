@@ -1,6 +1,6 @@
 package com.amplifyframework.datastore.generated.model;
 
-import com.amplifyframework.core.model.annotations.HasOne;
+import com.amplifyframework.core.model.annotations.HasMany;
 
 import java.util.List;
 import java.util.UUID;
@@ -26,7 +26,7 @@ public final class User implements Model {
   private final @ModelField(targetType="ID", isRequired = true) String id;
   private final @ModelField(targetType="String", isRequired = true) String googleID;
   private final @ModelField(targetType="String", isRequired = true) String originalEmail;
-  private final @ModelField(targetType="UserData") @HasOne(associatedWith = "user", type = UserData.class) UserData userData = null;
+  private final @ModelField(targetType="Bank") @HasMany(associatedWith = "user", type = Bank.class) List<Bank> banks = null;
   public String getId() {
       return id;
   }
@@ -39,8 +39,8 @@ public final class User implements Model {
       return originalEmail;
   }
   
-  public UserData getUserData() {
-      return userData;
+  public List<Bank> getBanks() {
+      return banks;
   }
   
   private User(String id, String googleID, String originalEmail) {

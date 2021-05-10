@@ -3,47 +3,61 @@ type TestGoal @model {
     content: String
 }
 
-type Update @model {
-    id: ID!
-    date: String!
-}
-
 type User @model {
     id: ID!
     googleID: String!
     originalEmail: String!
-    userData: UserData @connection(name: "UserDataConnection")
+    banks: [Bank] @connection(name: "User_Bank")
+}
+
+type Bank @model {
+    id: ID!
+    user: User! @connection(name: "User_Bank")
+    plaid_access_token: String!
+    institution_id: String!
+    institution_name: String
+    institution_logo: String
+    last_touched_time: String!
+    userData: UserData @connection(name: "Bank_Data")
 }
 
 type UserData @model {
     id: ID!
-    user: User! @connection(name: "UserDataConnection")
-    transactions: [TransactionWrapper] @connection(name: "UserDataTransactionConnection")
+    bank: Bank! @connection(name: "Bank_Data")
+    transactions: [TransactionWrapper] @connection(name: "Data_Transactions")
+    max_import_batch: Int!
+    oldest_pending_time: String
 }
 
 type TransactionWrapper @model {
     id: ID!
-    transaction: Transaction @connection(name: "TransactionWrapperConnection")
-    userData: UserData! @connection(name: "UserDataTransactionConnection")
-    overrideDescription: String
+    importBatch: Int
+    importDate: String
+    importSource: String
+    plaidID: String
+    userData: UserData! @connection(name: "Data_Transactions")
+    transaction: Transaction! @connection(name: "Transaction_Wrapper")
+    overrideName: String
     memo: String
 }
 
 type Transaction @model {
     id: ID!
-    wrapper: TransactionWrapper! @connection(name: "TransactionWrapperConnection")
+    wrapper: TransactionWrapper @connection(name: "Transaction_Wrapper")
     accountId: String
     amount:    Float!
     isoCurrencyCode:    String
     unofficialCurrencyCode:    String
+    categoryFolder: String
     category: [String]
     categoryId:    String
     date:    String
-    location:    Location @connection(name: "TransactionLocationConnection")
+    exactTime: String
+    location:    Location @connection(name: "Transaction_Location")
     merchantName:    String
     name:    String
     originalDescription:    String
-    paymentMeta:    PaymentMeta @connection(name: "TransactionPaymentMetaConnection")
+    paymentMeta:    PaymentMeta @connection(name: "Transaction_PaymentMeta")
     pending:    Boolean
     pendingTransactionId:    String
     transactionId:    String
@@ -56,6 +70,7 @@ type Transaction @model {
 
 type PaymentMeta @model {
     id: ID!
+    transaction: Transaction! @connection(name: "Transaction_PaymentMeta")
     byOrderOf: String
     payee: String
     payer: String
@@ -64,11 +79,11 @@ type PaymentMeta @model {
     ppdId: String
     reason: String
     referenceNumber: String
-    transaction: Transaction! @connection(name: "TransactionPaymentMetaConnection")
 }
 
 type Location @model{
     id: ID!
+    transaction: Transaction! @connection(name: "Transaction_Location")
     address: String
     city: String
     lat: Float
@@ -77,5 +92,4 @@ type Location @model{
     storeNumber: String
     postalCode: String
     country: String
-    transaction: Transaction! @connection(name: "TransactionLocationConnection")
 }

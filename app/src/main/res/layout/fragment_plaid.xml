@@ -2,11 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_plaid"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".fragments.PlaidFragment">
+    tools:context=".ui.PlaidFragment">
 
     <de.codecrafters.tableview.SortableTableView
         android:id="@+id/plaid_table"
@@ -20,13 +21,22 @@
         android:layout_height="0dp"
         android:layout_margin="@dimen/default_margin"
         android:layout_weight="1"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/trigger_plaid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_margin"
             android:text="Trigger" />
+
+        <Button
+            android:id="@+id/trigger_link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_margin"
+            android:text="Yes" />
     </LinearLayout>
 
 </LinearLayout>

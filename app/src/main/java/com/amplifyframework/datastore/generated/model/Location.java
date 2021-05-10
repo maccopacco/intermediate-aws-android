@@ -21,6 +21,7 @@ import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 @ModelConfig(pluralName = "Locations")
 public final class Location implements Model {
   public static final QueryField ID = field("Location", "id");
+  public static final QueryField TRANSACTION = field("Location", "locationTransactionId");
   public static final QueryField ADDRESS = field("Location", "address");
   public static final QueryField CITY = field("Location", "city");
   public static final QueryField LAT = field("Location", "lat");
@@ -29,8 +30,8 @@ public final class Location implements Model {
   public static final QueryField STORE_NUMBER = field("Location", "storeNumber");
   public static final QueryField POSTAL_CODE = field("Location", "postalCode");
   public static final QueryField COUNTRY = field("Location", "country");
-  public static final QueryField TRANSACTION = field("Location", "locationTransactionId");
   private final @ModelField(targetType="ID", isRequired = true) String id;
+  private final @ModelField(targetType="Transaction", isRequired = true) @BelongsTo(targetName = "locationTransactionId", type = Transaction.class) Transaction transaction;
   private final @ModelField(targetType="String") String address;
   private final @ModelField(targetType="String") String city;
   private final @ModelField(targetType="Float") Double lat;
@@ -39,9 +40,12 @@ public final class Location implements Model {
   private final @ModelField(targetType="String") String storeNumber;
   private final @ModelField(targetType="String") String postalCode;
   private final @ModelField(targetType="String") String country;
-  private final @ModelField(targetType="Transaction", isRequired = true) @BelongsTo(targetName = "locationTransactionId", type = Transaction.class) Transaction transaction;
   public String getId() {
       return id;
+  }
+  
+  public Transaction getTransaction() {
+      return transaction;
   }
   
   public String getAddress() {
@@ -76,12 +80,9 @@ public final class Location implements Model {
       return country;
   }
   
-  public Transaction getTransaction() {
-      return transaction;
-  }
-  
-  private Location(String id, String address, String city, Double lat, Double lon, String region, String storeNumber, String postalCode, String country, Transaction transaction) {
+  private Location(String id, Transaction transaction, String address, String city, Double lat, Double lon, String region, String storeNumber, String postalCode, String country) {
     this.id = id;
+    this.transaction = transaction;
     this.address = address;
     this.city = city;
     this.lat = lat;
@@ -90,7 +91,6 @@ public final class Location implements Model {
     this.storeNumber = storeNumber;
     this.postalCode = postalCode;
     this.country = country;
-    this.transaction = transaction;
   }
   
   @Override
@@ -102,6 +102,7 @@ public final class Location implements Model {
       } else {
       Location location = (Location) obj;
       return ObjectsCompat.equals(getId(), location.getId()) &&
+              ObjectsCompat.equals(getTransaction(), location.getTransaction()) &&
               ObjectsCompat.equals(getAddress(), location.getAddress()) &&
               ObjectsCompat.equals(getCity(), location.getCity()) &&
               ObjectsCompat.equals(getLat(), location.getLat()) &&
@@ -109,8 +110,7 @@ public final class Location implements Model {
               ObjectsCompat.equals(getRegion(), location.getRegion()) &&
               ObjectsCompat.equals(getStoreNumber(), location.getStoreNumber()) &&
               ObjectsCompat.equals(getPostalCode(), location.getPostalCode()) &&
-              ObjectsCompat.equals(getCountry(), location.getCountry()) &&
-              ObjectsCompat.equals(getTransaction(), location.getTransaction());
+              ObjectsCompat.equals(getCountry(), location.getCountry());
       }
   }
   
@@ -118,6 +118,7 @@ public final class Location implements Model {
    public int hashCode() {
     return new StringBuilder()
       .append(getId())
+      .append(getTransaction())
       .append(getAddress())
       .append(getCity())
       .append(getLat())
@@ -126,7 +127,6 @@ public final class Location implements Model {
       .append(getStoreNumber())
       .append(getPostalCode())
       .append(getCountry())
-      .append(getTransaction())
       .toString()
       .hashCode();
   }
@@ -136,6 +136,7 @@ public final class Location implements Model {
     return new StringBuilder()
       .append("Location {")
       .append("id=" + String.valueOf(getId()) + ", ")
+      .append("transaction=" + String.valueOf(getTransaction()) + ", ")
       .append("address=" + String.valueOf(getAddress()) + ", ")
       .append("city=" + String.valueOf(getCity()) + ", ")
       .append("lat=" + String.valueOf(getLat()) + ", ")
@@ -143,8 +144,7 @@ public final class Location implements Model {
       .append("region=" + String.valueOf(getRegion()) + ", ")
       .append("storeNumber=" + String.valueOf(getStoreNumber()) + ", ")
       .append("postalCode=" + String.valueOf(getPostalCode()) + ", ")
-      .append("country=" + String.valueOf(getCountry()) + ", ")
-      .append("transaction=" + String.valueOf(getTransaction()))
+      .append("country=" + String.valueOf(getCountry()))
       .append("}")
       .toString();
   }
@@ -188,6 +188,7 @@ public final class Location implements Model {
   
   public CopyOfBuilder copyOfBuilder() {
     return new CopyOfBuilder(id,
+      transaction,
       address,
       city,
       lat,
@@ -195,8 +196,7 @@ public final class Location implements Model {
       region,
       storeNumber,
       postalCode,
-      country,
-      transaction);
+      country);
   }
   public interface TransactionStep {
     BuildStep transaction(Transaction transaction);
@@ -234,6 +234,7 @@ public final class Location implements Model {
         
         return new Location(
           id,
+          transaction,
           address,
           city,
           lat,
@@ -241,8 +242,7 @@ public final class Location implements Model {
           region,
           storeNumber,
           postalCode,
-          country,
-          transaction);
+          country);
     }
     
     @Override
@@ -323,7 +323,7 @@ public final class Location implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String address, String city, Double lat, Double lon, String region, String storeNumber, String postalCode, String country, Transaction transaction) {
+    private CopyOfBuilder(String id, Transaction transaction, String address, String city, Double lat, Double lon, String region, String storeNumber, String postalCode, String country) {
       super.id(id);
       super.transaction(transaction)
         .address(address)

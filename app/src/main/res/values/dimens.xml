@@ -4,6 +4,8 @@
     <dimen name="nav_header_top_margin">65dp</dimen>
     <dimen name="profile_pic">100dp</dimen>
     <dimen name="profile_pic_round">250dp</dimen>
+    <dimen name="bank_logo">50dp</dimen>
+    <dimen name="bank_logo_round">100dp</dimen>
 
     <dimen name="fab_margin">16dp</dimen>
 </resources>

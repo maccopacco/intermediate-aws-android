@@ -21,6 +21,7 @@ android {
         implementation 'com.plaid.link:sdk-core:3.2.4'
         implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1'
         testImplementation 'junit:junit:4.+'
+        androidTestImplementation 'androidx.test:rules:1.2.0'
         implementation project(':android_lib')
 
 
@@ -52,14 +53,13 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.4'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.3.4'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.preference:preference:1.1.1'
+    implementation 'androidx.preference:preference-ktx:1.1.1'
 
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
     implementation('com.google.api-client:google-api-client-android:1.30.10') {
         exclude group: 'org.apache.httpcomponents'
     }
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 }

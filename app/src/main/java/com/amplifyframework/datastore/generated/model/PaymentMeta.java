@@ -21,6 +21,7 @@ import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 @ModelConfig(pluralName = "PaymentMetas")
 public final class PaymentMeta implements Model {
   public static final QueryField ID = field("PaymentMeta", "id");
+  public static final QueryField TRANSACTION = field("PaymentMeta", "paymentMetaTransactionId");
   public static final QueryField BY_ORDER_OF = field("PaymentMeta", "byOrderOf");
   public static final QueryField PAYEE = field("PaymentMeta", "payee");
   public static final QueryField PAYER = field("PaymentMeta", "payer");
@@ -29,8 +30,8 @@ public final class PaymentMeta implements Model {
   public static final QueryField PPD_ID = field("PaymentMeta", "ppdId");
   public static final QueryField REASON = field("PaymentMeta", "reason");
   public static final QueryField REFERENCE_NUMBER = field("PaymentMeta", "referenceNumber");
-  public static final QueryField TRANSACTION = field("PaymentMeta", "paymentMetaTransactionId");
   private final @ModelField(targetType="ID", isRequired = true) String id;
+  private final @ModelField(targetType="Transaction", isRequired = true) @BelongsTo(targetName = "paymentMetaTransactionId", type = Transaction.class) Transaction transaction;
   private final @ModelField(targetType="String") String byOrderOf;
   private final @ModelField(targetType="String") String payee;
   private final @ModelField(targetType="String") String payer;
@@ -39,9 +40,12 @@ public final class PaymentMeta implements Model {
   private final @ModelField(targetType="String") String ppdId;
   private final @ModelField(targetType="String") String reason;
   private final @ModelField(targetType="String") String referenceNumber;
-  private final @ModelField(targetType="Transaction", isRequired = true) @BelongsTo(targetName = "paymentMetaTransactionId", type = Transaction.class) Transaction transaction;
   public String getId() {
       return id;
+  }
+  
+  public Transaction getTransaction() {
+      return transaction;
   }
   
   public String getByOrderOf() {
@@ -76,12 +80,9 @@ public final class PaymentMeta implements Model {
       return referenceNumber;
   }
   
-  public Transaction getTransaction() {
-      return transaction;
-  }
-  
-  private PaymentMeta(String id, String byOrderOf, String payee, String payer, String paymentMethod, String paymentProcessor, String ppdId, String reason, String referenceNumber, Transaction transaction) {
+  private PaymentMeta(String id, Transaction transaction, String byOrderOf, String payee, String payer, String paymentMethod, String paymentProcessor, String ppdId, String reason, String referenceNumber) {
     this.id = id;
+    this.transaction = transaction;
     this.byOrderOf = byOrderOf;
     this.payee = payee;
     this.payer = payer;
@@ -90,7 +91,6 @@ public final class PaymentMeta implements Model {
     this.ppdId = ppdId;
     this.reason = reason;
     this.referenceNumber = referenceNumber;
-    this.transaction = transaction;
   }
   
   @Override
@@ -102,6 +102,7 @@ public final class PaymentMeta implements Model {
       } else {
       PaymentMeta paymentMeta = (PaymentMeta) obj;
       return ObjectsCompat.equals(getId(), paymentMeta.getId()) &&
+              ObjectsCompat.equals(getTransaction(), paymentMeta.getTransaction()) &&
               ObjectsCompat.equals(getByOrderOf(), paymentMeta.getByOrderOf()) &&
               ObjectsCompat.equals(getPayee(), paymentMeta.getPayee()) &&
               ObjectsCompat.equals(getPayer(), paymentMeta.getPayer()) &&
@@ -109,8 +110,7 @@ public final class PaymentMeta implements Model {
               ObjectsCompat.equals(getPaymentProcessor(), paymentMeta.getPaymentProcessor()) &&
               ObjectsCompat.equals(getPpdId(), paymentMeta.getPpdId()) &&
               ObjectsCompat.equals(getReason(), paymentMeta.getReason()) &&
-              ObjectsCompat.equals(getReferenceNumber(), paymentMeta.getReferenceNumber()) &&
-              ObjectsCompat.equals(getTransaction(), paymentMeta.getTransaction());
+              ObjectsCompat.equals(getReferenceNumber(), paymentMeta.getReferenceNumber());
       }
   }
   
@@ -118,6 +118,7 @@ public final class PaymentMeta implements Model {
    public int hashCode() {
     return new StringBuilder()
       .append(getId())
+      .append(getTransaction())
       .append(getByOrderOf())
       .append(getPayee())
       .append(getPayer())
@@ -126,7 +127,6 @@ public final class PaymentMeta implements Model {
       .append(getPpdId())
       .append(getReason())
       .append(getReferenceNumber())
-      .append(getTransaction())
       .toString()
       .hashCode();
   }
@@ -136,6 +136,7 @@ public final class PaymentMeta implements Model {
     return new StringBuilder()
       .append("PaymentMeta {")
       .append("id=" + String.valueOf(getId()) + ", ")
+      .append("transaction=" + String.valueOf(getTransaction()) + ", ")
       .append("byOrderOf=" + String.valueOf(getByOrderOf()) + ", ")
       .append("payee=" + String.valueOf(getPayee()) + ", ")
       .append("payer=" + String.valueOf(getPayer()) + ", ")
@@ -143,8 +144,7 @@ public final class PaymentMeta implements Model {
       .append("paymentProcessor=" + String.valueOf(getPaymentProcessor()) + ", ")
       .append("ppdId=" + String.valueOf(getPpdId()) + ", ")
       .append("reason=" + String.valueOf(getReason()) + ", ")
-      .append("referenceNumber=" + String.valueOf(getReferenceNumber()) + ", ")
-      .append("transaction=" + String.valueOf(getTransaction()))
+      .append("referenceNumber=" + String.valueOf(getReferenceNumber()))
       .append("}")
       .toString();
   }
@@ -188,6 +188,7 @@ public final class PaymentMeta implements Model {
   
   public CopyOfBuilder copyOfBuilder() {
     return new CopyOfBuilder(id,
+      transaction,
       byOrderOf,
       payee,
       payer,
@@ -195,8 +196,7 @@ public final class PaymentMeta implements Model {
       paymentProcessor,
       ppdId,
       reason,
-      referenceNumber,
-      transaction);
+      referenceNumber);
   }
   public interface TransactionStep {
     BuildStep transaction(Transaction transaction);
@@ -234,6 +234,7 @@ public final class PaymentMeta implements Model {
         
         return new PaymentMeta(
           id,
+          transaction,
           byOrderOf,
           payee,
           payer,
@@ -241,8 +242,7 @@ public final class PaymentMeta implements Model {
           paymentProcessor,
           ppdId,
           reason,
-          referenceNumber,
-          transaction);
+          referenceNumber);
     }
     
     @Override
@@ -323,7 +323,7 @@ public final class PaymentMeta implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String byOrderOf, String payee, String payer, String paymentMethod, String paymentProcessor, String ppdId, String reason, String referenceNumber, Transaction transaction) {
+    private CopyOfBuilder(String id, Transaction transaction, String byOrderOf, String payee, String payer, String paymentMethod, String paymentProcessor, String ppdId, String reason, String referenceNumber) {
       super.id(id);
       super.transaction(transaction)
         .byOrderOf(byOrderOf)

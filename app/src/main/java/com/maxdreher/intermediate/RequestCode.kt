@@ -7,5 +7,5 @@ import android.app.Activity
  */
 object RequestCode {
     const val GOOGLE_SIGNIN_CODE = 1
-    const val SIMPLE_FILE_CODE = 2
+    const val SIMPLE_FILE_CODE_JSON = 2
 }

@@ -22,25 +22,39 @@ import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 @ModelConfig(pluralName = "UserData")
 public final class UserData implements Model {
   public static final QueryField ID = field("UserData", "id");
-  public static final QueryField USER = field("UserData", "userDataUserId");
+  public static final QueryField BANK = field("UserData", "userDataBankId");
+  public static final QueryField MAX_IMPORT_BATCH = field("UserData", "max_import_batch");
+  public static final QueryField OLDEST_PENDING_TIME = field("UserData", "oldest_pending_time");
   private final @ModelField(targetType="ID", isRequired = true) String id;
-  private final @ModelField(targetType="User", isRequired = true) @BelongsTo(targetName = "userDataUserId", type = User.class) User user;
+  private final @ModelField(targetType="Bank", isRequired = true) @BelongsTo(targetName = "userDataBankId", type = Bank.class) Bank bank;
   private final @ModelField(targetType="TransactionWrapper") @HasMany(associatedWith = "userData", type = TransactionWrapper.class) List<TransactionWrapper> transactions = null;
+  private final @ModelField(targetType="Int", isRequired = true) Integer max_import_batch;
+  private final @ModelField(targetType="String") String oldest_pending_time;
   public String getId() {
       return id;
   }
   
-  public User getUser() {
-      return user;
+  public Bank getBank() {
+      return bank;
   }
   
   public List<TransactionWrapper> getTransactions() {
       return transactions;
   }
   
-  private UserData(String id, User user) {
+  public Integer getMaxImportBatch() {
+      return max_import_batch;
+  }
+  
+  public String getOldestPendingTime() {
+      return oldest_pending_time;
+  }
+  
+  private UserData(String id, Bank bank, Integer max_import_batch, String oldest_pending_time) {
     this.id = id;
-    this.user = user;
+    this.bank = bank;
+    this.max_import_batch = max_import_batch;
+    this.oldest_pending_time = oldest_pending_time;
   }
   
   @Override
@@ -52,7 +66,9 @@ public final class UserData implements Model {
       } else {
       UserData userData = (UserData) obj;
       return ObjectsCompat.equals(getId(), userData.getId()) &&
-              ObjectsCompat.equals(getUser(), userData.getUser());
+              ObjectsCompat.equals(getBank(), userData.getBank()) &&
+              ObjectsCompat.equals(getMaxImportBatch(), userData.getMaxImportBatch()) &&
+              ObjectsCompat.equals(getOldestPendingTime(), userData.getOldestPendingTime());
       }
   }
   
@@ -60,7 +76,9 @@ public final class UserData implements Model {
    public int hashCode() {
     return new StringBuilder()
       .append(getId())
-      .append(getUser())
+      .append(getBank())
+      .append(getMaxImportBatch())
+      .append(getOldestPendingTime())
       .toString()
       .hashCode();
   }
@@ -70,12 +88,14 @@ public final class UserData implements Model {
     return new StringBuilder()
       .append("UserData {")
       .append("id=" + String.valueOf(getId()) + ", ")
-      .append("user=" + String.valueOf(getUser()))
+      .append("bank=" + String.valueOf(getBank()) + ", ")
+      .append("max_import_batch=" + String.valueOf(getMaxImportBatch()) + ", ")
+      .append("oldest_pending_time=" + String.valueOf(getOldestPendingTime()))
       .append("}")
       .toString();
   }
   
-  public static UserStep builder() {
+  public static BankStep builder() {
       return new Builder();
   }
   
@@ -100,41 +120,68 @@ public final class UserData implements Model {
     }
     return new UserData(
       id,
+      null,
+      null,
       null
     );
   }
   
   public CopyOfBuilder copyOfBuilder() {
     return new CopyOfBuilder(id,
-      user);
+      bank,
+      max_import_batch,
+      oldest_pending_time);
   }
-  public interface UserStep {
-    BuildStep user(User user);
+  public interface BankStep {
+    MaxImportBatchStep bank(Bank bank);
+  }
+  
+
+  public interface MaxImportBatchStep {
+    BuildStep maxImportBatch(Integer maxImportBatch);
   }
   
 
   public interface BuildStep {
     UserData build();
     BuildStep id(String id) throws IllegalArgumentException;
+    BuildStep oldestPendingTime(String oldestPendingTime);
   }
   
 
-  public static class Builder implements UserStep, BuildStep {
+  public static class Builder implements BankStep, MaxImportBatchStep, BuildStep {
     private String id;
-    private User user;
+    private Bank bank;
+    private Integer max_import_batch;
+    private String oldest_pending_time;
     @Override
      public UserData build() {
         String id = this.id != null ? this.id : UUID.randomUUID().toString();
         
         return new UserData(
           id,
-          user);
+          bank,
+          max_import_batch,
+          oldest_pending_time);
     }
     
     @Override
-     public BuildStep user(User user) {
-        Objects.requireNonNull(user);
-        this.user = user;
+     public MaxImportBatchStep bank(Bank bank) {
+        Objects.requireNonNull(bank);
+        this.bank = bank;
+        return this;
+    }
+    
+    @Override
+     public BuildStep maxImportBatch(Integer maxImportBatch) {
+        Objects.requireNonNull(maxImportBatch);
+        this.max_import_batch = maxImportBatch;
+        return this;
+    }
+    
+    @Override
+     public BuildStep oldestPendingTime(String oldestPendingTime) {
+        this.oldest_pending_time = oldestPendingTime;
         return this;
     }
     
@@ -161,14 +208,26 @@ public final class UserData implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, User user) {
+    private CopyOfBuilder(String id, Bank bank, Integer maxImportBatch, String oldestPendingTime) {
       super.id(id);
-      super.user(user);
+      super.bank(bank)
+        .maxImportBatch(maxImportBatch)
+        .oldestPendingTime(oldestPendingTime);
     }
     
     @Override
-     public CopyOfBuilder user(User user) {
-      return (CopyOfBuilder) super.user(user);
+     public CopyOfBuilder bank(Bank bank) {
+      return (CopyOfBuilder) super.bank(bank);
+    }
+    
+    @Override
+     public CopyOfBuilder maxImportBatch(Integer maxImportBatch) {
+      return (CopyOfBuilder) super.maxImportBatch(maxImportBatch);
+    }
+    
+    @Override
+     public CopyOfBuilder oldestPendingTime(String oldestPendingTime) {
+      return (CopyOfBuilder) super.oldestPendingTime(oldestPendingTime);
     }
   }
   

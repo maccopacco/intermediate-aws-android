@@ -1,12 +1,56 @@
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory app:title="'Update' class">
+    <PreferenceCategory app:title="Go to">
         <Preference
-            app:key="addUpdate"
-            app:title="Add update" />
-        <Preference
-            app:key="clearUpdates"
-            app:title="Clear updates" />
+            app:key="gotoSettings"
+            app:title="Settings" />
     </PreferenceCategory>
+    <PreferenceCategory app:title="Custom Adds">
+        <Preference
+            app:key="addMyself"
+            app:title="Add myself" />
+        <Preference
+            app:key="setDate"
+            app:title="Set oldest pending time" />
+    </PreferenceCategory>
+    <PreferenceCategory app:title="Custom Shows">
+        <Preference
+            app:key="showInstitution"
+            app:title="Show my institution ID" />
+        <Preference
+            app:key="institutionSearch"
+            app:title="Search for Institution" />
+        <Preference
+            app:key="showLogo"
+            app:title="Show current banks logo" />
+    </PreferenceCategory>
+    <PreferenceCategory app:title="Custom Deletes">
+        <Preference
+            app:key="deleteAllUsers"
+            app:title="Delete all users" />
+        <Preference
+            app:key="deleteMyBanks"
+            app:title="Delete all my banks" />
+        <Preference
+            app:key="deleteAll"
+            app:title="Delete everything" />
+        <Preference
+            app:key="deleteTransactions"
+            app:title="Delete transactions" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="Testing">
+        <Preference
+            app:key="test1"
+            app:title="Test 1" />
+        <Preference
+            app:key="test2"
+            app:title="Test 2" />
+        <Preference
+            app:key="test3"
+            app:title="Test 3" />
+    </PreferenceCategory>
+
 
 </PreferenceScreen>

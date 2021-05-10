@@ -54,61 +54,6 @@ query ListTestGoals(
     startedAt
   }
 }
-query SyncUpdates(
-  $filter: ModelUpdateFilterInput
-  $limit: Int
-  $nextToken: String
-  $lastSync: AWSTimestamp
-) {
-  syncUpdates(
-    filter: $filter
-    limit: $limit
-    nextToken: $nextToken
-    lastSync: $lastSync
-  ) {
-    items {
-      id
-      date
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-    nextToken
-    startedAt
-  }
-}
-query GetUpdate($id: ID!) {
-  getUpdate(id: $id) {
-    id
-    date
-    _version
-    _deleted
-    _lastChangedAt
-    createdAt
-    updatedAt
-  }
-}
-query ListUpdates(
-  $filter: ModelUpdateFilterInput
-  $limit: Int
-  $nextToken: String
-) {
-  listUpdates(filter: $filter, limit: $limit, nextToken: $nextToken) {
-    items {
-      id
-      date
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-    nextToken
-    startedAt
-  }
-}
 query SyncUsers(
   $filter: ModelUserFilterInput
   $limit: Int
@@ -125,13 +70,9 @@ query SyncUsers(
       id
       googleID
       originalEmail
-      userData {
-        id
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
+      banks {
+        nextToken
+        startedAt
       }
       _version
       _deleted
@@ -148,27 +89,22 @@ query GetUser($id: ID!) {
     id
     googleID
     originalEmail
-    userData {
-      id
-      user {
+    banks {
+      items {
         id
-        googleID
-        originalEmail
+        plaid_access_token
+        institution_id
+        institution_name
+        institution_logo
+        last_touched_time
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
       }
-      transactions {
-        nextToken
-        startedAt
-      }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
+      nextToken
+      startedAt
     }
     _version
     _deleted
@@ -187,8 +123,152 @@ query ListUsers(
       id
       googleID
       originalEmail
+      banks {
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    nextToken
+    startedAt
+  }
+}
+query SyncBanks(
+  $filter: ModelBankFilterInput
+  $limit: Int
+  $nextToken: String
+  $lastSync: AWSTimestamp
+) {
+  syncBanks(
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+    lastSync: $lastSync
+  ) {
+    items {
+      id
+      user {
+        id
+        googleID
+        originalEmail
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      plaid_access_token
+      institution_id
+      institution_name
+      institution_logo
+      last_touched_time
       userData {
         id
+        max_import_batch
+        oldest_pending_time
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    nextToken
+    startedAt
+  }
+}
+query GetBank($id: ID!) {
+  getBank(id: $id) {
+    id
+    user {
+      id
+      googleID
+      originalEmail
+      banks {
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    plaid_access_token
+    institution_id
+    institution_name
+    institution_logo
+    last_touched_time
+    userData {
+      id
+      bank {
+        id
+        plaid_access_token
+        institution_id
+        institution_name
+        institution_logo
+        last_touched_time
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      transactions {
+        nextToken
+        startedAt
+      }
+      max_import_batch
+      oldest_pending_time
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+query ListBanks(
+  $filter: ModelBankFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listBanks(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      user {
+        id
+        googleID
+        originalEmail
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      plaid_access_token
+      institution_id
+      institution_name
+      institution_logo
+      last_touched_time
+      userData {
+        id
+        max_import_batch
+        oldest_pending_time
         _version
         _deleted
         _lastChangedAt
@@ -219,10 +299,13 @@ query SyncUserData(
   ) {
     items {
       id
-      user {
+      bank {
         id
-        googleID
-        originalEmail
+        plaid_access_token
+        institution_id
+        institution_name
+        institution_logo
+        last_touched_time
         _version
         _deleted
         _lastChangedAt
@@ -233,6 +316,8 @@ query SyncUserData(
         nextToken
         startedAt
       }
+      max_import_batch
+      oldest_pending_time
       _version
       _deleted
       _lastChangedAt
@@ -246,12 +331,27 @@ query SyncUserData(
 query GetUserData($id: ID!) {
   getUserData(id: $id) {
     id
-    user {
+    bank {
       id
-      googleID
-      originalEmail
+      user {
+        id
+        googleID
+        originalEmail
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      plaid_access_token
+      institution_id
+      institution_name
+      institution_logo
+      last_touched_time
       userData {
         id
+        max_import_batch
+        oldest_pending_time
         _version
         _deleted
         _lastChangedAt
@@ -267,7 +367,11 @@ query GetUserData($id: ID!) {
     transactions {
       items {
         id
-        overrideDescription
+        importBatch
+        importDate
+        importSource
+        plaidID
+        overrideName
         memo
         _version
         _deleted
@@ -278,6 +382,8 @@ query GetUserData($id: ID!) {
       nextToken
       startedAt
     }
+    max_import_batch
+    oldest_pending_time
     _version
     _deleted
     _lastChangedAt
@@ -293,10 +399,13 @@ query ListUserDatas(
   listUserDatas(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
-      user {
+      bank {
         id
-        googleID
-        originalEmail
+        plaid_access_token
+        institution_id
+        institution_name
+        institution_logo
+        last_touched_time
         _version
         _deleted
         _lastChangedAt
@@ -307,6 +416,8 @@ query ListUserDatas(
         nextToken
         startedAt
       }
+      max_import_batch
+      oldest_pending_time
       _version
       _deleted
       _lastChangedAt
@@ -331,15 +442,31 @@ query SyncTransactionWrappers(
   ) {
     items {
       id
+      importBatch
+      importDate
+      importSource
+      plaidID
+      userData {
+        id
+        max_import_batch
+        oldest_pending_time
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
       transaction {
         id
         accountId
         amount
         isoCurrencyCode
         unofficialCurrencyCode
+        categoryFolder
         category
         categoryId
         date
+        exactTime
         merchantName
         name
         originalDescription
@@ -357,15 +484,7 @@ query SyncTransactionWrappers(
         createdAt
         updatedAt
       }
-      userData {
-        id
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      overrideDescription
+      overrideName
       memo
       _version
       _deleted
@@ -380,11 +499,46 @@ query SyncTransactionWrappers(
 query GetTransactionWrapper($id: ID!) {
   getTransactionWrapper(id: $id) {
     id
+    importBatch
+    importDate
+    importSource
+    plaidID
+    userData {
+      id
+      bank {
+        id
+        plaid_access_token
+        institution_id
+        institution_name
+        institution_logo
+        last_touched_time
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      transactions {
+        nextToken
+        startedAt
+      }
+      max_import_batch
+      oldest_pending_time
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
     transaction {
       id
       wrapper {
         id
-        overrideDescription
+        importBatch
+        importDate
+        importSource
+        plaidID
+        overrideName
         memo
         _version
         _deleted
@@ -396,9 +550,11 @@ query GetTransactionWrapper($id: ID!) {
       amount
       isoCurrencyCode
       unofficialCurrencyCode
+      categoryFolder
       category
       categoryId
       date
+      exactTime
       location {
         id
         address
@@ -448,29 +604,7 @@ query GetTransactionWrapper($id: ID!) {
       createdAt
       updatedAt
     }
-    userData {
-      id
-      user {
-        id
-        googleID
-        originalEmail
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      transactions {
-        nextToken
-        startedAt
-      }
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-    overrideDescription
+    overrideName
     memo
     _version
     _deleted
@@ -491,15 +625,31 @@ query ListTransactionWrappers(
   ) {
     items {
       id
+      importBatch
+      importDate
+      importSource
+      plaidID
+      userData {
+        id
+        max_import_batch
+        oldest_pending_time
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
       transaction {
         id
         accountId
         amount
         isoCurrencyCode
         unofficialCurrencyCode
+        categoryFolder
         category
         categoryId
         date
+        exactTime
         merchantName
         name
         originalDescription
@@ -517,15 +667,7 @@ query ListTransactionWrappers(
         createdAt
         updatedAt
       }
-      userData {
-        id
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      overrideDescription
+      overrideName
       memo
       _version
       _deleted
@@ -553,7 +695,11 @@ query SyncTransactions(
       id
       wrapper {
         id
-        overrideDescription
+        importBatch
+        importDate
+        importSource
+        plaidID
+        overrideName
         memo
         _version
         _deleted
@@ -565,9 +711,11 @@ query SyncTransactions(
       amount
       isoCurrencyCode
       unofficialCurrencyCode
+      categoryFolder
       category
       categoryId
       date
+      exactTime
       location {
         id
         address
@@ -626,15 +774,31 @@ query GetTransaction($id: ID!) {
     id
     wrapper {
       id
+      importBatch
+      importDate
+      importSource
+      plaidID
+      userData {
+        id
+        max_import_batch
+        oldest_pending_time
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
       transaction {
         id
         accountId
         amount
         isoCurrencyCode
         unofficialCurrencyCode
+        categoryFolder
         category
         categoryId
         date
+        exactTime
         merchantName
         name
         originalDescription
@@ -652,15 +816,7 @@ query GetTransaction($id: ID!) {
         createdAt
         updatedAt
       }
-      userData {
-        id
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      overrideDescription
+      overrideName
       memo
       _version
       _deleted
@@ -672,28 +828,24 @@ query GetTransaction($id: ID!) {
     amount
     isoCurrencyCode
     unofficialCurrencyCode
+    categoryFolder
     category
     categoryId
     date
+    exactTime
     location {
       id
-      address
-      city
-      lat
-      lon
-      region
-      storeNumber
-      postalCode
-      country
       transaction {
         id
         accountId
         amount
         isoCurrencyCode
         unofficialCurrencyCode
+        categoryFolder
         category
         categoryId
         date
+        exactTime
         merchantName
         name
         originalDescription
@@ -711,6 +863,14 @@ query GetTransaction($id: ID!) {
         createdAt
         updatedAt
       }
+      address
+      city
+      lat
+      lon
+      region
+      storeNumber
+      postalCode
+      country
       _version
       _deleted
       _lastChangedAt
@@ -722,23 +882,17 @@ query GetTransaction($id: ID!) {
     originalDescription
     paymentMeta {
       id
-      byOrderOf
-      payee
-      payer
-      paymentMethod
-      paymentProcessor
-      ppdId
-      reason
-      referenceNumber
       transaction {
         id
         accountId
         amount
         isoCurrencyCode
         unofficialCurrencyCode
+        categoryFolder
         category
         categoryId
         date
+        exactTime
         merchantName
         name
         originalDescription
@@ -756,6 +910,14 @@ query GetTransaction($id: ID!) {
         createdAt
         updatedAt
       }
+      byOrderOf
+      payee
+      payer
+      paymentMethod
+      paymentProcessor
+      ppdId
+      reason
+      referenceNumber
       _version
       _deleted
       _lastChangedAt
@@ -787,7 +949,11 @@ query ListTransactions(
       id
       wrapper {
         id
-        overrideDescription
+        importBatch
+        importDate
+        importSource
+        plaidID
+        overrideName
         memo
         _version
         _deleted
@@ -799,9 +965,11 @@ query ListTransactions(
       amount
       isoCurrencyCode
       unofficialCurrencyCode
+      categoryFolder
       category
       categoryId
       date
+      exactTime
       location {
         id
         address
@@ -869,23 +1037,17 @@ query SyncPaymentMetas(
   ) {
     items {
       id
-      byOrderOf
-      payee
-      payer
-      paymentMethod
-      paymentProcessor
-      ppdId
-      reason
-      referenceNumber
       transaction {
         id
         accountId
         amount
         isoCurrencyCode
         unofficialCurrencyCode
+        categoryFolder
         category
         categoryId
         date
+        exactTime
         merchantName
         name
         originalDescription
@@ -903,6 +1065,14 @@ query SyncPaymentMetas(
         createdAt
         updatedAt
       }
+      byOrderOf
+      payee
+      payer
+      paymentMethod
+      paymentProcessor
+      ppdId
+      reason
+      referenceNumber
       _version
       _deleted
       _lastChangedAt
@@ -916,19 +1086,15 @@ query SyncPaymentMetas(
 query GetPaymentMeta($id: ID!) {
   getPaymentMeta(id: $id) {
     id
-    byOrderOf
-    payee
-    payer
-    paymentMethod
-    paymentProcessor
-    ppdId
-    reason
-    referenceNumber
     transaction {
       id
       wrapper {
         id
-        overrideDescription
+        importBatch
+        importDate
+        importSource
+        plaidID
+        overrideName
         memo
         _version
         _deleted
@@ -940,9 +1106,11 @@ query GetPaymentMeta($id: ID!) {
       amount
       isoCurrencyCode
       unofficialCurrencyCode
+      categoryFolder
       category
       categoryId
       date
+      exactTime
       location {
         id
         address
@@ -992,6 +1160,14 @@ query GetPaymentMeta($id: ID!) {
       createdAt
       updatedAt
     }
+    byOrderOf
+    payee
+    payer
+    paymentMethod
+    paymentProcessor
+    ppdId
+    reason
+    referenceNumber
     _version
     _deleted
     _lastChangedAt
@@ -1007,23 +1183,17 @@ query ListPaymentMetas(
   listPaymentMetas(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
-      byOrderOf
-      payee
-      payer
-      paymentMethod
-      paymentProcessor
-      ppdId
-      reason
-      referenceNumber
       transaction {
         id
         accountId
         amount
         isoCurrencyCode
         unofficialCurrencyCode
+        categoryFolder
         category
         categoryId
         date
+        exactTime
         merchantName
         name
         originalDescription
@@ -1041,6 +1211,14 @@ query ListPaymentMetas(
         createdAt
         updatedAt
       }
+      byOrderOf
+      payee
+      payer
+      paymentMethod
+      paymentProcessor
+      ppdId
+      reason
+      referenceNumber
       _version
       _deleted
       _lastChangedAt
@@ -1065,23 +1243,17 @@ query SyncLocations(
   ) {
     items {
       id
-      address
-      city
-      lat
-      lon
-      region
-      storeNumber
-      postalCode
-      country
       transaction {
         id
         accountId
         amount
         isoCurrencyCode
         unofficialCurrencyCode
+        categoryFolder
         category
         categoryId
         date
+        exactTime
         merchantName
         name
         originalDescription
@@ -1099,6 +1271,14 @@ query SyncLocations(
         createdAt
         updatedAt
       }
+      address
+      city
+      lat
+      lon
+      region
+      storeNumber
+      postalCode
+      country
       _version
       _deleted
       _lastChangedAt
@@ -1112,19 +1292,15 @@ query SyncLocations(
 query GetLocation($id: ID!) {
   getLocation(id: $id) {
     id
-    address
-    city
-    lat
-    lon
-    region
-    storeNumber
-    postalCode
-    country
     transaction {
       id
       wrapper {
         id
-        overrideDescription
+        importBatch
+        importDate
+        importSource
+        plaidID
+        overrideName
         memo
         _version
         _deleted
@@ -1136,9 +1312,11 @@ query GetLocation($id: ID!) {
       amount
       isoCurrencyCode
       unofficialCurrencyCode
+      categoryFolder
       category
       categoryId
       date
+      exactTime
       location {
         id
         address
@@ -1188,6 +1366,14 @@ query GetLocation($id: ID!) {
       createdAt
       updatedAt
     }
+    address
+    city
+    lat
+    lon
+    region
+    storeNumber
+    postalCode
+    country
     _version
     _deleted
     _lastChangedAt
@@ -1203,23 +1389,17 @@ query ListLocations(
   listLocations(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
-      address
-      city
-      lat
-      lon
-      region
-      storeNumber
-      postalCode
-      country
       transaction {
         id
         accountId
         amount
         isoCurrencyCode
         unofficialCurrencyCode
+        categoryFolder
         category
         categoryId
         date
+        exactTime
         merchantName
         name
         originalDescription
@@ -1237,6 +1417,14 @@ query ListLocations(
         createdAt
         updatedAt
       }
+      address
+      city
+      lat
+      lon
+      region
+      storeNumber
+      postalCode
+      country
       _version
       _deleted
       _lastChangedAt

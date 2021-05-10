@@ -1,6 +1,5 @@
 package com.amplifyframework.datastore.generated.model;
 
-import com.amplifyframework.core.model.annotations.HasOne;
 import com.amplifyframework.core.model.annotations.BelongsTo;
 
 import java.util.List;
@@ -22,38 +21,68 @@ import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 @ModelConfig(pluralName = "TransactionWrappers")
 public final class TransactionWrapper implements Model {
   public static final QueryField ID = field("TransactionWrapper", "id");
+  public static final QueryField IMPORT_BATCH = field("TransactionWrapper", "importBatch");
+  public static final QueryField IMPORT_DATE = field("TransactionWrapper", "importDate");
+  public static final QueryField IMPORT_SOURCE = field("TransactionWrapper", "importSource");
+  public static final QueryField PLAID_ID = field("TransactionWrapper", "plaidID");
   public static final QueryField USER_DATA = field("TransactionWrapper", "transactionWrapperUserDataId");
-  public static final QueryField OVERRIDE_DESCRIPTION = field("TransactionWrapper", "overrideDescription");
+  public static final QueryField TRANSACTION = field("TransactionWrapper", "transactionWrapperTransactionId");
+  public static final QueryField OVERRIDE_NAME = field("TransactionWrapper", "overrideName");
   public static final QueryField MEMO = field("TransactionWrapper", "memo");
   private final @ModelField(targetType="ID", isRequired = true) String id;
-  private final @ModelField(targetType="Transaction") @HasOne(associatedWith = "wrapper", type = Transaction.class) Transaction transaction = null;
+  private final @ModelField(targetType="Int") Integer importBatch;
+  private final @ModelField(targetType="String") String importDate;
+  private final @ModelField(targetType="String") String importSource;
+  private final @ModelField(targetType="String") String plaidID;
   private final @ModelField(targetType="UserData", isRequired = true) @BelongsTo(targetName = "transactionWrapperUserDataId", type = UserData.class) UserData userData;
-  private final @ModelField(targetType="String") String overrideDescription;
+  private final @ModelField(targetType="Transaction", isRequired = true) @BelongsTo(targetName = "transactionWrapperTransactionId", type = Transaction.class) Transaction transaction;
+  private final @ModelField(targetType="String") String overrideName;
   private final @ModelField(targetType="String") String memo;
   public String getId() {
       return id;
   }
   
-  public Transaction getTransaction() {
-      return transaction;
+  public Integer getImportBatch() {
+      return importBatch;
+  }
+  
+  public String getImportDate() {
+      return importDate;
+  }
+  
+  public String getImportSource() {
+      return importSource;
+  }
+  
+  public String getPlaidId() {
+      return plaidID;
   }
   
   public UserData getUserData() {
       return userData;
   }
   
-  public String getOverrideDescription() {
-      return overrideDescription;
+  public Transaction getTransaction() {
+      return transaction;
+  }
+  
+  public String getOverrideName() {
+      return overrideName;
   }
   
   public String getMemo() {
       return memo;
   }
   
-  private TransactionWrapper(String id, UserData userData, String overrideDescription, String memo) {
+  private TransactionWrapper(String id, Integer importBatch, String importDate, String importSource, String plaidID, UserData userData, Transaction transaction, String overrideName, String memo) {
     this.id = id;
+    this.importBatch = importBatch;
+    this.importDate = importDate;
+    this.importSource = importSource;
+    this.plaidID = plaidID;
     this.userData = userData;
-    this.overrideDescription = overrideDescription;
+    this.transaction = transaction;
+    this.overrideName = overrideName;
     this.memo = memo;
   }
   
@@ -66,8 +95,13 @@ public final class TransactionWrapper implements Model {
       } else {
       TransactionWrapper transactionWrapper = (TransactionWrapper) obj;
       return ObjectsCompat.equals(getId(), transactionWrapper.getId()) &&
+              ObjectsCompat.equals(getImportBatch(), transactionWrapper.getImportBatch()) &&
+              ObjectsCompat.equals(getImportDate(), transactionWrapper.getImportDate()) &&
+              ObjectsCompat.equals(getImportSource(), transactionWrapper.getImportSource()) &&
+              ObjectsCompat.equals(getPlaidId(), transactionWrapper.getPlaidId()) &&
               ObjectsCompat.equals(getUserData(), transactionWrapper.getUserData()) &&
-              ObjectsCompat.equals(getOverrideDescription(), transactionWrapper.getOverrideDescription()) &&
+              ObjectsCompat.equals(getTransaction(), transactionWrapper.getTransaction()) &&
+              ObjectsCompat.equals(getOverrideName(), transactionWrapper.getOverrideName()) &&
               ObjectsCompat.equals(getMemo(), transactionWrapper.getMemo());
       }
   }
@@ -76,8 +110,13 @@ public final class TransactionWrapper implements Model {
    public int hashCode() {
     return new StringBuilder()
       .append(getId())
+      .append(getImportBatch())
+      .append(getImportDate())
+      .append(getImportSource())
+      .append(getPlaidId())
       .append(getUserData())
-      .append(getOverrideDescription())
+      .append(getTransaction())
+      .append(getOverrideName())
       .append(getMemo())
       .toString()
       .hashCode();
@@ -88,8 +127,13 @@ public final class TransactionWrapper implements Model {
     return new StringBuilder()
       .append("TransactionWrapper {")
       .append("id=" + String.valueOf(getId()) + ", ")
+      .append("importBatch=" + String.valueOf(getImportBatch()) + ", ")
+      .append("importDate=" + String.valueOf(getImportDate()) + ", ")
+      .append("importSource=" + String.valueOf(getImportSource()) + ", ")
+      .append("plaidID=" + String.valueOf(getPlaidId()) + ", ")
       .append("userData=" + String.valueOf(getUserData()) + ", ")
-      .append("overrideDescription=" + String.valueOf(getOverrideDescription()) + ", ")
+      .append("transaction=" + String.valueOf(getTransaction()) + ", ")
+      .append("overrideName=" + String.valueOf(getOverrideName()) + ", ")
       .append("memo=" + String.valueOf(getMemo()))
       .append("}")
       .toString();
@@ -122,33 +166,57 @@ public final class TransactionWrapper implements Model {
       id,
       null,
       null,
+      null,
+      null,
+      null,
+      null,
+      null,
       null
     );
   }
   
   public CopyOfBuilder copyOfBuilder() {
     return new CopyOfBuilder(id,
+      importBatch,
+      importDate,
+      importSource,
+      plaidID,
       userData,
-      overrideDescription,
+      transaction,
+      overrideName,
       memo);
   }
   public interface UserDataStep {
-    BuildStep userData(UserData userData);
+    TransactionStep userData(UserData userData);
+  }
+  
+
+  public interface TransactionStep {
+    BuildStep transaction(Transaction transaction);
   }
   
 
   public interface BuildStep {
     TransactionWrapper build();
     BuildStep id(String id) throws IllegalArgumentException;
-    BuildStep overrideDescription(String overrideDescription);
+    BuildStep importBatch(Integer importBatch);
+    BuildStep importDate(String importDate);
+    BuildStep importSource(String importSource);
+    BuildStep plaidId(String plaidId);
+    BuildStep overrideName(String overrideName);
     BuildStep memo(String memo);
   }
   
 
-  public static class Builder implements UserDataStep, BuildStep {
+  public static class Builder implements UserDataStep, TransactionStep, BuildStep {
     private String id;
     private UserData userData;
-    private String overrideDescription;
+    private Transaction transaction;
+    private Integer importBatch;
+    private String importDate;
+    private String importSource;
+    private String plaidID;
+    private String overrideName;
     private String memo;
     @Override
      public TransactionWrapper build() {
@@ -156,21 +224,57 @@ public final class TransactionWrapper implements Model {
         
         return new TransactionWrapper(
           id,
+          importBatch,
+          importDate,
+          importSource,
+          plaidID,
           userData,
-          overrideDescription,
+          transaction,
+          overrideName,
           memo);
     }
     
     @Override
-     public BuildStep userData(UserData userData) {
+     public TransactionStep userData(UserData userData) {
         Objects.requireNonNull(userData);
         this.userData = userData;
         return this;
     }
     
     @Override
-     public BuildStep overrideDescription(String overrideDescription) {
-        this.overrideDescription = overrideDescription;
+     public BuildStep transaction(Transaction transaction) {
+        Objects.requireNonNull(transaction);
+        this.transaction = transaction;
+        return this;
+    }
+    
+    @Override
+     public BuildStep importBatch(Integer importBatch) {
+        this.importBatch = importBatch;
+        return this;
+    }
+    
+    @Override
+     public BuildStep importDate(String importDate) {
+        this.importDate = importDate;
+        return this;
+    }
+    
+    @Override
+     public BuildStep importSource(String importSource) {
+        this.importSource = importSource;
+        return this;
+    }
+    
+    @Override
+     public BuildStep plaidId(String plaidId) {
+        this.plaidID = plaidId;
+        return this;
+    }
+    
+    @Override
+     public BuildStep overrideName(String overrideName) {
+        this.overrideName = overrideName;
         return this;
     }
     
@@ -203,10 +307,15 @@ public final class TransactionWrapper implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, UserData userData, String overrideDescription, String memo) {
+    private CopyOfBuilder(String id, Integer importBatch, String importDate, String importSource, String plaidId, UserData userData, Transaction transaction, String overrideName, String memo) {
       super.id(id);
       super.userData(userData)
-        .overrideDescription(overrideDescription)
+        .transaction(transaction)
+        .importBatch(importBatch)
+        .importDate(importDate)
+        .importSource(importSource)
+        .plaidId(plaidId)
+        .overrideName(overrideName)
         .memo(memo);
     }
     
@@ -216,8 +325,33 @@ public final class TransactionWrapper implements Model {
     }
     
     @Override
-     public CopyOfBuilder overrideDescription(String overrideDescription) {
-      return (CopyOfBuilder) super.overrideDescription(overrideDescription);
+     public CopyOfBuilder transaction(Transaction transaction) {
+      return (CopyOfBuilder) super.transaction(transaction);
+    }
+    
+    @Override
+     public CopyOfBuilder importBatch(Integer importBatch) {
+      return (CopyOfBuilder) super.importBatch(importBatch);
+    }
+    
+    @Override
+     public CopyOfBuilder importDate(String importDate) {
+      return (CopyOfBuilder) super.importDate(importDate);
+    }
+    
+    @Override
+     public CopyOfBuilder importSource(String importSource) {
+      return (CopyOfBuilder) super.importSource(importSource);
+    }
+    
+    @Override
+     public CopyOfBuilder plaidId(String plaidId) {
+      return (CopyOfBuilder) super.plaidId(plaidId);
+    }
+    
+    @Override
+     public CopyOfBuilder overrideName(String overrideName) {
+      return (CopyOfBuilder) super.overrideName(overrideName);
     }
     
     @Override

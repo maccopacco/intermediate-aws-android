@@ -1,6 +1,5 @@
 package com.amplifyframework.datastore.generated.model;
 
-import com.amplifyframework.core.model.annotations.BelongsTo;
 import com.amplifyframework.core.model.annotations.HasOne;
 
 import java.util.List;
@@ -22,14 +21,15 @@ import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 @ModelConfig(pluralName = "Transactions")
 public final class Transaction implements Model {
   public static final QueryField ID = field("Transaction", "id");
-  public static final QueryField WRAPPER = field("Transaction", "transactionWrapperId");
   public static final QueryField ACCOUNT_ID = field("Transaction", "accountId");
   public static final QueryField AMOUNT = field("Transaction", "amount");
   public static final QueryField ISO_CURRENCY_CODE = field("Transaction", "isoCurrencyCode");
   public static final QueryField UNOFFICIAL_CURRENCY_CODE = field("Transaction", "unofficialCurrencyCode");
+  public static final QueryField CATEGORY_FOLDER = field("Transaction", "categoryFolder");
   public static final QueryField CATEGORY = field("Transaction", "category");
   public static final QueryField CATEGORY_ID = field("Transaction", "categoryId");
   public static final QueryField DATE = field("Transaction", "date");
+  public static final QueryField EXACT_TIME = field("Transaction", "exactTime");
   public static final QueryField MERCHANT_NAME = field("Transaction", "merchantName");
   public static final QueryField NAME = field("Transaction", "name");
   public static final QueryField ORIGINAL_DESCRIPTION = field("Transaction", "originalDescription");
@@ -42,14 +42,16 @@ public final class Transaction implements Model {
   public static final QueryField TRANSACTION_CODE = field("Transaction", "transactionCode");
   public static final QueryField PAYMENT_CHANNEL = field("Transaction", "paymentChannel");
   private final @ModelField(targetType="ID", isRequired = true) String id;
-  private final @ModelField(targetType="TransactionWrapper", isRequired = true) @BelongsTo(targetName = "transactionWrapperId", type = TransactionWrapper.class) TransactionWrapper wrapper;
+  private final @ModelField(targetType="TransactionWrapper") @HasOne(associatedWith = "transaction", type = TransactionWrapper.class) TransactionWrapper wrapper = null;
   private final @ModelField(targetType="String") String accountId;
   private final @ModelField(targetType="Float", isRequired = true) Double amount;
   private final @ModelField(targetType="String") String isoCurrencyCode;
   private final @ModelField(targetType="String") String unofficialCurrencyCode;
+  private final @ModelField(targetType="String") String categoryFolder;
   private final @ModelField(targetType="String") List<String> category;
   private final @ModelField(targetType="String") String categoryId;
   private final @ModelField(targetType="String") String date;
+  private final @ModelField(targetType="String") String exactTime;
   private final @ModelField(targetType="Location") @HasOne(associatedWith = "transaction", type = Location.class) Location location = null;
   private final @ModelField(targetType="String") String merchantName;
   private final @ModelField(targetType="String") String name;
@@ -87,6 +89,10 @@ public final class Transaction implements Model {
       return unofficialCurrencyCode;
   }
   
+  public String getCategoryFolder() {
+      return categoryFolder;
+  }
+  
   public List<String> getCategory() {
       return category;
   }
@@ -97,6 +103,10 @@ public final class Transaction implements Model {
   
   public String getDate() {
       return date;
+  }
+  
+  public String getExactTime() {
+      return exactTime;
   }
   
   public Location getLocation() {
@@ -151,16 +161,17 @@ public final class Transaction implements Model {
       return paymentChannel;
   }
   
-  private Transaction(String id, TransactionWrapper wrapper, String accountId, Double amount, String isoCurrencyCode, String unofficialCurrencyCode, List<String> category, String categoryId, String date, String merchantName, String name, String originalDescription, Boolean pending, String pendingTransactionId, String transactionId, String transactionType, String accountOwner, String authorizedDate, String transactionCode, String paymentChannel) {
+  private Transaction(String id, String accountId, Double amount, String isoCurrencyCode, String unofficialCurrencyCode, String categoryFolder, List<String> category, String categoryId, String date, String exactTime, String merchantName, String name, String originalDescription, Boolean pending, String pendingTransactionId, String transactionId, String transactionType, String accountOwner, String authorizedDate, String transactionCode, String paymentChannel) {
     this.id = id;
-    this.wrapper = wrapper;
     this.accountId = accountId;
     this.amount = amount;
     this.isoCurrencyCode = isoCurrencyCode;
     this.unofficialCurrencyCode = unofficialCurrencyCode;
+    this.categoryFolder = categoryFolder;
     this.category = category;
     this.categoryId = categoryId;
     this.date = date;
+    this.exactTime = exactTime;
     this.merchantName = merchantName;
     this.name = name;
     this.originalDescription = originalDescription;
@@ -183,14 +194,15 @@ public final class Transaction implements Model {
       } else {
       Transaction transaction = (Transaction) obj;
       return ObjectsCompat.equals(getId(), transaction.getId()) &&
-              ObjectsCompat.equals(getWrapper(), transaction.getWrapper()) &&
               ObjectsCompat.equals(getAccountId(), transaction.getAccountId()) &&
               ObjectsCompat.equals(getAmount(), transaction.getAmount()) &&
               ObjectsCompat.equals(getIsoCurrencyCode(), transaction.getIsoCurrencyCode()) &&
               ObjectsCompat.equals(getUnofficialCurrencyCode(), transaction.getUnofficialCurrencyCode()) &&
+              ObjectsCompat.equals(getCategoryFolder(), transaction.getCategoryFolder()) &&
               ObjectsCompat.equals(getCategory(), transaction.getCategory()) &&
               ObjectsCompat.equals(getCategoryId(), transaction.getCategoryId()) &&
               ObjectsCompat.equals(getDate(), transaction.getDate()) &&
+              ObjectsCompat.equals(getExactTime(), transaction.getExactTime()) &&
               ObjectsCompat.equals(getMerchantName(), transaction.getMerchantName()) &&
               ObjectsCompat.equals(getName(), transaction.getName()) &&
               ObjectsCompat.equals(getOriginalDescription(), transaction.getOriginalDescription()) &&
@@ -209,14 +221,15 @@ public final class Transaction implements Model {
    public int hashCode() {
     return new StringBuilder()
       .append(getId())
-      .append(getWrapper())
       .append(getAccountId())
       .append(getAmount())
       .append(getIsoCurrencyCode())
       .append(getUnofficialCurrencyCode())
+      .append(getCategoryFolder())
       .append(getCategory())
       .append(getCategoryId())
       .append(getDate())
+      .append(getExactTime())
       .append(getMerchantName())
       .append(getName())
       .append(getOriginalDescription())
@@ -237,14 +250,15 @@ public final class Transaction implements Model {
     return new StringBuilder()
       .append("Transaction {")
       .append("id=" + String.valueOf(getId()) + ", ")
-      .append("wrapper=" + String.valueOf(getWrapper()) + ", ")
       .append("accountId=" + String.valueOf(getAccountId()) + ", ")
       .append("amount=" + String.valueOf(getAmount()) + ", ")
       .append("isoCurrencyCode=" + String.valueOf(getIsoCurrencyCode()) + ", ")
       .append("unofficialCurrencyCode=" + String.valueOf(getUnofficialCurrencyCode()) + ", ")
+      .append("categoryFolder=" + String.valueOf(getCategoryFolder()) + ", ")
       .append("category=" + String.valueOf(getCategory()) + ", ")
       .append("categoryId=" + String.valueOf(getCategoryId()) + ", ")
       .append("date=" + String.valueOf(getDate()) + ", ")
+      .append("exactTime=" + String.valueOf(getExactTime()) + ", ")
       .append("merchantName=" + String.valueOf(getMerchantName()) + ", ")
       .append("name=" + String.valueOf(getName()) + ", ")
       .append("originalDescription=" + String.valueOf(getOriginalDescription()) + ", ")
@@ -260,7 +274,7 @@ public final class Transaction implements Model {
       .toString();
   }
   
-  public static WrapperStep builder() {
+  public static AmountStep builder() {
       return new Builder();
   }
   
@@ -303,20 +317,22 @@ public final class Transaction implements Model {
       null,
       null,
       null,
+      null,
       null
     );
   }
   
   public CopyOfBuilder copyOfBuilder() {
     return new CopyOfBuilder(id,
-      wrapper,
       accountId,
       amount,
       isoCurrencyCode,
       unofficialCurrencyCode,
+      categoryFolder,
       category,
       categoryId,
       date,
+      exactTime,
       merchantName,
       name,
       originalDescription,
@@ -329,11 +345,6 @@ public final class Transaction implements Model {
       transactionCode,
       paymentChannel);
   }
-  public interface WrapperStep {
-    AmountStep wrapper(TransactionWrapper wrapper);
-  }
-  
-
   public interface AmountStep {
     BuildStep amount(Double amount);
   }
@@ -345,9 +356,11 @@ public final class Transaction implements Model {
     BuildStep accountId(String accountId);
     BuildStep isoCurrencyCode(String isoCurrencyCode);
     BuildStep unofficialCurrencyCode(String unofficialCurrencyCode);
+    BuildStep categoryFolder(String categoryFolder);
     BuildStep category(List<String> category);
     BuildStep categoryId(String categoryId);
     BuildStep date(String date);
+    BuildStep exactTime(String exactTime);
     BuildStep merchantName(String merchantName);
     BuildStep name(String name);
     BuildStep originalDescription(String originalDescription);
@@ -362,16 +375,17 @@ public final class Transaction implements Model {
   }
   
 
-  public static class Builder implements WrapperStep, AmountStep, BuildStep {
+  public static class Builder implements AmountStep, BuildStep {
     private String id;
-    private TransactionWrapper wrapper;
     private Double amount;
     private String accountId;
     private String isoCurrencyCode;
     private String unofficialCurrencyCode;
+    private String categoryFolder;
     private List<String> category;
     private String categoryId;
     private String date;
+    private String exactTime;
     private String merchantName;
     private String name;
     private String originalDescription;
@@ -389,14 +403,15 @@ public final class Transaction implements Model {
         
         return new Transaction(
           id,
-          wrapper,
           accountId,
           amount,
           isoCurrencyCode,
           unofficialCurrencyCode,
+          categoryFolder,
           category,
           categoryId,
           date,
+          exactTime,
           merchantName,
           name,
           originalDescription,
@@ -408,13 +423,6 @@ public final class Transaction implements Model {
           authorizedDate,
           transactionCode,
           paymentChannel);
-    }
-    
-    @Override
-     public AmountStep wrapper(TransactionWrapper wrapper) {
-        Objects.requireNonNull(wrapper);
-        this.wrapper = wrapper;
-        return this;
     }
     
     @Override
@@ -443,6 +451,12 @@ public final class Transaction implements Model {
     }
     
     @Override
+     public BuildStep categoryFolder(String categoryFolder) {
+        this.categoryFolder = categoryFolder;
+        return this;
+    }
+    
+    @Override
      public BuildStep category(List<String> category) {
         this.category = category;
         return this;
@@ -457,6 +471,12 @@ public final class Transaction implements Model {
     @Override
      public BuildStep date(String date) {
         this.date = date;
+        return this;
+    }
+    
+    @Override
+     public BuildStep exactTime(String exactTime) {
+        this.exactTime = exactTime;
         return this;
     }
     
@@ -549,16 +569,17 @@ public final class Transaction implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, TransactionWrapper wrapper, String accountId, Double amount, String isoCurrencyCode, String unofficialCurrencyCode, List<String> category, String categoryId, String date, String merchantName, String name, String originalDescription, Boolean pending, String pendingTransactionId, String transactionId, String transactionType, String accountOwner, String authorizedDate, String transactionCode, String paymentChannel) {
+    private CopyOfBuilder(String id, String accountId, Double amount, String isoCurrencyCode, String unofficialCurrencyCode, String categoryFolder, List<String> category, String categoryId, String date, String exactTime, String merchantName, String name, String originalDescription, Boolean pending, String pendingTransactionId, String transactionId, String transactionType, String accountOwner, String authorizedDate, String transactionCode, String paymentChannel) {
       super.id(id);
-      super.wrapper(wrapper)
-        .amount(amount)
+      super.amount(amount)
         .accountId(accountId)
         .isoCurrencyCode(isoCurrencyCode)
         .unofficialCurrencyCode(unofficialCurrencyCode)
+        .categoryFolder(categoryFolder)
         .category(category)
         .categoryId(categoryId)
         .date(date)
+        .exactTime(exactTime)
         .merchantName(merchantName)
         .name(name)
         .originalDescription(originalDescription)
@@ -570,11 +591,6 @@ public final class Transaction implements Model {
         .authorizedDate(authorizedDate)
         .transactionCode(transactionCode)
         .paymentChannel(paymentChannel);
-    }
-    
-    @Override
-     public CopyOfBuilder wrapper(TransactionWrapper wrapper) {
-      return (CopyOfBuilder) super.wrapper(wrapper);
     }
     
     @Override
@@ -598,6 +614,11 @@ public final class Transaction implements Model {
     }
     
     @Override
+     public CopyOfBuilder categoryFolder(String categoryFolder) {
+      return (CopyOfBuilder) super.categoryFolder(categoryFolder);
+    }
+    
+    @Override
      public CopyOfBuilder category(List<String> category) {
       return (CopyOfBuilder) super.category(category);
     }
@@ -610,6 +631,11 @@ public final class Transaction implements Model {
     @Override
      public CopyOfBuilder date(String date) {
       return (CopyOfBuilder) super.date(date);
+    }
+    
+    @Override
+     public CopyOfBuilder exactTime(String exactTime) {
+      return (CopyOfBuilder) super.exactTime(exactTime);
     }
     
     @Override

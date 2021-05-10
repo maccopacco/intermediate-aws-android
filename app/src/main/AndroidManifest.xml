@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Intermediate">
         <activity
-            android:name=".fragments.MainActivity"
+            android:name=".ui.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.Intermediate.NoActionBar">
             <intent-filter>

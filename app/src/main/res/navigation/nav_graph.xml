@@ -7,29 +7,18 @@
 
     <fragment
         android:id="@+id/plaidFragment"
-        android:name="com.maxdreher.intermediate.fragments.PlaidFragment"
-        android:label="fragment_plaid"
-        tools:layout="@layout/fragment_plaid">
-        <action
-            android:id="@+id/action_plaidFragment_to_SQLFragment"
-            app:destination="@id/SQLFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/SQLFragment"
-        android:name="com.maxdreher.intermediate.fragments.SQLFragment"
-        android:label="SQLFragment">
-        <action
-            android:id="@+id/action_SQLFragment_to_plaidFragment"
-            app:destination="@id/plaidFragment" />
-    </fragment>
+        android:name="com.maxdreher.intermediate.ui.PlaidFragment"
+        android:label="Intermediate"
+        tools:layout="@layout/fragment_plaid"/>
+
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.maxdreher.intermediate.fragments.SettingsFragment"
-        android:label="SettingsFragment" />
+        android:name="com.maxdreher.intermediate.ui.SettingsFragment"
+        android:label="Settings" />
     <fragment
         android:id="@+id/adminSettings"
-        android:name="com.maxdreher.intermediate.fragments.AdminSettings"
-        android:label="AdminSettings" />
+        android:name="com.maxdreher.intermediate.ui.AdminSettings"
+        android:label="Admin Settings" />
 
 
 </navigation>

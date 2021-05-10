@@ -139,129 +139,6 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "syncUpdates",
-                        "description": null,
-                        "args": [
-                            {
-                                "name": "filter",
-                                "description": null,
-                                "type": {
-                                    "kind": "INPUT_OBJECT",
-                                    "name": "ModelUpdateFilterInput",
-                                    "ofType": null
-                                },
-                                "defaultValue": null
-                            },
-                            {
-                                "name": "limit",
-                                "description": null,
-                                "type": {
-                                    "kind": "SCALAR",
-                                    "name": "Int",
-                                    "ofType": null
-                                },
-                                "defaultValue": null
-                            },
-                            {
-                                "name": "nextToken",
-                                "description": null,
-                                "type": {
-                                    "kind": "SCALAR",
-                                    "name": "String",
-                                    "ofType": null
-                                },
-                                "defaultValue": null
-                            },
-                            {
-                                "name": "lastSync",
-                                "description": null,
-                                "type": {
-                                    "kind": "SCALAR",
-                                    "name": "AWSTimestamp",
-                                    "ofType": null
-                                },
-                                "defaultValue": null
-                            }
-                        ],
-                        "type": {
-                            "kind": "OBJECT",
-                            "name": "ModelUpdateConnection",
-                            "ofType": null
-                        },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "getUpdate",
-                        "description": null,
-                        "args": [
-                            {
-                                "name": "id",
-                                "description": null,
-                                "type": {
-                                    "kind": "NON_NULL",
-                                    "name": null,
-                                    "ofType": {
-                                        "kind": "SCALAR",
-                                        "name": "ID",
-                                        "ofType": null
-                                    }
-                                },
-                                "defaultValue": null
-                            }
-                        ],
-                        "type": {
-                            "kind": "OBJECT",
-                            "name": "Update",
-                            "ofType": null
-                        },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "listUpdates",
-                        "description": null,
-                        "args": [
-                            {
-                                "name": "filter",
-                                "description": null,
-                                "type": {
-                                    "kind": "INPUT_OBJECT",
-                                    "name": "ModelUpdateFilterInput",
-                                    "ofType": null
-                                },
-                                "defaultValue": null
-                            },
-                            {
-                                "name": "limit",
-                                "description": null,
-                                "type": {
-                                    "kind": "SCALAR",
-                                    "name": "Int",
-                                    "ofType": null
-                                },
-                                "defaultValue": null
-                            },
-                            {
-                                "name": "nextToken",
-                                "description": null,
-                                "type": {
-                                    "kind": "SCALAR",
-                                    "name": "String",
-                                    "ofType": null
-                                },
-                                "defaultValue": null
-                            }
-                        ],
-                        "type": {
-                            "kind": "OBJECT",
-                            "name": "ModelUpdateConnection",
-                            "ofType": null
-                        },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
                         "name": "syncUsers",
                         "description": null,
                         "args": [
@@ -379,6 +256,129 @@
                         "type": {
                             "kind": "OBJECT",
                             "name": "ModelUserConnection",
+                            "ofType": null
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "syncBanks",
+                        "description": null,
+                        "args": [
+                            {
+                                "name": "filter",
+                                "description": null,
+                                "type": {
+                                    "kind": "INPUT_OBJECT",
+                                    "name": "ModelBankFilterInput",
+                                    "ofType": null
+                                },
+                                "defaultValue": null
+                            },
+                            {
+                                "name": "limit",
+                                "description": null,
+                                "type": {
+                                    "kind": "SCALAR",
+                                    "name": "Int",
+                                    "ofType": null
+                                },
+                                "defaultValue": null
+                            },
+                            {
+                                "name": "nextToken",
+                                "description": null,
+                                "type": {
+                                    "kind": "SCALAR",
+                                    "name": "String",
+                                    "ofType": null
+                                },
+                                "defaultValue": null
+                            },
+                            {
+                                "name": "lastSync",
+                                "description": null,
+                                "type": {
+                                    "kind": "SCALAR",
+                                    "name": "AWSTimestamp",
+                                    "ofType": null
+                                },
+                                "defaultValue": null
+                            }
+                        ],
+                        "type": {
+                            "kind": "OBJECT",
+                            "name": "ModelBankConnection",
+                            "ofType": null
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "getBank",
+                        "description": null,
+                        "args": [
+                            {
+                                "name": "id",
+                                "description": null,
+                                "type": {
+                                    "kind": "NON_NULL",
+                                    "name": null,
+                                    "ofType": {
+                                        "kind": "SCALAR",
+                                        "name": "ID",
+                                        "ofType": null
+                                    }
+                                },
+                                "defaultValue": null
+                            }
+                        ],
+                        "type": {
+                            "kind": "OBJECT",
+                            "name": "Bank",
+                            "ofType": null
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "listBanks",
+                        "description": null,
+                        "args": [
+                            {
+                                "name": "filter",
+                                "description": null,
+                                "type": {
+                                    "kind": "INPUT_OBJECT",
+                                    "name": "ModelBankFilterInput",
+                                    "ofType": null
+                                },
+                                "defaultValue": null
+                            },
+                            {
+                                "name": "limit",
+                                "description": null,
+                                "type": {
+                                    "kind": "SCALAR",
+                                    "name": "Int",
+                                    "ofType": null
+                                },
+                                "defaultValue": null
+                            },
+                            {
+                                "name": "nextToken",
+                                "description": null,
+                                "type": {
+                                    "kind": "SCALAR",
+                                    "name": "String",
+                                    "ofType": null
+                                },
+                                "defaultValue": null
+                            }
+                        ],
+                        "type": {
+                            "kind": "OBJECT",
+                            "name": "ModelBankConnection",
                             "ofType": null
                         },
                         "isDeprecated": false,
@@ -1748,245 +1748,6 @@
             },
             {
                 "kind": "INPUT_OBJECT",
-                "name": "ModelUpdateFilterInput",
-                "description": null,
-                "fields": null,
-                "inputFields": [
-                    {
-                        "name": "id",
-                        "description": null,
-                        "type": {
-                            "kind": "INPUT_OBJECT",
-                            "name": "ModelIDInput",
-                            "ofType": null
-                        },
-                        "defaultValue": null
-                    },
-                    {
-                        "name": "date",
-                        "description": null,
-                        "type": {
-                            "kind": "INPUT_OBJECT",
-                            "name": "ModelStringInput",
-                            "ofType": null
-                        },
-                        "defaultValue": null
-                    },
-                    {
-                        "name": "and",
-                        "description": null,
-                        "type": {
-                            "kind": "LIST",
-                            "name": null,
-                            "ofType": {
-                                "kind": "INPUT_OBJECT",
-                                "name": "ModelUpdateFilterInput",
-                                "ofType": null
-                            }
-                        },
-                        "defaultValue": null
-                    },
-                    {
-                        "name": "or",
-                        "description": null,
-                        "type": {
-                            "kind": "LIST",
-                            "name": null,
-                            "ofType": {
-                                "kind": "INPUT_OBJECT",
-                                "name": "ModelUpdateFilterInput",
-                                "ofType": null
-                            }
-                        },
-                        "defaultValue": null
-                    },
-                    {
-                        "name": "not",
-                        "description": null,
-                        "type": {
-                            "kind": "INPUT_OBJECT",
-                            "name": "ModelUpdateFilterInput",
-                            "ofType": null
-                        },
-                        "defaultValue": null
-                    }
-                ],
-                "interfaces": null,
-                "enumValues": null,
-                "possibleTypes": null
-            },
-            {
-                "kind": "OBJECT",
-                "name": "ModelUpdateConnection",
-                "description": null,
-                "fields": [
-                    {
-                        "name": "items",
-                        "description": null,
-                        "args": [],
-                        "type": {
-                            "kind": "LIST",
-                            "name": null,
-                            "ofType": {
-                                "kind": "OBJECT",
-                                "name": "Update",
-                                "ofType": null
-                            }
-                        },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "nextToken",
-                        "description": null,
-                        "args": [],
-                        "type": {
-                            "kind": "SCALAR",
-                            "name": "String",
-                            "ofType": null
-                        },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "startedAt",
-                        "description": null,
-                        "args": [],
-                        "type": {
-                            "kind": "SCALAR",
-                            "name": "AWSTimestamp",
-                            "ofType": null
-                        },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    }
-                ],
-                "inputFields": null,
-                "interfaces": [],
-                "enumValues": null,
-                "possibleTypes": null
-            },
-            {
-                "kind": "OBJECT",
-                "name": "Update",
-                "description": null,
-                "fields": [
-                    {
-                        "name": "id",
-                        "description": null,
-                        "args": [],
-                        "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": {
-                                "kind": "SCALAR",
-                                "name": "ID",
-                                "ofType": null
-                            }
-                        },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "date",
-                        "description": null,
-                        "args": [],
-                        "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": {
-                                "kind": "SCALAR",
-                                "name": "String",
-                                "ofType": null
-                            }
-                        },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "_version",
-                        "description": null,
-                        "args": [],
-                        "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": {
-                                "kind": "SCALAR",
-                                "name": "Int",
-                                "ofType": null
-                            }
-                        },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "_deleted",
-                        "description": null,
-                        "args": [],
-                        "type": {
-                            "kind": "SCALAR",
-                            "name": "Boolean",
-                            "ofType": null
-                        },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "_lastChangedAt",
-                        "description": null,
-                        "args": [],
-                        "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": {
-                                "kind": "SCALAR",
-                                "name": "AWSTimestamp",
-                                "ofType": null
-                            }
-                        },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "createdAt",
-                        "description": null,
-                        "args": [],
-                        "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": {
-                                "kind": "SCALAR",
-                                "name": "AWSDateTime",
-                                "ofType": null
-                            }
-                        },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "updatedAt",
-                        "description": null,
-                        "args": [],
-                        "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": {
-                                "kind": "SCALAR",
-                                "name": "AWSDateTime",
-                                "ofType": null
-                            }
-                        },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    }
-                ],
-                "inputFields": null,
-                "interfaces": [],
-                "enumValues": null,
-                "possibleTypes": null
-            },
-            {
-                "kind": "INPUT_OBJECT",
                 "name": "ModelUserFilterInput",
                 "description": null,
                 "fields": null,
@@ -2169,6 +1930,433 @@
                         "deprecationReason": null
                     },
                     {
+                        "name": "banks",
+                        "description": null,
+                        "args": [
+                            {
+                                "name": "filter",
+                                "description": null,
+                                "type": {
+                                    "kind": "INPUT_OBJECT",
+                                    "name": "ModelBankFilterInput",
+                                    "ofType": null
+                                },
+                                "defaultValue": null
+                            },
+                            {
+                                "name": "sortDirection",
+                                "description": null,
+                                "type": {
+                                    "kind": "ENUM",
+                                    "name": "ModelSortDirection",
+                                    "ofType": null
+                                },
+                                "defaultValue": null
+                            },
+                            {
+                                "name": "limit",
+                                "description": null,
+                                "type": {
+                                    "kind": "SCALAR",
+                                    "name": "Int",
+                                    "ofType": null
+                                },
+                                "defaultValue": null
+                            },
+                            {
+                                "name": "nextToken",
+                                "description": null,
+                                "type": {
+                                    "kind": "SCALAR",
+                                    "name": "String",
+                                    "ofType": null
+                                },
+                                "defaultValue": null
+                            }
+                        ],
+                        "type": {
+                            "kind": "OBJECT",
+                            "name": "ModelBankConnection",
+                            "ofType": null
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "_version",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": {
+                                "kind": "SCALAR",
+                                "name": "Int",
+                                "ofType": null
+                            }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "_deleted",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "Boolean",
+                            "ofType": null
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "_lastChangedAt",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": {
+                                "kind": "SCALAR",
+                                "name": "AWSTimestamp",
+                                "ofType": null
+                            }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "createdAt",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": {
+                                "kind": "SCALAR",
+                                "name": "AWSDateTime",
+                                "ofType": null
+                            }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "updatedAt",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": {
+                                "kind": "SCALAR",
+                                "name": "AWSDateTime",
+                                "ofType": null
+                            }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    }
+                ],
+                "inputFields": null,
+                "interfaces": [],
+                "enumValues": null,
+                "possibleTypes": null
+            },
+            {
+                "kind": "INPUT_OBJECT",
+                "name": "ModelBankFilterInput",
+                "description": null,
+                "fields": null,
+                "inputFields": [
+                    {
+                        "name": "id",
+                        "description": null,
+                        "type": {
+                            "kind": "INPUT_OBJECT",
+                            "name": "ModelIDInput",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "plaid_access_token",
+                        "description": null,
+                        "type": {
+                            "kind": "INPUT_OBJECT",
+                            "name": "ModelStringInput",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "institution_id",
+                        "description": null,
+                        "type": {
+                            "kind": "INPUT_OBJECT",
+                            "name": "ModelStringInput",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "institution_name",
+                        "description": null,
+                        "type": {
+                            "kind": "INPUT_OBJECT",
+                            "name": "ModelStringInput",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "institution_logo",
+                        "description": null,
+                        "type": {
+                            "kind": "INPUT_OBJECT",
+                            "name": "ModelStringInput",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "last_touched_time",
+                        "description": null,
+                        "type": {
+                            "kind": "INPUT_OBJECT",
+                            "name": "ModelStringInput",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "and",
+                        "description": null,
+                        "type": {
+                            "kind": "LIST",
+                            "name": null,
+                            "ofType": {
+                                "kind": "INPUT_OBJECT",
+                                "name": "ModelBankFilterInput",
+                                "ofType": null
+                            }
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "or",
+                        "description": null,
+                        "type": {
+                            "kind": "LIST",
+                            "name": null,
+                            "ofType": {
+                                "kind": "INPUT_OBJECT",
+                                "name": "ModelBankFilterInput",
+                                "ofType": null
+                            }
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "not",
+                        "description": null,
+                        "type": {
+                            "kind": "INPUT_OBJECT",
+                            "name": "ModelBankFilterInput",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    }
+                ],
+                "interfaces": null,
+                "enumValues": null,
+                "possibleTypes": null
+            },
+            {
+                "kind": "ENUM",
+                "name": "ModelSortDirection",
+                "description": null,
+                "fields": null,
+                "inputFields": null,
+                "interfaces": null,
+                "enumValues": [
+                    {
+                        "name": "ASC",
+                        "description": null,
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "DESC",
+                        "description": null,
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    }
+                ],
+                "possibleTypes": null
+            },
+            {
+                "kind": "OBJECT",
+                "name": "ModelBankConnection",
+                "description": null,
+                "fields": [
+                    {
+                        "name": "items",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "LIST",
+                            "name": null,
+                            "ofType": {
+                                "kind": "OBJECT",
+                                "name": "Bank",
+                                "ofType": null
+                            }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "nextToken",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "String",
+                            "ofType": null
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "startedAt",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "AWSTimestamp",
+                            "ofType": null
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    }
+                ],
+                "inputFields": null,
+                "interfaces": [],
+                "enumValues": null,
+                "possibleTypes": null
+            },
+            {
+                "kind": "OBJECT",
+                "name": "Bank",
+                "description": null,
+                "fields": [
+                    {
+                        "name": "id",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": {
+                                "kind": "SCALAR",
+                                "name": "ID",
+                                "ofType": null
+                            }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "user",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": {
+                                "kind": "OBJECT",
+                                "name": "User",
+                                "ofType": null
+                            }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "plaid_access_token",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "institution_id",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "institution_name",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "String",
+                            "ofType": null
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "institution_logo",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "String",
+                            "ofType": null
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "last_touched_time",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
                         "name": "userData",
                         "description": null,
                         "args": [],
@@ -2284,7 +2472,7 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "user",
+                        "name": "bank",
                         "description": null,
                         "args": [],
                         "type": {
@@ -2292,7 +2480,7 @@
                             "name": null,
                             "ofType": {
                                 "kind": "OBJECT",
-                                "name": "User",
+                                "name": "Bank",
                                 "ofType": null
                             }
                         },
@@ -2347,6 +2535,34 @@
                         "type": {
                             "kind": "OBJECT",
                             "name": "ModelTransactionWrapperConnection",
+                            "ofType": null
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "max_import_batch",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": {
+                                "kind": "SCALAR",
+                                "name": "Int",
+                                "ofType": null
+                            }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "oldest_pending_time",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "String",
                             "ofType": null
                         },
                         "isDeprecated": false,
@@ -2451,7 +2667,47 @@
                         "defaultValue": null
                     },
                     {
-                        "name": "overrideDescription",
+                        "name": "importBatch",
+                        "description": null,
+                        "type": {
+                            "kind": "INPUT_OBJECT",
+                            "name": "ModelIntInput",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "importDate",
+                        "description": null,
+                        "type": {
+                            "kind": "INPUT_OBJECT",
+                            "name": "ModelStringInput",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "importSource",
+                        "description": null,
+                        "type": {
+                            "kind": "INPUT_OBJECT",
+                            "name": "ModelStringInput",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "plaidID",
+                        "description": null,
+                        "type": {
+                            "kind": "INPUT_OBJECT",
+                            "name": "ModelStringInput",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "overrideName",
                         "description": null,
                         "type": {
                             "kind": "INPUT_OBJECT",
@@ -2514,26 +2770,108 @@
                 "possibleTypes": null
             },
             {
-                "kind": "ENUM",
-                "name": "ModelSortDirection",
+                "kind": "INPUT_OBJECT",
+                "name": "ModelIntInput",
                 "description": null,
                 "fields": null,
-                "inputFields": null,
-                "interfaces": null,
-                "enumValues": [
+                "inputFields": [
                     {
-                        "name": "ASC",
+                        "name": "ne",
                         "description": null,
-                        "isDeprecated": false,
-                        "deprecationReason": null
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "Int",
+                            "ofType": null
+                        },
+                        "defaultValue": null
                     },
                     {
-                        "name": "DESC",
+                        "name": "eq",
                         "description": null,
-                        "isDeprecated": false,
-                        "deprecationReason": null
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "Int",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "le",
+                        "description": null,
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "Int",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "lt",
+                        "description": null,
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "Int",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "ge",
+                        "description": null,
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "Int",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "gt",
+                        "description": null,
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "Int",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "between",
+                        "description": null,
+                        "type": {
+                            "kind": "LIST",
+                            "name": null,
+                            "ofType": {
+                                "kind": "SCALAR",
+                                "name": "Int",
+                                "ofType": null
+                            }
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "attributeExists",
+                        "description": null,
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "Boolean",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "attributeType",
+                        "description": null,
+                        "type": {
+                            "kind": "ENUM",
+                            "name": "ModelAttributeTypes",
+                            "ofType": null
+                        },
+                        "defaultValue": null
                     }
                 ],
+                "interfaces": null,
+                "enumValues": null,
                 "possibleTypes": null
             },
             {
@@ -2609,12 +2947,48 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "transaction",
+                        "name": "importBatch",
                         "description": null,
                         "args": [],
                         "type": {
-                            "kind": "OBJECT",
-                            "name": "Transaction",
+                            "kind": "SCALAR",
+                            "name": "Int",
+                            "ofType": null
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "importDate",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "String",
+                            "ofType": null
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "importSource",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "String",
+                            "ofType": null
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "plaidID",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "String",
                             "ofType": null
                         },
                         "isDeprecated": false,
@@ -2637,7 +3011,23 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "overrideDescription",
+                        "name": "transaction",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": {
+                                "kind": "OBJECT",
+                                "name": "Transaction",
+                                "ofType": null
+                            }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "overrideName",
                         "description": null,
                         "args": [],
                         "type": {
@@ -2768,13 +3158,9 @@
                         "description": null,
                         "args": [],
                         "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": {
-                                "kind": "OBJECT",
-                                "name": "TransactionWrapper",
-                                "ofType": null
-                            }
+                            "kind": "OBJECT",
+                            "name": "TransactionWrapper",
+                            "ofType": null
                         },
                         "isDeprecated": false,
                         "deprecationReason": null
@@ -2832,6 +3218,18 @@
                         "deprecationReason": null
                     },
                     {
+                        "name": "categoryFolder",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "String",
+                            "ofType": null
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
                         "name": "category",
                         "description": null,
                         "args": [],
@@ -2861,6 +3259,18 @@
                     },
                     {
                         "name": "date",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "String",
+                            "ofType": null
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "exactTime",
                         "description": null,
                         "args": [],
                         "type": {
@@ -3141,6 +3551,22 @@
                         "deprecationReason": null
                     },
                     {
+                        "name": "transaction",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": {
+                                "kind": "OBJECT",
+                                "name": "Transaction",
+                                "ofType": null
+                            }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
                         "name": "address",
                         "description": null,
                         "args": [],
@@ -3232,22 +3658,6 @@
                             "kind": "SCALAR",
                             "name": "String",
                             "ofType": null
-                        },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "transaction",
-                        "description": null,
-                        "args": [],
-                        "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": {
-                                "kind": "OBJECT",
-                                "name": "Transaction",
-                                "ofType": null
-                            }
                         },
                         "isDeprecated": false,
                         "deprecationReason": null
@@ -3356,6 +3766,22 @@
                         "deprecationReason": null
                     },
                     {
+                        "name": "transaction",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": {
+                                "kind": "OBJECT",
+                                "name": "Transaction",
+                                "ofType": null
+                            }
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
                         "name": "byOrderOf",
                         "description": null,
                         "args": [],
@@ -3447,22 +3873,6 @@
                             "kind": "SCALAR",
                             "name": "String",
                             "ofType": null
-                        },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "transaction",
-                        "description": null,
-                        "args": [],
-                        "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": {
-                                "kind": "OBJECT",
-                                "name": "Transaction",
-                                "ofType": null
-                            }
                         },
                         "isDeprecated": false,
                         "deprecationReason": null
@@ -3561,6 +3971,26 @@
                         "type": {
                             "kind": "INPUT_OBJECT",
                             "name": "ModelIDInput",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "max_import_batch",
+                        "description": null,
+                        "type": {
+                            "kind": "INPUT_OBJECT",
+                            "name": "ModelIntInput",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "oldest_pending_time",
+                        "description": null,
+                        "type": {
+                            "kind": "INPUT_OBJECT",
+                            "name": "ModelStringInput",
                             "ofType": null
                         },
                         "defaultValue": null
@@ -3716,6 +4146,16 @@
                         "defaultValue": null
                     },
                     {
+                        "name": "categoryFolder",
+                        "description": null,
+                        "type": {
+                            "kind": "INPUT_OBJECT",
+                            "name": "ModelStringInput",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
                         "name": "category",
                         "description": null,
                         "type": {
@@ -3737,6 +4177,16 @@
                     },
                     {
                         "name": "date",
+                        "description": null,
+                        "type": {
+                            "kind": "INPUT_OBJECT",
+                            "name": "ModelStringInput",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "exactTime",
                         "description": null,
                         "type": {
                             "kind": "INPUT_OBJECT",
@@ -4602,117 +5052,6 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "createUpdate",
-                        "description": null,
-                        "args": [
-                            {
-                                "name": "input",
-                                "description": null,
-                                "type": {
-                                    "kind": "NON_NULL",
-                                    "name": null,
-                                    "ofType": {
-                                        "kind": "INPUT_OBJECT",
-                                        "name": "CreateUpdateInput",
-                                        "ofType": null
-                                    }
-                                },
-                                "defaultValue": null
-                            },
-                            {
-                                "name": "condition",
-                                "description": null,
-                                "type": {
-                                    "kind": "INPUT_OBJECT",
-                                    "name": "ModelUpdateConditionInput",
-                                    "ofType": null
-                                },
-                                "defaultValue": null
-                            }
-                        ],
-                        "type": {
-                            "kind": "OBJECT",
-                            "name": "Update",
-                            "ofType": null
-                        },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "updateUpdate",
-                        "description": null,
-                        "args": [
-                            {
-                                "name": "input",
-                                "description": null,
-                                "type": {
-                                    "kind": "NON_NULL",
-                                    "name": null,
-                                    "ofType": {
-                                        "kind": "INPUT_OBJECT",
-                                        "name": "UpdateUpdateInput",
-                                        "ofType": null
-                                    }
-                                },
-                                "defaultValue": null
-                            },
-                            {
-                                "name": "condition",
-                                "description": null,
-                                "type": {
-                                    "kind": "INPUT_OBJECT",
-                                    "name": "ModelUpdateConditionInput",
-                                    "ofType": null
-                                },
-                                "defaultValue": null
-                            }
-                        ],
-                        "type": {
-                            "kind": "OBJECT",
-                            "name": "Update",
-                            "ofType": null
-                        },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "deleteUpdate",
-                        "description": null,
-                        "args": [
-                            {
-                                "name": "input",
-                                "description": null,
-                                "type": {
-                                    "kind": "NON_NULL",
-                                    "name": null,
-                                    "ofType": {
-                                        "kind": "INPUT_OBJECT",
-                                        "name": "DeleteUpdateInput",
-                                        "ofType": null
-                                    }
-                                },
-                                "defaultValue": null
-                            },
-                            {
-                                "name": "condition",
-                                "description": null,
-                                "type": {
-                                    "kind": "INPUT_OBJECT",
-                                    "name": "ModelUpdateConditionInput",
-                                    "ofType": null
-                                },
-                                "defaultValue": null
-                            }
-                        ],
-                        "type": {
-                            "kind": "OBJECT",
-                            "name": "Update",
-                            "ofType": null
-                        },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
                         "name": "createUser",
                         "description": null,
                         "args": [
@@ -4818,6 +5157,117 @@
                         "type": {
                             "kind": "OBJECT",
                             "name": "User",
+                            "ofType": null
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "createBank",
+                        "description": null,
+                        "args": [
+                            {
+                                "name": "input",
+                                "description": null,
+                                "type": {
+                                    "kind": "NON_NULL",
+                                    "name": null,
+                                    "ofType": {
+                                        "kind": "INPUT_OBJECT",
+                                        "name": "CreateBankInput",
+                                        "ofType": null
+                                    }
+                                },
+                                "defaultValue": null
+                            },
+                            {
+                                "name": "condition",
+                                "description": null,
+                                "type": {
+                                    "kind": "INPUT_OBJECT",
+                                    "name": "ModelBankConditionInput",
+                                    "ofType": null
+                                },
+                                "defaultValue": null
+                            }
+                        ],
+                        "type": {
+                            "kind": "OBJECT",
+                            "name": "Bank",
+                            "ofType": null
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "updateBank",
+                        "description": null,
+                        "args": [
+                            {
+                                "name": "input",
+                                "description": null,
+                                "type": {
+                                    "kind": "NON_NULL",
+                                    "name": null,
+                                    "ofType": {
+                                        "kind": "INPUT_OBJECT",
+                                        "name": "UpdateBankInput",
+                                        "ofType": null
+                                    }
+                                },
+                                "defaultValue": null
+                            },
+                            {
+                                "name": "condition",
+                                "description": null,
+                                "type": {
+                                    "kind": "INPUT_OBJECT",
+                                    "name": "ModelBankConditionInput",
+                                    "ofType": null
+                                },
+                                "defaultValue": null
+                            }
+                        ],
+                        "type": {
+                            "kind": "OBJECT",
+                            "name": "Bank",
+                            "ofType": null
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "deleteBank",
+                        "description": null,
+                        "args": [
+                            {
+                                "name": "input",
+                                "description": null,
+                                "type": {
+                                    "kind": "NON_NULL",
+                                    "name": null,
+                                    "ofType": {
+                                        "kind": "INPUT_OBJECT",
+                                        "name": "DeleteBankInput",
+                                        "ofType": null
+                                    }
+                                },
+                                "defaultValue": null
+                            },
+                            {
+                                "name": "condition",
+                                "description": null,
+                                "type": {
+                                    "kind": "INPUT_OBJECT",
+                                    "name": "ModelBankConditionInput",
+                                    "ofType": null
+                                },
+                                "defaultValue": null
+                            }
+                        ],
+                        "type": {
+                            "kind": "OBJECT",
+                            "name": "Bank",
                             "ofType": null
                         },
                         "isDeprecated": false,
@@ -5562,186 +6012,6 @@
             },
             {
                 "kind": "INPUT_OBJECT",
-                "name": "CreateUpdateInput",
-                "description": null,
-                "fields": null,
-                "inputFields": [
-                    {
-                        "name": "id",
-                        "description": null,
-                        "type": {
-                            "kind": "SCALAR",
-                            "name": "ID",
-                            "ofType": null
-                        },
-                        "defaultValue": null
-                    },
-                    {
-                        "name": "date",
-                        "description": null,
-                        "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": {
-                                "kind": "SCALAR",
-                                "name": "String",
-                                "ofType": null
-                            }
-                        },
-                        "defaultValue": null
-                    },
-                    {
-                        "name": "_version",
-                        "description": null,
-                        "type": {
-                            "kind": "SCALAR",
-                            "name": "Int",
-                            "ofType": null
-                        },
-                        "defaultValue": null
-                    }
-                ],
-                "interfaces": null,
-                "enumValues": null,
-                "possibleTypes": null
-            },
-            {
-                "kind": "INPUT_OBJECT",
-                "name": "ModelUpdateConditionInput",
-                "description": null,
-                "fields": null,
-                "inputFields": [
-                    {
-                        "name": "date",
-                        "description": null,
-                        "type": {
-                            "kind": "INPUT_OBJECT",
-                            "name": "ModelStringInput",
-                            "ofType": null
-                        },
-                        "defaultValue": null
-                    },
-                    {
-                        "name": "and",
-                        "description": null,
-                        "type": {
-                            "kind": "LIST",
-                            "name": null,
-                            "ofType": {
-                                "kind": "INPUT_OBJECT",
-                                "name": "ModelUpdateConditionInput",
-                                "ofType": null
-                            }
-                        },
-                        "defaultValue": null
-                    },
-                    {
-                        "name": "or",
-                        "description": null,
-                        "type": {
-                            "kind": "LIST",
-                            "name": null,
-                            "ofType": {
-                                "kind": "INPUT_OBJECT",
-                                "name": "ModelUpdateConditionInput",
-                                "ofType": null
-                            }
-                        },
-                        "defaultValue": null
-                    },
-                    {
-                        "name": "not",
-                        "description": null,
-                        "type": {
-                            "kind": "INPUT_OBJECT",
-                            "name": "ModelUpdateConditionInput",
-                            "ofType": null
-                        },
-                        "defaultValue": null
-                    }
-                ],
-                "interfaces": null,
-                "enumValues": null,
-                "possibleTypes": null
-            },
-            {
-                "kind": "INPUT_OBJECT",
-                "name": "UpdateUpdateInput",
-                "description": null,
-                "fields": null,
-                "inputFields": [
-                    {
-                        "name": "id",
-                        "description": null,
-                        "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": {
-                                "kind": "SCALAR",
-                                "name": "ID",
-                                "ofType": null
-                            }
-                        },
-                        "defaultValue": null
-                    },
-                    {
-                        "name": "date",
-                        "description": null,
-                        "type": {
-                            "kind": "SCALAR",
-                            "name": "String",
-                            "ofType": null
-                        },
-                        "defaultValue": null
-                    },
-                    {
-                        "name": "_version",
-                        "description": null,
-                        "type": {
-                            "kind": "SCALAR",
-                            "name": "Int",
-                            "ofType": null
-                        },
-                        "defaultValue": null
-                    }
-                ],
-                "interfaces": null,
-                "enumValues": null,
-                "possibleTypes": null
-            },
-            {
-                "kind": "INPUT_OBJECT",
-                "name": "DeleteUpdateInput",
-                "description": null,
-                "fields": null,
-                "inputFields": [
-                    {
-                        "name": "id",
-                        "description": null,
-                        "type": {
-                            "kind": "SCALAR",
-                            "name": "ID",
-                            "ofType": null
-                        },
-                        "defaultValue": null
-                    },
-                    {
-                        "name": "_version",
-                        "description": null,
-                        "type": {
-                            "kind": "SCALAR",
-                            "name": "Int",
-                            "ofType": null
-                        },
-                        "defaultValue": null
-                    }
-                ],
-                "interfaces": null,
-                "enumValues": null,
-                "possibleTypes": null
-            },
-            {
-                "kind": "INPUT_OBJECT",
                 "name": "CreateUserInput",
                 "description": null,
                 "fields": null,
@@ -5790,16 +6060,6 @@
                         "type": {
                             "kind": "SCALAR",
                             "name": "Int",
-                            "ofType": null
-                        },
-                        "defaultValue": null
-                    },
-                    {
-                        "name": "userUserDataId",
-                        "description": null,
-                        "type": {
-                            "kind": "SCALAR",
-                            "name": "ID",
                             "ofType": null
                         },
                         "defaultValue": null
@@ -5927,9 +6187,147 @@
                             "ofType": null
                         },
                         "defaultValue": null
+                    }
+                ],
+                "interfaces": null,
+                "enumValues": null,
+                "possibleTypes": null
+            },
+            {
+                "kind": "INPUT_OBJECT",
+                "name": "DeleteUserInput",
+                "description": null,
+                "fields": null,
+                "inputFields": [
+                    {
+                        "name": "id",
+                        "description": null,
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "ID",
+                            "ofType": null
+                        },
+                        "defaultValue": null
                     },
                     {
-                        "name": "userUserDataId",
+                        "name": "_version",
+                        "description": null,
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "Int",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    }
+                ],
+                "interfaces": null,
+                "enumValues": null,
+                "possibleTypes": null
+            },
+            {
+                "kind": "INPUT_OBJECT",
+                "name": "CreateBankInput",
+                "description": null,
+                "fields": null,
+                "inputFields": [
+                    {
+                        "name": "id",
+                        "description": null,
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "ID",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "plaid_access_token",
+                        "description": null,
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            }
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "institution_id",
+                        "description": null,
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            }
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "institution_name",
+                        "description": null,
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "String",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "institution_logo",
+                        "description": null,
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "String",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "last_touched_time",
+                        "description": null,
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": {
+                                "kind": "SCALAR",
+                                "name": "String",
+                                "ofType": null
+                            }
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "_version",
+                        "description": null,
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "Int",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "bankUserId",
+                        "description": null,
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": {
+                                "kind": "SCALAR",
+                                "name": "ID",
+                                "ofType": null
+                            }
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "bankUserDataId",
                         "description": null,
                         "type": {
                             "kind": "SCALAR",
@@ -5945,7 +6343,211 @@
             },
             {
                 "kind": "INPUT_OBJECT",
-                "name": "DeleteUserInput",
+                "name": "ModelBankConditionInput",
+                "description": null,
+                "fields": null,
+                "inputFields": [
+                    {
+                        "name": "plaid_access_token",
+                        "description": null,
+                        "type": {
+                            "kind": "INPUT_OBJECT",
+                            "name": "ModelStringInput",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "institution_id",
+                        "description": null,
+                        "type": {
+                            "kind": "INPUT_OBJECT",
+                            "name": "ModelStringInput",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "institution_name",
+                        "description": null,
+                        "type": {
+                            "kind": "INPUT_OBJECT",
+                            "name": "ModelStringInput",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "institution_logo",
+                        "description": null,
+                        "type": {
+                            "kind": "INPUT_OBJECT",
+                            "name": "ModelStringInput",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "last_touched_time",
+                        "description": null,
+                        "type": {
+                            "kind": "INPUT_OBJECT",
+                            "name": "ModelStringInput",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "and",
+                        "description": null,
+                        "type": {
+                            "kind": "LIST",
+                            "name": null,
+                            "ofType": {
+                                "kind": "INPUT_OBJECT",
+                                "name": "ModelBankConditionInput",
+                                "ofType": null
+                            }
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "or",
+                        "description": null,
+                        "type": {
+                            "kind": "LIST",
+                            "name": null,
+                            "ofType": {
+                                "kind": "INPUT_OBJECT",
+                                "name": "ModelBankConditionInput",
+                                "ofType": null
+                            }
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "not",
+                        "description": null,
+                        "type": {
+                            "kind": "INPUT_OBJECT",
+                            "name": "ModelBankConditionInput",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    }
+                ],
+                "interfaces": null,
+                "enumValues": null,
+                "possibleTypes": null
+            },
+            {
+                "kind": "INPUT_OBJECT",
+                "name": "UpdateBankInput",
+                "description": null,
+                "fields": null,
+                "inputFields": [
+                    {
+                        "name": "id",
+                        "description": null,
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": {
+                                "kind": "SCALAR",
+                                "name": "ID",
+                                "ofType": null
+                            }
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "plaid_access_token",
+                        "description": null,
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "String",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "institution_id",
+                        "description": null,
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "String",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "institution_name",
+                        "description": null,
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "String",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "institution_logo",
+                        "description": null,
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "String",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "last_touched_time",
+                        "description": null,
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "String",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "_version",
+                        "description": null,
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "Int",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "bankUserId",
+                        "description": null,
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "ID",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "bankUserDataId",
+                        "description": null,
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "ID",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    }
+                ],
+                "interfaces": null,
+                "enumValues": null,
+                "possibleTypes": null
+            },
+            {
+                "kind": "INPUT_OBJECT",
+                "name": "DeleteBankInput",
                 "description": null,
                 "fields": null,
                 "inputFields": [
@@ -5991,6 +6593,30 @@
                         "defaultValue": null
                     },
                     {
+                        "name": "max_import_batch",
+                        "description": null,
+                        "type": {
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": {
+                                "kind": "SCALAR",
+                                "name": "Int",
+                                "ofType": null
+                            }
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "oldest_pending_time",
+                        "description": null,
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "String",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
                         "name": "_version",
                         "description": null,
                         "type": {
@@ -6001,7 +6627,7 @@
                         "defaultValue": null
                     },
                     {
-                        "name": "userDataUserId",
+                        "name": "userDataBankId",
                         "description": null,
                         "type": {
                             "kind": "NON_NULL",
@@ -6025,6 +6651,26 @@
                 "description": null,
                 "fields": null,
                 "inputFields": [
+                    {
+                        "name": "max_import_batch",
+                        "description": null,
+                        "type": {
+                            "kind": "INPUT_OBJECT",
+                            "name": "ModelIntInput",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "oldest_pending_time",
+                        "description": null,
+                        "type": {
+                            "kind": "INPUT_OBJECT",
+                            "name": "ModelStringInput",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
                     {
                         "name": "and",
                         "description": null,
@@ -6089,6 +6735,26 @@
                         "defaultValue": null
                     },
                     {
+                        "name": "max_import_batch",
+                        "description": null,
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "Int",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "oldest_pending_time",
+                        "description": null,
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "String",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
                         "name": "_version",
                         "description": null,
                         "type": {
@@ -6099,7 +6765,7 @@
                         "defaultValue": null
                     },
                     {
-                        "name": "userDataUserId",
+                        "name": "userDataBankId",
                         "description": null,
                         "type": {
                             "kind": "SCALAR",
@@ -6161,7 +6827,47 @@
                         "defaultValue": null
                     },
                     {
-                        "name": "overrideDescription",
+                        "name": "importBatch",
+                        "description": null,
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "Int",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "importDate",
+                        "description": null,
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "String",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "importSource",
+                        "description": null,
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "String",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "plaidID",
+                        "description": null,
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "String",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "overrideName",
                         "description": null,
                         "type": {
                             "kind": "SCALAR",
@@ -6191,17 +6897,21 @@
                         "defaultValue": null
                     },
                     {
-                        "name": "transactionWrapperTransactionId",
+                        "name": "transactionWrapperUserDataId",
                         "description": null,
                         "type": {
-                            "kind": "SCALAR",
-                            "name": "ID",
-                            "ofType": null
+                            "kind": "NON_NULL",
+                            "name": null,
+                            "ofType": {
+                                "kind": "SCALAR",
+                                "name": "ID",
+                                "ofType": null
+                            }
                         },
                         "defaultValue": null
                     },
                     {
-                        "name": "transactionWrapperUserDataId",
+                        "name": "transactionWrapperTransactionId",
                         "description": null,
                         "type": {
                             "kind": "NON_NULL",
@@ -6226,7 +6936,47 @@
                 "fields": null,
                 "inputFields": [
                     {
-                        "name": "overrideDescription",
+                        "name": "importBatch",
+                        "description": null,
+                        "type": {
+                            "kind": "INPUT_OBJECT",
+                            "name": "ModelIntInput",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "importDate",
+                        "description": null,
+                        "type": {
+                            "kind": "INPUT_OBJECT",
+                            "name": "ModelStringInput",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "importSource",
+                        "description": null,
+                        "type": {
+                            "kind": "INPUT_OBJECT",
+                            "name": "ModelStringInput",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "plaidID",
+                        "description": null,
+                        "type": {
+                            "kind": "INPUT_OBJECT",
+                            "name": "ModelStringInput",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "overrideName",
                         "description": null,
                         "type": {
                             "kind": "INPUT_OBJECT",
@@ -6309,7 +7059,47 @@
                         "defaultValue": null
                     },
                     {
-                        "name": "overrideDescription",
+                        "name": "importBatch",
+                        "description": null,
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "Int",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "importDate",
+                        "description": null,
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "String",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "importSource",
+                        "description": null,
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "String",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "plaidID",
+                        "description": null,
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "String",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "overrideName",
                         "description": null,
                         "type": {
                             "kind": "SCALAR",
@@ -6339,7 +7129,7 @@
                         "defaultValue": null
                     },
                     {
-                        "name": "transactionWrapperTransactionId",
+                        "name": "transactionWrapperUserDataId",
                         "description": null,
                         "type": {
                             "kind": "SCALAR",
@@ -6349,7 +7139,7 @@
                         "defaultValue": null
                     },
                     {
-                        "name": "transactionWrapperUserDataId",
+                        "name": "transactionWrapperTransactionId",
                         "description": null,
                         "type": {
                             "kind": "SCALAR",
@@ -6455,6 +7245,16 @@
                         "defaultValue": null
                     },
                     {
+                        "name": "categoryFolder",
+                        "description": null,
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "String",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
                         "name": "category",
                         "description": null,
                         "type": {
@@ -6480,6 +7280,16 @@
                     },
                     {
                         "name": "date",
+                        "description": null,
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "String",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "exactTime",
                         "description": null,
                         "type": {
                             "kind": "SCALAR",
@@ -6612,13 +7422,9 @@
                         "name": "transactionWrapperId",
                         "description": null,
                         "type": {
-                            "kind": "NON_NULL",
-                            "name": null,
-                            "ofType": {
-                                "kind": "SCALAR",
-                                "name": "ID",
-                                "ofType": null
-                            }
+                            "kind": "SCALAR",
+                            "name": "ID",
+                            "ofType": null
                         },
                         "defaultValue": null
                     },
@@ -6694,6 +7500,16 @@
                         "defaultValue": null
                     },
                     {
+                        "name": "categoryFolder",
+                        "description": null,
+                        "type": {
+                            "kind": "INPUT_OBJECT",
+                            "name": "ModelStringInput",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
                         "name": "category",
                         "description": null,
                         "type": {
@@ -6715,6 +7531,16 @@
                     },
                     {
                         "name": "date",
+                        "description": null,
+                        "type": {
+                            "kind": "INPUT_OBJECT",
+                            "name": "ModelStringInput",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "exactTime",
                         "description": null,
                         "type": {
                             "kind": "INPUT_OBJECT",
@@ -6937,6 +7763,16 @@
                         "defaultValue": null
                     },
                     {
+                        "name": "categoryFolder",
+                        "description": null,
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "String",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
                         "name": "category",
                         "description": null,
                         "type": {
@@ -6962,6 +7798,16 @@
                     },
                     {
                         "name": "date",
+                        "description": null,
+                        "type": {
+                            "kind": "SCALAR",
+                            "name": "String",
+                            "ofType": null
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "name": "exactTime",
                         "description": null,
                         "type": {
                             "kind": "SCALAR",
@@ -8018,42 +8864,6 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "onCreateUpdate",
-                        "description": null,
-                        "args": [],
-                        "type": {
-                            "kind": "OBJECT",
-                            "name": "Update",
-                            "ofType": null
-                        },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "onUpdateUpdate",
-                        "description": null,
-                        "args": [],
-                        "type": {
-                            "kind": "OBJECT",
-                            "name": "Update",
-                            "ofType": null
-                        },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
-                        "name": "onDeleteUpdate",
-                        "description": null,
-                        "args": [],
-                        "type": {
-                            "kind": "OBJECT",
-                            "name": "Update",
-                            "ofType": null
-                        },
-                        "isDeprecated": false,
-                        "deprecationReason": null
-                    },
-                    {
                         "name": "onCreateUser",
                         "description": null,
                         "args": [],
@@ -8084,6 +8894,42 @@
                         "type": {
                             "kind": "OBJECT",
                             "name": "User",
+                            "ofType": null
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "onCreateBank",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "OBJECT",
+                            "name": "Bank",
+                            "ofType": null
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "onUpdateBank",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "OBJECT",
+                            "name": "Bank",
+                            "ofType": null
+                        },
+                        "isDeprecated": false,
+                        "deprecationReason": null
+                    },
+                    {
+                        "name": "onDeleteBank",
+                        "description": null,
+                        "args": [],
+                        "type": {
+                            "kind": "OBJECT",
+                            "name": "Bank",
                             "ofType": null
                         },
                         "isDeprecated": false,
@@ -9157,111 +10003,6 @@
                 "description": null,
                 "fields": null,
                 "inputFields": null,
-                "interfaces": null,
-                "enumValues": null,
-                "possibleTypes": null
-            },
-            {
-                "kind": "INPUT_OBJECT",
-                "name": "ModelIntInput",
-                "description": null,
-                "fields": null,
-                "inputFields": [
-                    {
-                        "name": "ne",
-                        "description": null,
-                        "type": {
-                            "kind": "SCALAR",
-                            "name": "Int",
-                            "ofType": null
-                        },
-                        "defaultValue": null
-                    },
-                    {
-                        "name": "eq",
-                        "description": null,
-                        "type": {
-                            "kind": "SCALAR",
-                            "name": "Int",
-                            "ofType": null
-                        },
-                        "defaultValue": null
-                    },
-                    {
-                        "name": "le",
-                        "description": null,
-                        "type": {
-                            "kind": "SCALAR",
-                            "name": "Int",
-                            "ofType": null
-                        },
-                        "defaultValue": null
-                    },
-                    {
-                        "name": "lt",
-                        "description": null,
-                        "type": {
-                            "kind": "SCALAR",
-                            "name": "Int",
-                            "ofType": null
-                        },
-                        "defaultValue": null
-                    },
-                    {
-                        "name": "ge",
-                        "description": null,
-                        "type": {
-                            "kind": "SCALAR",
-                            "name": "Int",
-                            "ofType": null
-                        },
-                        "defaultValue": null
-                    },
-                    {
-                        "name": "gt",
-                        "description": null,
-                        "type": {
-                            "kind": "SCALAR",
-                            "name": "Int",
-                            "ofType": null
-                        },
-                        "defaultValue": null
-                    },
-                    {
-                        "name": "between",
-                        "description": null,
-                        "type": {
-                            "kind": "LIST",
-                            "name": null,
-                            "ofType": {
-                                "kind": "SCALAR",
-                                "name": "Int",
-                                "ofType": null
-                            }
-                        },
-                        "defaultValue": null
-                    },
-                    {
-                        "name": "attributeExists",
-                        "description": null,
-                        "type": {
-                            "kind": "SCALAR",
-                            "name": "Boolean",
-                            "ofType": null
-                        },
-                        "defaultValue": null
-                    },
-                    {
-                        "name": "attributeType",
-                        "description": null,
-                        "type": {
-                            "kind": "ENUM",
-                            "name": "ModelAttributeTypes",
-                            "ofType": null
-                        },
-                        "defaultValue": null
-                    }
-                ],
                 "interfaces": null,
                 "enumValues": null,
                 "possibleTypes": null
