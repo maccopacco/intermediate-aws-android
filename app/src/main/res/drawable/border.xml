@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@android:color/transparent" />
+    <stroke
+        android:width="@dimen/transaction_pending_stroke"
+        android:color="@color/transaction_insignificant" />
+    <padding
+        android:bottom="@dimen/transaction_pending_border"
+        android:left="@dimen/transaction_pending_border"
+        android:right="@dimen/transaction_pending_border"
+        android:top="@dimen/transaction_pending_border" />
+</shape>

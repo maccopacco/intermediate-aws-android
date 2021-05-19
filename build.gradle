@@ -42,4 +42,13 @@ task copyKeys(type: Copy) {
     }
 }
 
+task checkKeys(type: Exec) {
+    def command = "git diff root..head -- */Keys.kt > diff_keys.txt"
+//    def res = ['sh', '-c', 'git rev-list HEAD | wc -l | tr -d " "'].execute().text.trim()
+//    println(res)
+//    commandLine 'cmd', '/c', 'git rev-list HEAD'
+//    commandLine 'cmd', '/c', command
+}
+
+
 apply plugin: 'com.amplifyframework.amplifytools'

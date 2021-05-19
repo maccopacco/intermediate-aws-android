@@ -17,7 +17,7 @@
         android:label="Settings" />
     <fragment
         android:id="@+id/adminSettings"
-        android:name="com.maxdreher.intermediate.ui.AdminSettings"
+        android:name="com.maxdreher.intermediate.ui.AdminSettingsFragment"
         android:label="Admin Settings" />
 
 

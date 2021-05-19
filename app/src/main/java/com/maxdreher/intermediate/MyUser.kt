@@ -15,6 +15,7 @@ object MyUser {
     private val everOnline = AtomicBoolean(false)
     private val online = AtomicBoolean(false)
 
+    var allowOfflineSignin = false
     var user: User? = null
     var bank: Bank? = null
     var data: UserData? = null

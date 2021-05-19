@@ -6,12 +6,18 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
+import kotlin.math.pow
 
 class test {
     @Test
     fun test() {
         val daAll = (1..(3 * 5) step 3).map { (it..it + 2).toList() }.also { println(it) }
         println(daAll.flatten())
+    }
+
+    @Test
+    fun printFormat() {
+        println("$%4.2f".format(2.3))
     }
 
     @Test
@@ -101,6 +107,16 @@ class test {
         runBlocking {
             delay(6000)
         }
+    }
+
+    infix fun Int.toPowerOf(exponent: Int): Double {
+        return this.toDouble().pow(exponent)
+    }
+
+    @Test
+    fun testInfix() {
+        println(2 toPowerOf 3)
+        mapOf(1 to 3, 4 to 5)
     }
 
 }

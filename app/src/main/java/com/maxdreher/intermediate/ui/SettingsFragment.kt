@@ -9,8 +9,7 @@ import com.amplifyframework.core.model.Model
 import com.amplifyframework.core.model.query.Page
 import com.amplifyframework.core.model.query.Where
 import com.amplifyframework.core.model.query.predicate.QueryPredicate
-import com.amplifyframework.datastore.generated.model.Bank
-import com.amplifyframework.datastore.generated.model.UserData
+import com.amplifyframework.datastore.generated.model.*
 import com.maxdreher.*
 import com.maxdreher.extensions.IGoogleBaseBase
 import com.maxdreher.extensions.PreferenceFragmentCompatBase
@@ -25,18 +24,18 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 class SettingsFragment : PreferenceFragmentCompatBase(R.xml.preferences), IPlaidBase {
 
-    override val activity: Activity
-        get() = requireActivity()
+    override val activity: Activity?
+        get() = getActivity()
 
     private var listPreference: ListPreference? = null
+
+    private var accountToSaveTo: Account? = null
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         super.onCreatePreferences(savedInstanceState, rootKey)
 
         google()
-
         app()
-
         import()
     }
 
@@ -57,7 +56,6 @@ class SettingsFragment : PreferenceFragmentCompatBase(R.xml.preferences), IPlaid
                     } else {
                         val badBanks = list.filter { it.institutionName == null }
                         if (badBanks.isNotEmpty()) {
-                            toast("")
                             updateBankFailure()
                             getBankNamesAndIDs(badBanks)
                         } else {
@@ -94,7 +92,7 @@ class SettingsFragment : PreferenceFragmentCompatBase(R.xml.preferences), IPlaid
         call(object {})
         listPreference = (findPreference("appChooseBank") as ListPreference).apply {
             updateBanks()
-            setOnPreferenceChangeListener { preference, newValue ->
+            setOnPreferenceChangeListener { _, newValue ->
                 onNewBankSelected(newValue)
                 true
             }
@@ -162,6 +160,7 @@ class SettingsFragment : PreferenceFragmentCompatBase(R.xml.preferences), IPlaid
                         .save(this@SettingsFragment) {
                             findBankAndUserData()
                             setBankImage()
+                            toast("${it.institutionName} selected")
                         }
                 }
             },
@@ -175,8 +174,27 @@ class SettingsFragment : PreferenceFragmentCompatBase(R.xml.preferences), IPlaid
     private fun import() {
         call(object {})
         findPreference("importSimpleJSON") {
-            openFile(MIME_TYPE.JSON, RequestCode.SIMPLE_FILE_CODE_JSON)
+            startSimpleImport()
         }
+    }
+
+
+    private fun google() {
+        call(object {})
+        findPreference("googleAccountSignin") {
+            if (IGoogleBaseBase.account != null) {
+                signout()?.addOnSuccessListener { signin() }
+            } else {
+                signin()
+            }
+        }
+        findPreference("googleAccountSignout") { signout() }
+    }
+
+    private fun startSimpleImport() {
+        call(object {})
+        //account chooser, then
+        openFile(MIME_TYPE.CSV, RequestCode.SIMPLE_FILE_CODE_JSON)
     }
 
     private fun openFile(mimeType: MIME_TYPE, code: Int) {
@@ -195,18 +213,6 @@ class SettingsFragment : PreferenceFragmentCompatBase(R.xml.preferences), IPlaid
         )
     }
 
-    private fun google() {
-        call(object {})
-        findPreference("googleAccountSignin") {
-            if (IGoogleBaseBase.account != null) {
-                signout()?.addOnSuccessListener { signin() }
-            } else {
-                signin()
-            }
-        }
-        findPreference("googleAccountSignout") { signout() }
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super<IPlaidBase>.onActivityResult(requestCode, resultCode, data)
         call(object {})
@@ -223,30 +229,37 @@ class SettingsFragment : PreferenceFragmentCompatBase(R.xml.preferences), IPlaid
      */
     private fun saveSimpleData(data: Intent?) {
         call(object {})
-        GlobalScope.launch {
-            withContext(Dispatchers.Default) {
-                MyUser.data?.let { userData ->
-                    val parseResult = ParseSimpleToAmp.convert(
-                        data?.data,
-                        this@SettingsFragment,
-                        userData
-                    )
-                    if (parseResult == null) {
-                        toast("Bad data from Simple")
-                        return@let
-                    }
-                    GlobalScope.launch {
-                        saveSimpleResults(parseResult)
-                    }
-                } ?: badSignin()
+        accountToSaveTo?.let { account ->
+            GlobalScope.launch {
+                withContext(Dispatchers.Default) {
+                    MyUser.data?.let { userData ->
+                        val parseResult = ParseSimpleToAmp.convert(
+                            data?.data,
+                            this@SettingsFragment,
+                            userData,
+                            account,
+                            15
+                        )
+                        if (parseResult == null) {
+                            toast("Bad data from Simple")
+                            return@let
+                        }
+                        GlobalScope.launch {
+                            saveSimpleResults(parseResult)
+                        }
+                    } ?: badSignin()
+                }
             }
-        }
+        } ?: error(
+            "The account you wanted to save to is gone, how'd you get here? " +
+                    "\nLeave and don't come back"
+        )
     }
 
     private fun saveSimpleResults(parseResult: List<List<Model>>) {
         call(object {})
         val firstError = AtomicBoolean(true)
-        val errorConsumer: (Model, Exception, Int) -> Unit = { model, ex, batch ->
+        val errorConsumer: (Model, Exception, Int) -> Unit = { model, ex, _ ->
             if (firstError.get()) {
                 alert("Errors found in Simple Import", "Will have to send log files to Max")
                 firstError.set(false)
@@ -256,7 +269,7 @@ class SettingsFragment : PreferenceFragmentCompatBase(R.xml.preferences), IPlaid
         }
         GlobalScope.launch {
             runBlocking {
-                parseResult.take(50).forEachIndexed { index, list ->
+                parseResult.forEachIndexed { index, list ->
                     launch {
                         Util.saveModels(this@SettingsFragment, list, index, errorConsumer)
                     }

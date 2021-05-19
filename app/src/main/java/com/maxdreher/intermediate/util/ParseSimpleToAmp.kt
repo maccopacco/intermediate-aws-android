@@ -6,17 +6,21 @@ import com.amplifyframework.datastore.generated.model.*
 import com.maxdreher.Util
 import com.maxdreher.extensions.IContextBase
 import org.json.JSONObject
+import java.lang.Integer.min
 import java.util.*
 
 object ParseSimpleToAmp {
+
     /**
      * @return [List] of [List] of [Model]s to be saved. Each inner [List] represents
-     * the nested models (like [Transaction]s in a [TransactionWrapper] and so on)
+     * the nested models (like [Location]s in a [Transaction] and so on)
      */
     fun convert(
         uri: Uri?,
         cb: IContextBase,
         userData: UserData,
+        account: Account,
+        maxAmount: Int? = null
     ): List<List<Model>>? {
         uri?.let {
             val text: String?
@@ -27,7 +31,7 @@ object ParseSimpleToAmp {
                 return null
             }
             return try {
-                convertJSONToAmp(text, userData)
+                convertJSONToAmp(text, userData, account, maxAmount)
             } catch (e: Exception) {
                 cb.error("Could not parse file\n${e.message}")
                 e.printStackTrace()
@@ -39,7 +43,9 @@ object ParseSimpleToAmp {
 
     private fun convertJSONToAmp(
         text: String,
-        userData: UserData
+        userData: UserData,
+        account: Account,
+        maxAmount: Int?
     ): List<List<Model>> {
         val importBatch = userData.maxImportBatch + 1
         val importDate = Util.getSaneDate()
@@ -48,16 +54,25 @@ object ParseSimpleToAmp {
         val json = JSONObject(text)
         val transactions = json.getJSONArray("transactions")
 
-        return (0 until transactions.length()).map {
+        val size = transactions.length()
+        val length = maxAmount?.let {
+            min(it, size)
+        } ?: size
+
+        return (0 until length).map {
             val rawT = transactions.getJSONObject(it)
             try {
                 return@map mutableListOf<Model>().apply {
                     val t = Transaction.Builder()
-                        .apply {
+                        .userData(userData)
+                        .account(account.plaidId)
+                        //amount
+                        .run {
                             val a = rawT.getJSONObject("amounts").getDouble("amount") / 10000
                             val sign = if (rawT.getString("bookkeeping_type") == "debit") 1 else -1
                             amount(a * sign)
                         }
+                        //date
                         .apply {
                             val date = Date(
                                 rawT.getJSONObject("times")
@@ -66,23 +81,15 @@ object ParseSimpleToAmp {
                             date(Util.simpleDateFormat.format(date))
                             exactTime(Util.saneDateFormat.format(date))
                         }
-                        .pending(false)
-//                        .pending(rawT.getBoolean("is_hold"))
+                        .importBatch(importBatch)
+                        .importSource(importSource)
+                        .importDate(importDate)
+                        .pending(
+                            false
+                            /** rawT.getBoolean("is_hold")*/
+                        )
                         .name(rawT.getString("raw_description"))
-                        .apply {
-                            val categories = rawT.getJSONArray("categories")
-                            if (categories.length() > 0) {
-                                val cat = categories.getJSONObject(0)
-                                category(listOf(cat.getString("name")))
-                                categoryFolder(cat.getString("folder"))
-                            }
-                        }
-                        .build().also {
-                            add(it)
-                        }
-                    val w = TransactionWrapper.builder()
-                        .userData(userData)
-                        .transaction(t)
+                        //memo & description
                         .apply {
                             if (rawT.has("memo")) {
                                 memo(rawT.getString("memo"))
@@ -93,13 +100,20 @@ object ParseSimpleToAmp {
                                 overrideName(rawT.getString("description"))
                             }
                         }
-                        .importBatch(importBatch)
-                        .importSource(importSource)
-                        .importDate(importDate)
-                        .build().also { add(it) }
+                        //categories
+                        .apply {
+                            val categories = rawT.getJSONArray("categories")
+                            if (categories.length() > 0) {
+                                val cat = categories.getJSONObject(0)
+                                category(listOf(cat.getString("name")))
+                                categoryFolder(cat.getString("folder"))
+                            }
+                        }
+                        .build().also { self -> add(self) }
+
                     if (rawT.has("geo")) {
                         val geo = rawT.getJSONObject("geo")
-                        val loc = Location.Builder()
+                        Location.Builder()
                             .transaction(t)
                             .city(geo.getString("city"))
                             .apply {
@@ -114,7 +128,7 @@ object ParseSimpleToAmp {
                                 }
                             }
                             .postalCode(geo.getString("zip"))
-                            .build().also { add(it) }
+                            .build().also { self -> add(self) }
                     }
                 }
             } catch (e: java.lang.Exception) {

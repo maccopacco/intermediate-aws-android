@@ -18,33 +18,54 @@ type Bank @model {
     institution_name: String
     institution_logo: String
     last_touched_time: String!
-    userData: UserData @connection(name: "Bank_Data")
+    userData: UserData @connection(name: "Bank_UserData")
 }
 
 type UserData @model {
     id: ID!
-    bank: Bank! @connection(name: "Bank_Data")
-    transactions: [TransactionWrapper] @connection(name: "Data_Transactions")
+    bank: Bank! @connection(name: "Bank_UserData")
     max_import_batch: Int!
     oldest_pending_time: String
+    accounts: [Account] @connection(name: "UserData_Account")
+    transactions: [Transaction] @connection(name: "UserData_Transaction")
 }
 
-type TransactionWrapper @model {
+type Account @model {
     id: ID!
-    importBatch: Int
-    importDate: String
-    importSource: String
-    plaidID: String
-    userData: UserData! @connection(name: "Data_Transactions")
-    transaction: Transaction! @connection(name: "Transaction_Wrapper")
+    plaidID: String!
+    name: String!
     overrideName: String
-    memo: String
+    userData: UserData! @connection(name: "UserData_Account")
+    balances: [Balance] @connection(name: "Account_Balance")
+    #    transactions: [Transaction] @connection(name: "Account_Transaction")
+}
+
+type Balance @model {
+    id: ID!
+    account: Account! @connection(name: "Account_Balance")
+    availableBalance: Float!
+    currentBalance: Float!
+    time: String!
 }
 
 type Transaction @model {
     id: ID!
-    wrapper: TransactionWrapper @connection(name: "Transaction_Wrapper")
-    accountId: String
+
+    # Simple features
+    overrideName: String
+    memo: String
+
+    #Imports
+    importBatch: Int
+    importDate: String
+    importSource: String
+
+    plaidID: String # Plaids identifier for this transaction
+    userData: UserData! @connection(name: "UserData_Transaction")
+    account: String!
+    #    account: Account @connection(name: "Account_Transaction")
+
+    # From Plaid
     amount:    Float!
     isoCurrencyCode:    String
     unofficialCurrencyCode:    String

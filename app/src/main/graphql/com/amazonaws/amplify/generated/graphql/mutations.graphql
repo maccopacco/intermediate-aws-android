@@ -177,12 +177,16 @@ mutation CreateBank(
         createdAt
         updatedAt
       }
+      max_import_batch
+      oldest_pending_time
+      accounts {
+        nextToken
+        startedAt
+      }
       transactions {
         nextToken
         startedAt
       }
-      max_import_batch
-      oldest_pending_time
       _version
       _deleted
       _lastChangedAt
@@ -236,12 +240,16 @@ mutation UpdateBank(
         createdAt
         updatedAt
       }
+      max_import_batch
+      oldest_pending_time
+      accounts {
+        nextToken
+        startedAt
+      }
       transactions {
         nextToken
         startedAt
       }
-      max_import_batch
-      oldest_pending_time
       _version
       _deleted
       _lastChangedAt
@@ -295,12 +303,16 @@ mutation DeleteBank(
         createdAt
         updatedAt
       }
+      max_import_batch
+      oldest_pending_time
+      accounts {
+        nextToken
+        startedAt
+      }
       transactions {
         nextToken
         startedAt
       }
-      max_import_batch
-      oldest_pending_time
       _version
       _deleted
       _lastChangedAt
@@ -353,15 +365,14 @@ mutation CreateUserData(
       createdAt
       updatedAt
     }
-    transactions {
+    max_import_batch
+    oldest_pending_time
+    accounts {
       items {
         id
-        importBatch
-        importDate
-        importSource
         plaidID
+        name
         overrideName
-        memo
         _version
         _deleted
         _lastChangedAt
@@ -371,8 +382,44 @@ mutation CreateUserData(
       nextToken
       startedAt
     }
-    max_import_batch
-    oldest_pending_time
+    transactions {
+      items {
+        id
+        overrideName
+        memo
+        importBatch
+        importDate
+        importSource
+        plaidID
+        account
+        amount
+        isoCurrencyCode
+        unofficialCurrencyCode
+        categoryFolder
+        category
+        categoryId
+        date
+        exactTime
+        merchantName
+        name
+        originalDescription
+        pending
+        pendingTransactionId
+        transactionId
+        transactionType
+        accountOwner
+        authorizedDate
+        transactionCode
+        paymentChannel
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
     _version
     _deleted
     _lastChangedAt
@@ -419,15 +466,14 @@ mutation UpdateUserData(
       createdAt
       updatedAt
     }
-    transactions {
+    max_import_batch
+    oldest_pending_time
+    accounts {
       items {
         id
-        importBatch
-        importDate
-        importSource
         plaidID
+        name
         overrideName
-        memo
         _version
         _deleted
         _lastChangedAt
@@ -437,8 +483,44 @@ mutation UpdateUserData(
       nextToken
       startedAt
     }
-    max_import_batch
-    oldest_pending_time
+    transactions {
+      items {
+        id
+        overrideName
+        memo
+        importBatch
+        importDate
+        importSource
+        plaidID
+        account
+        amount
+        isoCurrencyCode
+        unofficialCurrencyCode
+        categoryFolder
+        category
+        categoryId
+        date
+        exactTime
+        merchantName
+        name
+        originalDescription
+        pending
+        pendingTransactionId
+        transactionId
+        transactionType
+        accountOwner
+        authorizedDate
+        transactionCode
+        paymentChannel
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
     _version
     _deleted
     _lastChangedAt
@@ -485,15 +567,14 @@ mutation DeleteUserData(
       createdAt
       updatedAt
     }
-    transactions {
+    max_import_batch
+    oldest_pending_time
+    accounts {
       items {
         id
-        importBatch
-        importDate
-        importSource
         plaidID
+        name
         overrideName
-        memo
         _version
         _deleted
         _lastChangedAt
@@ -503,400 +584,16 @@ mutation DeleteUserData(
       nextToken
       startedAt
     }
-    max_import_batch
-    oldest_pending_time
-    _version
-    _deleted
-    _lastChangedAt
-    createdAt
-    updatedAt
-  }
-}
-mutation CreateTransactionWrapper(
-  $input: CreateTransactionWrapperInput!
-  $condition: ModelTransactionWrapperConditionInput
-) {
-  createTransactionWrapper(input: $input, condition: $condition) {
-    id
-    importBatch
-    importDate
-    importSource
-    plaidID
-    userData {
-      id
-      bank {
+    transactions {
+      items {
         id
-        plaid_access_token
-        institution_id
-        institution_name
-        institution_logo
-        last_touched_time
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      transactions {
-        nextToken
-        startedAt
-      }
-      max_import_batch
-      oldest_pending_time
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-    transaction {
-      id
-      wrapper {
-        id
+        overrideName
+        memo
         importBatch
         importDate
         importSource
         plaidID
-        overrideName
-        memo
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      accountId
-      amount
-      isoCurrencyCode
-      unofficialCurrencyCode
-      categoryFolder
-      category
-      categoryId
-      date
-      exactTime
-      location {
-        id
-        address
-        city
-        lat
-        lon
-        region
-        storeNumber
-        postalCode
-        country
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      merchantName
-      name
-      originalDescription
-      paymentMeta {
-        id
-        byOrderOf
-        payee
-        payer
-        paymentMethod
-        paymentProcessor
-        ppdId
-        reason
-        referenceNumber
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      pending
-      pendingTransactionId
-      transactionId
-      transactionType
-      accountOwner
-      authorizedDate
-      transactionCode
-      paymentChannel
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-    overrideName
-    memo
-    _version
-    _deleted
-    _lastChangedAt
-    createdAt
-    updatedAt
-  }
-}
-mutation UpdateTransactionWrapper(
-  $input: UpdateTransactionWrapperInput!
-  $condition: ModelTransactionWrapperConditionInput
-) {
-  updateTransactionWrapper(input: $input, condition: $condition) {
-    id
-    importBatch
-    importDate
-    importSource
-    plaidID
-    userData {
-      id
-      bank {
-        id
-        plaid_access_token
-        institution_id
-        institution_name
-        institution_logo
-        last_touched_time
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      transactions {
-        nextToken
-        startedAt
-      }
-      max_import_batch
-      oldest_pending_time
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-    transaction {
-      id
-      wrapper {
-        id
-        importBatch
-        importDate
-        importSource
-        plaidID
-        overrideName
-        memo
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      accountId
-      amount
-      isoCurrencyCode
-      unofficialCurrencyCode
-      categoryFolder
-      category
-      categoryId
-      date
-      exactTime
-      location {
-        id
-        address
-        city
-        lat
-        lon
-        region
-        storeNumber
-        postalCode
-        country
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      merchantName
-      name
-      originalDescription
-      paymentMeta {
-        id
-        byOrderOf
-        payee
-        payer
-        paymentMethod
-        paymentProcessor
-        ppdId
-        reason
-        referenceNumber
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      pending
-      pendingTransactionId
-      transactionId
-      transactionType
-      accountOwner
-      authorizedDate
-      transactionCode
-      paymentChannel
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-    overrideName
-    memo
-    _version
-    _deleted
-    _lastChangedAt
-    createdAt
-    updatedAt
-  }
-}
-mutation DeleteTransactionWrapper(
-  $input: DeleteTransactionWrapperInput!
-  $condition: ModelTransactionWrapperConditionInput
-) {
-  deleteTransactionWrapper(input: $input, condition: $condition) {
-    id
-    importBatch
-    importDate
-    importSource
-    plaidID
-    userData {
-      id
-      bank {
-        id
-        plaid_access_token
-        institution_id
-        institution_name
-        institution_logo
-        last_touched_time
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      transactions {
-        nextToken
-        startedAt
-      }
-      max_import_batch
-      oldest_pending_time
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-    transaction {
-      id
-      wrapper {
-        id
-        importBatch
-        importDate
-        importSource
-        plaidID
-        overrideName
-        memo
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      accountId
-      amount
-      isoCurrencyCode
-      unofficialCurrencyCode
-      categoryFolder
-      category
-      categoryId
-      date
-      exactTime
-      location {
-        id
-        address
-        city
-        lat
-        lon
-        region
-        storeNumber
-        postalCode
-        country
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      merchantName
-      name
-      originalDescription
-      paymentMeta {
-        id
-        byOrderOf
-        payee
-        payer
-        paymentMethod
-        paymentProcessor
-        ppdId
-        reason
-        referenceNumber
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      pending
-      pendingTransactionId
-      transactionId
-      transactionType
-      accountOwner
-      authorizedDate
-      transactionCode
-      paymentChannel
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-    overrideName
-    memo
-    _version
-    _deleted
-    _lastChangedAt
-    createdAt
-    updatedAt
-  }
-}
-mutation CreateTransaction(
-  $input: CreateTransactionInput!
-  $condition: ModelTransactionConditionInput
-) {
-  createTransaction(input: $input, condition: $condition) {
-    id
-    wrapper {
-      id
-      importBatch
-      importDate
-      importSource
-      plaidID
-      userData {
-        id
-        max_import_batch
-        oldest_pending_time
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      transaction {
-        id
-        accountId
+        account
         amount
         isoCurrencyCode
         unofficialCurrencyCode
@@ -922,15 +619,369 @@ mutation CreateTransaction(
         createdAt
         updatedAt
       }
-      overrideName
-      memo
+      nextToken
+      startedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+mutation CreateAccount(
+  $input: CreateAccountInput!
+  $condition: ModelAccountConditionInput
+) {
+  createAccount(input: $input, condition: $condition) {
+    id
+    plaidID
+    name
+    overrideName
+    userData {
+      id
+      bank {
+        id
+        plaid_access_token
+        institution_id
+        institution_name
+        institution_logo
+        last_touched_time
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      max_import_batch
+      oldest_pending_time
+      accounts {
+        nextToken
+        startedAt
+      }
+      transactions {
+        nextToken
+        startedAt
+      }
       _version
       _deleted
       _lastChangedAt
       createdAt
       updatedAt
     }
-    accountId
+    balances {
+      items {
+        id
+        availableBalance
+        currentBalance
+        time
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+mutation UpdateAccount(
+  $input: UpdateAccountInput!
+  $condition: ModelAccountConditionInput
+) {
+  updateAccount(input: $input, condition: $condition) {
+    id
+    plaidID
+    name
+    overrideName
+    userData {
+      id
+      bank {
+        id
+        plaid_access_token
+        institution_id
+        institution_name
+        institution_logo
+        last_touched_time
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      max_import_batch
+      oldest_pending_time
+      accounts {
+        nextToken
+        startedAt
+      }
+      transactions {
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    balances {
+      items {
+        id
+        availableBalance
+        currentBalance
+        time
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+mutation DeleteAccount(
+  $input: DeleteAccountInput!
+  $condition: ModelAccountConditionInput
+) {
+  deleteAccount(input: $input, condition: $condition) {
+    id
+    plaidID
+    name
+    overrideName
+    userData {
+      id
+      bank {
+        id
+        plaid_access_token
+        institution_id
+        institution_name
+        institution_logo
+        last_touched_time
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      max_import_batch
+      oldest_pending_time
+      accounts {
+        nextToken
+        startedAt
+      }
+      transactions {
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    balances {
+      items {
+        id
+        availableBalance
+        currentBalance
+        time
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+mutation CreateBalance(
+  $input: CreateBalanceInput!
+  $condition: ModelBalanceConditionInput
+) {
+  createBalance(input: $input, condition: $condition) {
+    id
+    account {
+      id
+      plaidID
+      name
+      overrideName
+      userData {
+        id
+        max_import_batch
+        oldest_pending_time
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      balances {
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    availableBalance
+    currentBalance
+    time
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+mutation UpdateBalance(
+  $input: UpdateBalanceInput!
+  $condition: ModelBalanceConditionInput
+) {
+  updateBalance(input: $input, condition: $condition) {
+    id
+    account {
+      id
+      plaidID
+      name
+      overrideName
+      userData {
+        id
+        max_import_batch
+        oldest_pending_time
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      balances {
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    availableBalance
+    currentBalance
+    time
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+mutation DeleteBalance(
+  $input: DeleteBalanceInput!
+  $condition: ModelBalanceConditionInput
+) {
+  deleteBalance(input: $input, condition: $condition) {
+    id
+    account {
+      id
+      plaidID
+      name
+      overrideName
+      userData {
+        id
+        max_import_batch
+        oldest_pending_time
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      balances {
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    availableBalance
+    currentBalance
+    time
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+mutation CreateTransaction(
+  $input: CreateTransactionInput!
+  $condition: ModelTransactionConditionInput
+) {
+  createTransaction(input: $input, condition: $condition) {
+    id
+    overrideName
+    memo
+    importBatch
+    importDate
+    importSource
+    plaidID
+    userData {
+      id
+      bank {
+        id
+        plaid_access_token
+        institution_id
+        institution_name
+        institution_logo
+        last_touched_time
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      max_import_batch
+      oldest_pending_time
+      accounts {
+        nextToken
+        startedAt
+      }
+      transactions {
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    account
     amount
     isoCurrencyCode
     unofficialCurrencyCode
@@ -943,7 +994,13 @@ mutation CreateTransaction(
       id
       transaction {
         id
-        accountId
+        overrideName
+        memo
+        importBatch
+        importDate
+        importSource
+        plaidID
+        account
         amount
         isoCurrencyCode
         unofficialCurrencyCode
@@ -990,7 +1047,13 @@ mutation CreateTransaction(
       id
       transaction {
         id
-        accountId
+        overrideName
+        memo
+        importBatch
+        importDate
+        importSource
+        plaidID
+        account
         amount
         isoCurrencyCode
         unofficialCurrencyCode
@@ -1051,59 +1114,44 @@ mutation UpdateTransaction(
 ) {
   updateTransaction(input: $input, condition: $condition) {
     id
-    wrapper {
+    overrideName
+    memo
+    importBatch
+    importDate
+    importSource
+    plaidID
+    userData {
       id
-      importBatch
-      importDate
-      importSource
-      plaidID
-      userData {
+      bank {
         id
-        max_import_batch
-        oldest_pending_time
+        plaid_access_token
+        institution_id
+        institution_name
+        institution_logo
+        last_touched_time
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
       }
-      transaction {
-        id
-        accountId
-        amount
-        isoCurrencyCode
-        unofficialCurrencyCode
-        categoryFolder
-        category
-        categoryId
-        date
-        exactTime
-        merchantName
-        name
-        originalDescription
-        pending
-        pendingTransactionId
-        transactionId
-        transactionType
-        accountOwner
-        authorizedDate
-        transactionCode
-        paymentChannel
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
+      max_import_batch
+      oldest_pending_time
+      accounts {
+        nextToken
+        startedAt
       }
-      overrideName
-      memo
+      transactions {
+        nextToken
+        startedAt
+      }
       _version
       _deleted
       _lastChangedAt
       createdAt
       updatedAt
     }
-    accountId
+    account
     amount
     isoCurrencyCode
     unofficialCurrencyCode
@@ -1116,7 +1164,13 @@ mutation UpdateTransaction(
       id
       transaction {
         id
-        accountId
+        overrideName
+        memo
+        importBatch
+        importDate
+        importSource
+        plaidID
+        account
         amount
         isoCurrencyCode
         unofficialCurrencyCode
@@ -1163,7 +1217,13 @@ mutation UpdateTransaction(
       id
       transaction {
         id
-        accountId
+        overrideName
+        memo
+        importBatch
+        importDate
+        importSource
+        plaidID
+        account
         amount
         isoCurrencyCode
         unofficialCurrencyCode
@@ -1224,59 +1284,44 @@ mutation DeleteTransaction(
 ) {
   deleteTransaction(input: $input, condition: $condition) {
     id
-    wrapper {
+    overrideName
+    memo
+    importBatch
+    importDate
+    importSource
+    plaidID
+    userData {
       id
-      importBatch
-      importDate
-      importSource
-      plaidID
-      userData {
+      bank {
         id
-        max_import_batch
-        oldest_pending_time
+        plaid_access_token
+        institution_id
+        institution_name
+        institution_logo
+        last_touched_time
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
       }
-      transaction {
-        id
-        accountId
-        amount
-        isoCurrencyCode
-        unofficialCurrencyCode
-        categoryFolder
-        category
-        categoryId
-        date
-        exactTime
-        merchantName
-        name
-        originalDescription
-        pending
-        pendingTransactionId
-        transactionId
-        transactionType
-        accountOwner
-        authorizedDate
-        transactionCode
-        paymentChannel
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
+      max_import_batch
+      oldest_pending_time
+      accounts {
+        nextToken
+        startedAt
       }
-      overrideName
-      memo
+      transactions {
+        nextToken
+        startedAt
+      }
       _version
       _deleted
       _lastChangedAt
       createdAt
       updatedAt
     }
-    accountId
+    account
     amount
     isoCurrencyCode
     unofficialCurrencyCode
@@ -1289,7 +1334,13 @@ mutation DeleteTransaction(
       id
       transaction {
         id
-        accountId
+        overrideName
+        memo
+        importBatch
+        importDate
+        importSource
+        plaidID
+        account
         amount
         isoCurrencyCode
         unofficialCurrencyCode
@@ -1336,7 +1387,13 @@ mutation DeleteTransaction(
       id
       transaction {
         id
-        accountId
+        overrideName
+        memo
+        importBatch
+        importDate
+        importSource
+        plaidID
+        account
         amount
         isoCurrencyCode
         unofficialCurrencyCode
@@ -1399,21 +1456,23 @@ mutation CreatePaymentMeta(
     id
     transaction {
       id
-      wrapper {
+      overrideName
+      memo
+      importBatch
+      importDate
+      importSource
+      plaidID
+      userData {
         id
-        importBatch
-        importDate
-        importSource
-        plaidID
-        overrideName
-        memo
+        max_import_batch
+        oldest_pending_time
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
       }
-      accountId
+      account
       amount
       isoCurrencyCode
       unofficialCurrencyCode
@@ -1494,21 +1553,23 @@ mutation UpdatePaymentMeta(
     id
     transaction {
       id
-      wrapper {
+      overrideName
+      memo
+      importBatch
+      importDate
+      importSource
+      plaidID
+      userData {
         id
-        importBatch
-        importDate
-        importSource
-        plaidID
-        overrideName
-        memo
+        max_import_batch
+        oldest_pending_time
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
       }
-      accountId
+      account
       amount
       isoCurrencyCode
       unofficialCurrencyCode
@@ -1589,21 +1650,23 @@ mutation DeletePaymentMeta(
     id
     transaction {
       id
-      wrapper {
+      overrideName
+      memo
+      importBatch
+      importDate
+      importSource
+      plaidID
+      userData {
         id
-        importBatch
-        importDate
-        importSource
-        plaidID
-        overrideName
-        memo
+        max_import_batch
+        oldest_pending_time
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
       }
-      accountId
+      account
       amount
       isoCurrencyCode
       unofficialCurrencyCode
@@ -1684,21 +1747,23 @@ mutation CreateLocation(
     id
     transaction {
       id
-      wrapper {
+      overrideName
+      memo
+      importBatch
+      importDate
+      importSource
+      plaidID
+      userData {
         id
-        importBatch
-        importDate
-        importSource
-        plaidID
-        overrideName
-        memo
+        max_import_batch
+        oldest_pending_time
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
       }
-      accountId
+      account
       amount
       isoCurrencyCode
       unofficialCurrencyCode
@@ -1779,21 +1844,23 @@ mutation UpdateLocation(
     id
     transaction {
       id
-      wrapper {
+      overrideName
+      memo
+      importBatch
+      importDate
+      importSource
+      plaidID
+      userData {
         id
-        importBatch
-        importDate
-        importSource
-        plaidID
-        overrideName
-        memo
+        max_import_batch
+        oldest_pending_time
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
       }
-      accountId
+      account
       amount
       isoCurrencyCode
       unofficialCurrencyCode
@@ -1874,21 +1941,23 @@ mutation DeleteLocation(
     id
     transaction {
       id
-      wrapper {
+      overrideName
+      memo
+      importBatch
+      importDate
+      importSource
+      plaidID
+      userData {
         id
-        importBatch
-        importDate
-        importSource
-        plaidID
-        overrideName
-        memo
+        max_import_batch
+        oldest_pending_time
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
       }
-      accountId
+      account
       amount
       isoCurrencyCode
       unofficialCurrencyCode

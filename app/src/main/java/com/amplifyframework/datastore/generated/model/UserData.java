@@ -27,9 +27,10 @@ public final class UserData implements Model {
   public static final QueryField OLDEST_PENDING_TIME = field("UserData", "oldest_pending_time");
   private final @ModelField(targetType="ID", isRequired = true) String id;
   private final @ModelField(targetType="Bank", isRequired = true) @BelongsTo(targetName = "userDataBankId", type = Bank.class) Bank bank;
-  private final @ModelField(targetType="TransactionWrapper") @HasMany(associatedWith = "userData", type = TransactionWrapper.class) List<TransactionWrapper> transactions = null;
   private final @ModelField(targetType="Int", isRequired = true) Integer max_import_batch;
   private final @ModelField(targetType="String") String oldest_pending_time;
+  private final @ModelField(targetType="Account") @HasMany(associatedWith = "userData", type = Account.class) List<Account> accounts = null;
+  private final @ModelField(targetType="Transaction") @HasMany(associatedWith = "userData", type = Transaction.class) List<Transaction> transactions = null;
   public String getId() {
       return id;
   }
@@ -38,16 +39,20 @@ public final class UserData implements Model {
       return bank;
   }
   
-  public List<TransactionWrapper> getTransactions() {
-      return transactions;
-  }
-  
   public Integer getMaxImportBatch() {
       return max_import_batch;
   }
   
   public String getOldestPendingTime() {
       return oldest_pending_time;
+  }
+  
+  public List<Account> getAccounts() {
+      return accounts;
+  }
+  
+  public List<Transaction> getTransactions() {
+      return transactions;
   }
   
   private UserData(String id, Bank bank, Integer max_import_batch, String oldest_pending_time) {

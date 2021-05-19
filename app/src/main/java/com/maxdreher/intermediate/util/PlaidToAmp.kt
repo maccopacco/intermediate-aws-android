@@ -20,39 +20,36 @@ object PlaidToAmp {
 
     fun convert(
         inputTransaction: TransactionsGetResponse.Transaction,
-        userData: UserData
+        account: Account,
+        userData: UserData,
     ): List<Model> {
         with(inputTransaction) {
             return mutableListOf<Model>().apply {
-                TransactionWrapper.builder()
+                Transaction.builder()
                     .userData(userData)
-                    .transaction(Transaction.Builder()
-                        .amount(amount)
-                        .accountId(accountId)
-                        .isoCurrencyCode(isoCurrencyCode)
-                        .unofficialCurrencyCode(unofficialCurrencyCode)
-                        .category(category)
-                        .categoryId(categoryId)
-                        .date(convertDate(date))
-                        .merchantName(merchantName)
-                        .name(name)
-                        .originalDescription(originalDescription)
-                        .pending(pending)
-                        .pendingTransactionId(pendingTransactionId)
-                        .transactionId(transactionId)
-                        .transactionType(transactionType)
-                        .accountOwner(accountOwner)
-                        .authorizedDate(authorizedDate)
-                        .transactionCode(transactionCode)
-                        .paymentChannel(paymentChannel)
-                        .build().also {
-                            add(it)
-                            add(convert(location, it))
-                            add(convert(paymentMeta, it))
-                        })
+                    .account(account.plaidId)
+                    .amount(amount)
                     .plaidId(transactionId)
+                    .isoCurrencyCode(isoCurrencyCode)
+                    .unofficialCurrencyCode(unofficialCurrencyCode)
+                    .category(category)
+                    .categoryId(categoryId)
+                    .date(convertDate(date))
+                    .merchantName(merchantName)
+                    .name(name)
+                    .originalDescription(originalDescription)
+                    .pending(pending)
+                    .pendingTransactionId(pendingTransactionId)
+                    .transactionId(transactionId)
+                    .transactionType(transactionType)
+                    .accountOwner(accountOwner)
+                    .authorizedDate(authorizedDate)
+                    .transactionCode(transactionCode)
+                    .paymentChannel(paymentChannel)
                     .build().also {
                         add(it)
+                        add(convert(location, it))
+                        add(convert(paymentMeta, it))
                     }
             }
         }

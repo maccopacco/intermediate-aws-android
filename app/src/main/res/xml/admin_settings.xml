@@ -6,7 +6,12 @@
             app:key="gotoSettings"
             app:title="Settings" />
     </PreferenceCategory>
-    <PreferenceCategory app:title="Custom Adds">
+    <PreferenceCategory app:title="Settings">
+        <SwitchPreference
+            app:key="settingAllowOffline"
+            app:title="Allow Offline (if you're me)" />
+    </PreferenceCategory>
+    <PreferenceCategory app:title="Adds">
         <Preference
             app:key="addMyself"
             app:title="Add myself" />
@@ -14,7 +19,7 @@
             app:key="setDate"
             app:title="Set oldest pending time" />
     </PreferenceCategory>
-    <PreferenceCategory app:title="Custom Shows">
+    <PreferenceCategory app:title="Shows">
         <Preference
             app:key="showInstitution"
             app:title="Show my institution ID" />
@@ -24,8 +29,14 @@
         <Preference
             app:key="showLogo"
             app:title="Show current banks logo" />
+        <Preference
+            app:key="showTransactionCount"
+            app:title="Show amount of transactions" />
+        <Preference
+            app:key="showAccounts"
+            app:title="Show accounts" />
     </PreferenceCategory>
-    <PreferenceCategory app:title="Custom Deletes">
+    <PreferenceCategory app:title="Deletes">
         <Preference
             app:key="deleteAllUsers"
             app:title="Delete all users" />

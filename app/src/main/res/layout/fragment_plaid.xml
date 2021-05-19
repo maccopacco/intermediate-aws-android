@@ -9,12 +9,12 @@
     android:orientation="vertical"
     tools:context=".ui.PlaidFragment">
 
-    <de.codecrafters.tableview.SortableTableView
-        android:id="@+id/plaid_table"
+    <ListView
+        android:id="@+id/plaid_view_listview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="@dimen/default_margin"
-        android:layout_weight="4" />
+        android:layout_weight="6" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -25,18 +25,18 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/trigger_plaid"
+            android:id="@+id/add_items"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/default_margin"
-            android:text="Trigger" />
+            android:text="Add" />
 
         <Button
-            android:id="@+id/trigger_link"
+            android:id="@+id/remove_items"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/default_margin"
-            android:text="Yes" />
+            android:text="Delete items" />
     </LinearLayout>
 
 </LinearLayout>

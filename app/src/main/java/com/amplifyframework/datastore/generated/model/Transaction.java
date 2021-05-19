@@ -1,5 +1,6 @@
 package com.amplifyframework.datastore.generated.model;
 
+import com.amplifyframework.core.model.annotations.BelongsTo;
 import com.amplifyframework.core.model.annotations.HasOne;
 
 import java.util.List;
@@ -21,7 +22,14 @@ import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 @ModelConfig(pluralName = "Transactions")
 public final class Transaction implements Model {
   public static final QueryField ID = field("Transaction", "id");
-  public static final QueryField ACCOUNT_ID = field("Transaction", "accountId");
+  public static final QueryField OVERRIDE_NAME = field("Transaction", "overrideName");
+  public static final QueryField MEMO = field("Transaction", "memo");
+  public static final QueryField IMPORT_BATCH = field("Transaction", "importBatch");
+  public static final QueryField IMPORT_DATE = field("Transaction", "importDate");
+  public static final QueryField IMPORT_SOURCE = field("Transaction", "importSource");
+  public static final QueryField PLAID_ID = field("Transaction", "plaidID");
+  public static final QueryField USER_DATA = field("Transaction", "transactionUserDataId");
+  public static final QueryField ACCOUNT = field("Transaction", "account");
   public static final QueryField AMOUNT = field("Transaction", "amount");
   public static final QueryField ISO_CURRENCY_CODE = field("Transaction", "isoCurrencyCode");
   public static final QueryField UNOFFICIAL_CURRENCY_CODE = field("Transaction", "unofficialCurrencyCode");
@@ -42,8 +50,14 @@ public final class Transaction implements Model {
   public static final QueryField TRANSACTION_CODE = field("Transaction", "transactionCode");
   public static final QueryField PAYMENT_CHANNEL = field("Transaction", "paymentChannel");
   private final @ModelField(targetType="ID", isRequired = true) String id;
-  private final @ModelField(targetType="TransactionWrapper") @HasOne(associatedWith = "transaction", type = TransactionWrapper.class) TransactionWrapper wrapper = null;
-  private final @ModelField(targetType="String") String accountId;
+  private final @ModelField(targetType="String") String overrideName;
+  private final @ModelField(targetType="String") String memo;
+  private final @ModelField(targetType="Int") Integer importBatch;
+  private final @ModelField(targetType="String") String importDate;
+  private final @ModelField(targetType="String") String importSource;
+  private final @ModelField(targetType="String") String plaidID;
+  private final @ModelField(targetType="UserData", isRequired = true) @BelongsTo(targetName = "transactionUserDataId", type = UserData.class) UserData userData;
+  private final @ModelField(targetType="String", isRequired = true) String account;
   private final @ModelField(targetType="Float", isRequired = true) Double amount;
   private final @ModelField(targetType="String") String isoCurrencyCode;
   private final @ModelField(targetType="String") String unofficialCurrencyCode;
@@ -69,12 +83,36 @@ public final class Transaction implements Model {
       return id;
   }
   
-  public TransactionWrapper getWrapper() {
-      return wrapper;
+  public String getOverrideName() {
+      return overrideName;
   }
   
-  public String getAccountId() {
-      return accountId;
+  public String getMemo() {
+      return memo;
+  }
+  
+  public Integer getImportBatch() {
+      return importBatch;
+  }
+  
+  public String getImportDate() {
+      return importDate;
+  }
+  
+  public String getImportSource() {
+      return importSource;
+  }
+  
+  public String getPlaidId() {
+      return plaidID;
+  }
+  
+  public UserData getUserData() {
+      return userData;
+  }
+  
+  public String getAccount() {
+      return account;
   }
   
   public Double getAmount() {
@@ -161,9 +199,16 @@ public final class Transaction implements Model {
       return paymentChannel;
   }
   
-  private Transaction(String id, String accountId, Double amount, String isoCurrencyCode, String unofficialCurrencyCode, String categoryFolder, List<String> category, String categoryId, String date, String exactTime, String merchantName, String name, String originalDescription, Boolean pending, String pendingTransactionId, String transactionId, String transactionType, String accountOwner, String authorizedDate, String transactionCode, String paymentChannel) {
+  private Transaction(String id, String overrideName, String memo, Integer importBatch, String importDate, String importSource, String plaidID, UserData userData, String account, Double amount, String isoCurrencyCode, String unofficialCurrencyCode, String categoryFolder, List<String> category, String categoryId, String date, String exactTime, String merchantName, String name, String originalDescription, Boolean pending, String pendingTransactionId, String transactionId, String transactionType, String accountOwner, String authorizedDate, String transactionCode, String paymentChannel) {
     this.id = id;
-    this.accountId = accountId;
+    this.overrideName = overrideName;
+    this.memo = memo;
+    this.importBatch = importBatch;
+    this.importDate = importDate;
+    this.importSource = importSource;
+    this.plaidID = plaidID;
+    this.userData = userData;
+    this.account = account;
     this.amount = amount;
     this.isoCurrencyCode = isoCurrencyCode;
     this.unofficialCurrencyCode = unofficialCurrencyCode;
@@ -194,7 +239,14 @@ public final class Transaction implements Model {
       } else {
       Transaction transaction = (Transaction) obj;
       return ObjectsCompat.equals(getId(), transaction.getId()) &&
-              ObjectsCompat.equals(getAccountId(), transaction.getAccountId()) &&
+              ObjectsCompat.equals(getOverrideName(), transaction.getOverrideName()) &&
+              ObjectsCompat.equals(getMemo(), transaction.getMemo()) &&
+              ObjectsCompat.equals(getImportBatch(), transaction.getImportBatch()) &&
+              ObjectsCompat.equals(getImportDate(), transaction.getImportDate()) &&
+              ObjectsCompat.equals(getImportSource(), transaction.getImportSource()) &&
+              ObjectsCompat.equals(getPlaidId(), transaction.getPlaidId()) &&
+              ObjectsCompat.equals(getUserData(), transaction.getUserData()) &&
+              ObjectsCompat.equals(getAccount(), transaction.getAccount()) &&
               ObjectsCompat.equals(getAmount(), transaction.getAmount()) &&
               ObjectsCompat.equals(getIsoCurrencyCode(), transaction.getIsoCurrencyCode()) &&
               ObjectsCompat.equals(getUnofficialCurrencyCode(), transaction.getUnofficialCurrencyCode()) &&
@@ -221,7 +273,14 @@ public final class Transaction implements Model {
    public int hashCode() {
     return new StringBuilder()
       .append(getId())
-      .append(getAccountId())
+      .append(getOverrideName())
+      .append(getMemo())
+      .append(getImportBatch())
+      .append(getImportDate())
+      .append(getImportSource())
+      .append(getPlaidId())
+      .append(getUserData())
+      .append(getAccount())
       .append(getAmount())
       .append(getIsoCurrencyCode())
       .append(getUnofficialCurrencyCode())
@@ -250,7 +309,14 @@ public final class Transaction implements Model {
     return new StringBuilder()
       .append("Transaction {")
       .append("id=" + String.valueOf(getId()) + ", ")
-      .append("accountId=" + String.valueOf(getAccountId()) + ", ")
+      .append("overrideName=" + String.valueOf(getOverrideName()) + ", ")
+      .append("memo=" + String.valueOf(getMemo()) + ", ")
+      .append("importBatch=" + String.valueOf(getImportBatch()) + ", ")
+      .append("importDate=" + String.valueOf(getImportDate()) + ", ")
+      .append("importSource=" + String.valueOf(getImportSource()) + ", ")
+      .append("plaidID=" + String.valueOf(getPlaidId()) + ", ")
+      .append("userData=" + String.valueOf(getUserData()) + ", ")
+      .append("account=" + String.valueOf(getAccount()) + ", ")
       .append("amount=" + String.valueOf(getAmount()) + ", ")
       .append("isoCurrencyCode=" + String.valueOf(getIsoCurrencyCode()) + ", ")
       .append("unofficialCurrencyCode=" + String.valueOf(getUnofficialCurrencyCode()) + ", ")
@@ -274,7 +340,7 @@ public final class Transaction implements Model {
       .toString();
   }
   
-  public static AmountStep builder() {
+  public static UserDataStep builder() {
       return new Builder();
   }
   
@@ -318,13 +384,27 @@ public final class Transaction implements Model {
       null,
       null,
       null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
       null
     );
   }
   
   public CopyOfBuilder copyOfBuilder() {
     return new CopyOfBuilder(id,
-      accountId,
+      overrideName,
+      memo,
+      importBatch,
+      importDate,
+      importSource,
+      plaidID,
+      userData,
+      account,
       amount,
       isoCurrencyCode,
       unofficialCurrencyCode,
@@ -345,6 +425,16 @@ public final class Transaction implements Model {
       transactionCode,
       paymentChannel);
   }
+  public interface UserDataStep {
+    AccountStep userData(UserData userData);
+  }
+  
+
+  public interface AccountStep {
+    AmountStep account(String account);
+  }
+  
+
   public interface AmountStep {
     BuildStep amount(Double amount);
   }
@@ -353,7 +443,12 @@ public final class Transaction implements Model {
   public interface BuildStep {
     Transaction build();
     BuildStep id(String id) throws IllegalArgumentException;
-    BuildStep accountId(String accountId);
+    BuildStep overrideName(String overrideName);
+    BuildStep memo(String memo);
+    BuildStep importBatch(Integer importBatch);
+    BuildStep importDate(String importDate);
+    BuildStep importSource(String importSource);
+    BuildStep plaidId(String plaidId);
     BuildStep isoCurrencyCode(String isoCurrencyCode);
     BuildStep unofficialCurrencyCode(String unofficialCurrencyCode);
     BuildStep categoryFolder(String categoryFolder);
@@ -375,10 +470,17 @@ public final class Transaction implements Model {
   }
   
 
-  public static class Builder implements AmountStep, BuildStep {
+  public static class Builder implements UserDataStep, AccountStep, AmountStep, BuildStep {
     private String id;
+    private UserData userData;
+    private String account;
     private Double amount;
-    private String accountId;
+    private String overrideName;
+    private String memo;
+    private Integer importBatch;
+    private String importDate;
+    private String importSource;
+    private String plaidID;
     private String isoCurrencyCode;
     private String unofficialCurrencyCode;
     private String categoryFolder;
@@ -403,7 +505,14 @@ public final class Transaction implements Model {
         
         return new Transaction(
           id,
-          accountId,
+          overrideName,
+          memo,
+          importBatch,
+          importDate,
+          importSource,
+          plaidID,
+          userData,
+          account,
           amount,
           isoCurrencyCode,
           unofficialCurrencyCode,
@@ -426,6 +535,20 @@ public final class Transaction implements Model {
     }
     
     @Override
+     public AccountStep userData(UserData userData) {
+        Objects.requireNonNull(userData);
+        this.userData = userData;
+        return this;
+    }
+    
+    @Override
+     public AmountStep account(String account) {
+        Objects.requireNonNull(account);
+        this.account = account;
+        return this;
+    }
+    
+    @Override
      public BuildStep amount(Double amount) {
         Objects.requireNonNull(amount);
         this.amount = amount;
@@ -433,8 +556,38 @@ public final class Transaction implements Model {
     }
     
     @Override
-     public BuildStep accountId(String accountId) {
-        this.accountId = accountId;
+     public BuildStep overrideName(String overrideName) {
+        this.overrideName = overrideName;
+        return this;
+    }
+    
+    @Override
+     public BuildStep memo(String memo) {
+        this.memo = memo;
+        return this;
+    }
+    
+    @Override
+     public BuildStep importBatch(Integer importBatch) {
+        this.importBatch = importBatch;
+        return this;
+    }
+    
+    @Override
+     public BuildStep importDate(String importDate) {
+        this.importDate = importDate;
+        return this;
+    }
+    
+    @Override
+     public BuildStep importSource(String importSource) {
+        this.importSource = importSource;
+        return this;
+    }
+    
+    @Override
+     public BuildStep plaidId(String plaidId) {
+        this.plaidID = plaidId;
         return this;
     }
     
@@ -569,10 +722,17 @@ public final class Transaction implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String accountId, Double amount, String isoCurrencyCode, String unofficialCurrencyCode, String categoryFolder, List<String> category, String categoryId, String date, String exactTime, String merchantName, String name, String originalDescription, Boolean pending, String pendingTransactionId, String transactionId, String transactionType, String accountOwner, String authorizedDate, String transactionCode, String paymentChannel) {
+    private CopyOfBuilder(String id, String overrideName, String memo, Integer importBatch, String importDate, String importSource, String plaidId, UserData userData, String account, Double amount, String isoCurrencyCode, String unofficialCurrencyCode, String categoryFolder, List<String> category, String categoryId, String date, String exactTime, String merchantName, String name, String originalDescription, Boolean pending, String pendingTransactionId, String transactionId, String transactionType, String accountOwner, String authorizedDate, String transactionCode, String paymentChannel) {
       super.id(id);
-      super.amount(amount)
-        .accountId(accountId)
+      super.userData(userData)
+        .account(account)
+        .amount(amount)
+        .overrideName(overrideName)
+        .memo(memo)
+        .importBatch(importBatch)
+        .importDate(importDate)
+        .importSource(importSource)
+        .plaidId(plaidId)
         .isoCurrencyCode(isoCurrencyCode)
         .unofficialCurrencyCode(unofficialCurrencyCode)
         .categoryFolder(categoryFolder)
@@ -594,13 +754,48 @@ public final class Transaction implements Model {
     }
     
     @Override
+     public CopyOfBuilder userData(UserData userData) {
+      return (CopyOfBuilder) super.userData(userData);
+    }
+    
+    @Override
+     public CopyOfBuilder account(String account) {
+      return (CopyOfBuilder) super.account(account);
+    }
+    
+    @Override
      public CopyOfBuilder amount(Double amount) {
       return (CopyOfBuilder) super.amount(amount);
     }
     
     @Override
-     public CopyOfBuilder accountId(String accountId) {
-      return (CopyOfBuilder) super.accountId(accountId);
+     public CopyOfBuilder overrideName(String overrideName) {
+      return (CopyOfBuilder) super.overrideName(overrideName);
+    }
+    
+    @Override
+     public CopyOfBuilder memo(String memo) {
+      return (CopyOfBuilder) super.memo(memo);
+    }
+    
+    @Override
+     public CopyOfBuilder importBatch(Integer importBatch) {
+      return (CopyOfBuilder) super.importBatch(importBatch);
+    }
+    
+    @Override
+     public CopyOfBuilder importDate(String importDate) {
+      return (CopyOfBuilder) super.importDate(importDate);
+    }
+    
+    @Override
+     public CopyOfBuilder importSource(String importSource) {
+      return (CopyOfBuilder) super.importSource(importSource);
+    }
+    
+    @Override
+     public CopyOfBuilder plaidId(String plaidId) {
+      return (CopyOfBuilder) super.plaidId(plaidId);
     }
     
     @Override

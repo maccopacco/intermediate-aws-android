@@ -14,7 +14,10 @@ import android.widget.EditText
 import android.widget.ImageView
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.navigation.fragment.findNavController
+import androidx.preference.SwitchPreference
 import com.amplifyframework.core.Amplify
+import com.amplifyframework.core.model.query.Where
+import com.amplifyframework.datastore.DataStoreException
 import com.amplifyframework.datastore.generated.model.*
 import com.maxdreher.*
 import com.maxdreher.extensions.PreferenceFragmentCompatBase
@@ -28,18 +31,19 @@ import com.maxdreher.table.TableEntry
 import com.maxdreher.table.TableHelper
 import com.plaid.client.request.AccountsGetRequest
 import com.plaid.client.request.InstitutionsSearchRequest
+import com.plaid.client.request.TransactionsGetRequest
 import com.plaid.client.response.Institution
 import com.plaid.client.response.InstitutionsSearchResponse
 import de.codecrafters.tableview.SortableTableView
 import kotlinx.coroutines.*
 import java.util.*
 import java.util.concurrent.TimeUnit
-import java.util.concurrent.atomic.AtomicInteger
+import java.util.concurrent.atomic.AtomicReference
 
-class AdminSettings : PreferenceFragmentCompatBase(R.xml.admin_settings), IPlaidBase {
+class AdminSettingsFragment : PreferenceFragmentCompatBase(R.xml.admin_settings), IPlaidBase {
 
-    override val activity: Activity
-        get() = requireActivity()
+    override val activity: Activity?
+        get() = getActivity()
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super<IPlaidBase>.onActivityResult(requestCode, resultCode, data)
@@ -48,6 +52,7 @@ class AdminSettings : PreferenceFragmentCompatBase(R.xml.admin_settings), IPlaid
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         super.onCreatePreferences(savedInstanceState, rootKey)
         goto()
+        settings()
         adds()
         shows()
         deletes()
@@ -60,38 +65,42 @@ class AdminSettings : PreferenceFragmentCompatBase(R.xml.admin_settings), IPlaid
         }
     }
 
-    private fun test() {
-        val count = AtomicInteger(0)
-        findPreference("test1") {
-            MyUser.data?.let { data ->
-                Transaction.builder()
-                    .amount(1.0)
-                    .pending(true)
-                    .date(
-                        Date(
-                            Date().time - TimeUnit.DAYS.toMillis(
-                                count.getAndIncrement().toLong()
-                            )
-                        ).toAmpDate()
-                    )
-                    .originalDescription("desc")
-                    .build().save(this) {
-                        TransactionWrapper.Builder()
-                            .userData(data)
-                            .transaction(it)
-                            .overrideName("Better desc")
-                            .memo("memo")
-                            .build()
-                            .save(this)
-                    }
+    private fun settings() {
+        (findPreference("settingAllowOffline") as SwitchPreference).apply {
+            setOnPreferenceChangeListener { _, allowOffline: Any ->
+                if (allowOffline is Boolean) {
+                    toast("Allow offline signin: $allowOffline")
+                    MyUser.allowOfflineSignin = allowOffline
+                }
+                true
+            }
+            MyUser.allowOfflineSignin = isChecked
+        }
+    }
 
-            } ?: toast("No user data")
+    private fun test() {
+        findPreference("test1") {
+            getDataFromPlaid()
         }
         findPreference("test2") {
-            updateLastItem()
+            updateBalancies()
         }
         findPreference("test3") {
-            updateItems()
+            MyUser.data?.let { data ->
+                val oldestDate = data.getLastDate() ?: return@let
+                plaidClient.service().transactionsGet(
+                    TransactionsGetRequest(
+                        data.bank.plaidAccessToken,
+                        oldestDate,
+                        Date(Date().time + TimeUnit.DAYS.toMillis(3))
+                    )
+                ).enqueue(PlaidCallback({
+                    toast("Total of ${it.body()?.totalTransactions} from Plaid")
+                }, {
+                    error("Could not do plaid\n${it.message}")
+                    it.printStackTrace()
+                }))
+            }
         }
     }
 
@@ -115,15 +124,18 @@ class AdminSettings : PreferenceFragmentCompatBase(R.xml.admin_settings), IPlaid
                     data.copyOfBuilder()
                         .oldestPendingTime(
                             date?.toAmpDate()
-                        ).build().save({ toast("Should be saved"); findBankAndUserData() })
+                        ).build().save({ toast("Should be saved"); findBankAndUserData() }, {
+                            alert("Could not set date", it.message.toString())
+                            it.printStackTrace()
+                        })
                 }
                 alertBuilder("Pick a date")
                     .setView(datePicker)
-                    .setPositiveButton("Submit") { dialogInterface: DialogInterface, i: Int ->
+                    .setPositiveButton("Submit") { _: DialogInterface, _: Int ->
                         set.invoke(datePicker.getDate())
                     }
                     .setNegativeButton("Cancel", null)
-                    .setNeutralButton("Set null") { d, i ->
+                    .setNeutralButton("Set null") { _, _ ->
                         set.invoke(null)
                     }
                     .show()
@@ -161,14 +173,10 @@ class AdminSettings : PreferenceFragmentCompatBase(R.xml.admin_settings), IPlaid
         }
 
         findPreference("deleteTransactions") {
-            TransactionWrapper::class.deleteAll(
-                {
-                    toast("Wrappers gone")
-                    Transaction::class.deleteAll(
-                        { toast("Bye transactions") },
-                        { ex -> error("Transactions not gone\n${ex.message}");ex.printStackTrace() })
-                },
-                { error("Wrappers not gone\n${it.message}");it.printStackTrace() })
+            Transaction::class.deleteAll(
+                { toast("Bye transactions") },
+                { ex -> error("Transactions not gone\n${ex.message}");ex.printStackTrace() })
+
         }
     }
 
@@ -192,7 +200,7 @@ class AdminSettings : PreferenceFragmentCompatBase(R.xml.admin_settings), IPlaid
                                     return@let
                                 }
                                 val table = SortableTableView<Institution>(context).apply {
-                                    addDataLongClickListener { rowIndex, clickedData ->
+                                    addDataLongClickListener { _, clickedData ->
                                         (getSystemService(
                                             requireContext(),
                                             ClipboardManager::class.java
@@ -248,6 +256,40 @@ class AdminSettings : PreferenceFragmentCompatBase(R.xml.admin_settings), IPlaid
             } ?: toast("No logo idiot!")
         }
 
-    }
+        findPreference("showTransactionCount") {
+            GlobalScope.launch {
+                val error = AtomicReference<DataStoreException?>(null)
+                val options = Where.matchesAll()
+                val amountOfTransactions = Transaction::class.query(options).getOr {
+                    error.set(it)
+                }?.size ?: -1
+                withContext(Dispatchers.Main) {
+                    val e = error.get()
+                    alert(e?.let { "Error" } ?: "Success",
+                        e?.message
+                            ?: "Transactions: ${amountOfTransactions}")
+                }
+            }
+        }
 
+        findPreference("showAccounts") {
+            MyUser.data?.let { data ->
+                plaidClient.service().accountsGet(AccountsGetRequest(data.bank.plaidAccessToken))
+                    .enqueue(
+                        PlaidCallback({ response ->
+                            if (response.isSuccessful) {
+                                response.body()?.accounts?.joinToString("\n") { account ->
+                                    "[${account.name}] [${account.officialName}]"
+                                }?.also {
+                                    alert("Accounts for ${data.bank.institutionName}", it)
+                                } ?: toast("Bad response seems")
+                            }
+                        }, {
+                            error("Nah summ wrong: \n${it.message}")
+                            it.printStackTrace()
+                        })
+                    )
+            }
+        }
+    }
 }

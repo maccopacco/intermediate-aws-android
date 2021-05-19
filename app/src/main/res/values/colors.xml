@@ -7,4 +7,10 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="transaction_date_background">#CDCDCD</color>
+    <color name="transaction_debit">#C60B0B</color>
+    <color name="transaction_credit">#4CAF50</color>
+    <color name="transaction_insignificant">#939393</color>
+    <color name="transaction_category_default">#7986CB</color>
 </resources>

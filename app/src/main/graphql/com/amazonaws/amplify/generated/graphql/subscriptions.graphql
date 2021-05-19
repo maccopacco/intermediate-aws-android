@@ -156,12 +156,16 @@ subscription OnCreateBank {
         createdAt
         updatedAt
       }
+      max_import_batch
+      oldest_pending_time
+      accounts {
+        nextToken
+        startedAt
+      }
       transactions {
         nextToken
         startedAt
       }
-      max_import_batch
-      oldest_pending_time
       _version
       _deleted
       _lastChangedAt
@@ -212,12 +216,16 @@ subscription OnUpdateBank {
         createdAt
         updatedAt
       }
+      max_import_batch
+      oldest_pending_time
+      accounts {
+        nextToken
+        startedAt
+      }
       transactions {
         nextToken
         startedAt
       }
-      max_import_batch
-      oldest_pending_time
       _version
       _deleted
       _lastChangedAt
@@ -268,12 +276,16 @@ subscription OnDeleteBank {
         createdAt
         updatedAt
       }
+      max_import_batch
+      oldest_pending_time
+      accounts {
+        nextToken
+        startedAt
+      }
       transactions {
         nextToken
         startedAt
       }
-      max_import_batch
-      oldest_pending_time
       _version
       _deleted
       _lastChangedAt
@@ -323,15 +335,14 @@ subscription OnCreateUserData {
       createdAt
       updatedAt
     }
-    transactions {
+    max_import_batch
+    oldest_pending_time
+    accounts {
       items {
         id
-        importBatch
-        importDate
-        importSource
         plaidID
+        name
         overrideName
-        memo
         _version
         _deleted
         _lastChangedAt
@@ -341,8 +352,44 @@ subscription OnCreateUserData {
       nextToken
       startedAt
     }
-    max_import_batch
-    oldest_pending_time
+    transactions {
+      items {
+        id
+        overrideName
+        memo
+        importBatch
+        importDate
+        importSource
+        plaidID
+        account
+        amount
+        isoCurrencyCode
+        unofficialCurrencyCode
+        categoryFolder
+        category
+        categoryId
+        date
+        exactTime
+        merchantName
+        name
+        originalDescription
+        pending
+        pendingTransactionId
+        transactionId
+        transactionType
+        accountOwner
+        authorizedDate
+        transactionCode
+        paymentChannel
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
     _version
     _deleted
     _lastChangedAt
@@ -386,15 +433,14 @@ subscription OnUpdateUserData {
       createdAt
       updatedAt
     }
-    transactions {
+    max_import_batch
+    oldest_pending_time
+    accounts {
       items {
         id
-        importBatch
-        importDate
-        importSource
         plaidID
+        name
         overrideName
-        memo
         _version
         _deleted
         _lastChangedAt
@@ -404,8 +450,44 @@ subscription OnUpdateUserData {
       nextToken
       startedAt
     }
-    max_import_batch
-    oldest_pending_time
+    transactions {
+      items {
+        id
+        overrideName
+        memo
+        importBatch
+        importDate
+        importSource
+        plaidID
+        account
+        amount
+        isoCurrencyCode
+        unofficialCurrencyCode
+        categoryFolder
+        category
+        categoryId
+        date
+        exactTime
+        merchantName
+        name
+        originalDescription
+        pending
+        pendingTransactionId
+        transactionId
+        transactionType
+        accountOwner
+        authorizedDate
+        transactionCode
+        paymentChannel
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
     _version
     _deleted
     _lastChangedAt
@@ -449,15 +531,14 @@ subscription OnDeleteUserData {
       createdAt
       updatedAt
     }
-    transactions {
+    max_import_batch
+    oldest_pending_time
+    accounts {
       items {
         id
-        importBatch
-        importDate
-        importSource
         plaidID
+        name
         overrideName
-        memo
         _version
         _deleted
         _lastChangedAt
@@ -467,388 +548,16 @@ subscription OnDeleteUserData {
       nextToken
       startedAt
     }
-    max_import_batch
-    oldest_pending_time
-    _version
-    _deleted
-    _lastChangedAt
-    createdAt
-    updatedAt
-  }
-}
-subscription OnCreateTransactionWrapper {
-  onCreateTransactionWrapper {
-    id
-    importBatch
-    importDate
-    importSource
-    plaidID
-    userData {
-      id
-      bank {
+    transactions {
+      items {
         id
-        plaid_access_token
-        institution_id
-        institution_name
-        institution_logo
-        last_touched_time
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      transactions {
-        nextToken
-        startedAt
-      }
-      max_import_batch
-      oldest_pending_time
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-    transaction {
-      id
-      wrapper {
-        id
+        overrideName
+        memo
         importBatch
         importDate
         importSource
         plaidID
-        overrideName
-        memo
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      accountId
-      amount
-      isoCurrencyCode
-      unofficialCurrencyCode
-      categoryFolder
-      category
-      categoryId
-      date
-      exactTime
-      location {
-        id
-        address
-        city
-        lat
-        lon
-        region
-        storeNumber
-        postalCode
-        country
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      merchantName
-      name
-      originalDescription
-      paymentMeta {
-        id
-        byOrderOf
-        payee
-        payer
-        paymentMethod
-        paymentProcessor
-        ppdId
-        reason
-        referenceNumber
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      pending
-      pendingTransactionId
-      transactionId
-      transactionType
-      accountOwner
-      authorizedDate
-      transactionCode
-      paymentChannel
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-    overrideName
-    memo
-    _version
-    _deleted
-    _lastChangedAt
-    createdAt
-    updatedAt
-  }
-}
-subscription OnUpdateTransactionWrapper {
-  onUpdateTransactionWrapper {
-    id
-    importBatch
-    importDate
-    importSource
-    plaidID
-    userData {
-      id
-      bank {
-        id
-        plaid_access_token
-        institution_id
-        institution_name
-        institution_logo
-        last_touched_time
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      transactions {
-        nextToken
-        startedAt
-      }
-      max_import_batch
-      oldest_pending_time
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-    transaction {
-      id
-      wrapper {
-        id
-        importBatch
-        importDate
-        importSource
-        plaidID
-        overrideName
-        memo
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      accountId
-      amount
-      isoCurrencyCode
-      unofficialCurrencyCode
-      categoryFolder
-      category
-      categoryId
-      date
-      exactTime
-      location {
-        id
-        address
-        city
-        lat
-        lon
-        region
-        storeNumber
-        postalCode
-        country
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      merchantName
-      name
-      originalDescription
-      paymentMeta {
-        id
-        byOrderOf
-        payee
-        payer
-        paymentMethod
-        paymentProcessor
-        ppdId
-        reason
-        referenceNumber
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      pending
-      pendingTransactionId
-      transactionId
-      transactionType
-      accountOwner
-      authorizedDate
-      transactionCode
-      paymentChannel
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-    overrideName
-    memo
-    _version
-    _deleted
-    _lastChangedAt
-    createdAt
-    updatedAt
-  }
-}
-subscription OnDeleteTransactionWrapper {
-  onDeleteTransactionWrapper {
-    id
-    importBatch
-    importDate
-    importSource
-    plaidID
-    userData {
-      id
-      bank {
-        id
-        plaid_access_token
-        institution_id
-        institution_name
-        institution_logo
-        last_touched_time
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      transactions {
-        nextToken
-        startedAt
-      }
-      max_import_batch
-      oldest_pending_time
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-    transaction {
-      id
-      wrapper {
-        id
-        importBatch
-        importDate
-        importSource
-        plaidID
-        overrideName
-        memo
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      accountId
-      amount
-      isoCurrencyCode
-      unofficialCurrencyCode
-      categoryFolder
-      category
-      categoryId
-      date
-      exactTime
-      location {
-        id
-        address
-        city
-        lat
-        lon
-        region
-        storeNumber
-        postalCode
-        country
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      merchantName
-      name
-      originalDescription
-      paymentMeta {
-        id
-        byOrderOf
-        payee
-        payer
-        paymentMethod
-        paymentProcessor
-        ppdId
-        reason
-        referenceNumber
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      pending
-      pendingTransactionId
-      transactionId
-      transactionType
-      accountOwner
-      authorizedDate
-      transactionCode
-      paymentChannel
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-    overrideName
-    memo
-    _version
-    _deleted
-    _lastChangedAt
-    createdAt
-    updatedAt
-  }
-}
-subscription OnCreateTransaction {
-  onCreateTransaction {
-    id
-    wrapper {
-      id
-      importBatch
-      importDate
-      importSource
-      plaidID
-      userData {
-        id
-        max_import_batch
-        oldest_pending_time
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      transaction {
-        id
-        accountId
+        account
         amount
         isoCurrencyCode
         unofficialCurrencyCode
@@ -874,15 +583,348 @@ subscription OnCreateTransaction {
         createdAt
         updatedAt
       }
-      overrideName
-      memo
+      nextToken
+      startedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+subscription OnCreateAccount {
+  onCreateAccount {
+    id
+    plaidID
+    name
+    overrideName
+    userData {
+      id
+      bank {
+        id
+        plaid_access_token
+        institution_id
+        institution_name
+        institution_logo
+        last_touched_time
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      max_import_batch
+      oldest_pending_time
+      accounts {
+        nextToken
+        startedAt
+      }
+      transactions {
+        nextToken
+        startedAt
+      }
       _version
       _deleted
       _lastChangedAt
       createdAt
       updatedAt
     }
-    accountId
+    balances {
+      items {
+        id
+        availableBalance
+        currentBalance
+        time
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+subscription OnUpdateAccount {
+  onUpdateAccount {
+    id
+    plaidID
+    name
+    overrideName
+    userData {
+      id
+      bank {
+        id
+        plaid_access_token
+        institution_id
+        institution_name
+        institution_logo
+        last_touched_time
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      max_import_batch
+      oldest_pending_time
+      accounts {
+        nextToken
+        startedAt
+      }
+      transactions {
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    balances {
+      items {
+        id
+        availableBalance
+        currentBalance
+        time
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+subscription OnDeleteAccount {
+  onDeleteAccount {
+    id
+    plaidID
+    name
+    overrideName
+    userData {
+      id
+      bank {
+        id
+        plaid_access_token
+        institution_id
+        institution_name
+        institution_logo
+        last_touched_time
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      max_import_batch
+      oldest_pending_time
+      accounts {
+        nextToken
+        startedAt
+      }
+      transactions {
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    balances {
+      items {
+        id
+        availableBalance
+        currentBalance
+        time
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+subscription OnCreateBalance {
+  onCreateBalance {
+    id
+    account {
+      id
+      plaidID
+      name
+      overrideName
+      userData {
+        id
+        max_import_batch
+        oldest_pending_time
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      balances {
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    availableBalance
+    currentBalance
+    time
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+subscription OnUpdateBalance {
+  onUpdateBalance {
+    id
+    account {
+      id
+      plaidID
+      name
+      overrideName
+      userData {
+        id
+        max_import_batch
+        oldest_pending_time
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      balances {
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    availableBalance
+    currentBalance
+    time
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+subscription OnDeleteBalance {
+  onDeleteBalance {
+    id
+    account {
+      id
+      plaidID
+      name
+      overrideName
+      userData {
+        id
+        max_import_batch
+        oldest_pending_time
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      balances {
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    availableBalance
+    currentBalance
+    time
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+subscription OnCreateTransaction {
+  onCreateTransaction {
+    id
+    overrideName
+    memo
+    importBatch
+    importDate
+    importSource
+    plaidID
+    userData {
+      id
+      bank {
+        id
+        plaid_access_token
+        institution_id
+        institution_name
+        institution_logo
+        last_touched_time
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      max_import_batch
+      oldest_pending_time
+      accounts {
+        nextToken
+        startedAt
+      }
+      transactions {
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    account
     amount
     isoCurrencyCode
     unofficialCurrencyCode
@@ -895,7 +937,13 @@ subscription OnCreateTransaction {
       id
       transaction {
         id
-        accountId
+        overrideName
+        memo
+        importBatch
+        importDate
+        importSource
+        plaidID
+        account
         amount
         isoCurrencyCode
         unofficialCurrencyCode
@@ -942,7 +990,13 @@ subscription OnCreateTransaction {
       id
       transaction {
         id
-        accountId
+        overrideName
+        memo
+        importBatch
+        importDate
+        importSource
+        plaidID
+        account
         amount
         isoCurrencyCode
         unofficialCurrencyCode
@@ -1000,59 +1054,44 @@ subscription OnCreateTransaction {
 subscription OnUpdateTransaction {
   onUpdateTransaction {
     id
-    wrapper {
+    overrideName
+    memo
+    importBatch
+    importDate
+    importSource
+    plaidID
+    userData {
       id
-      importBatch
-      importDate
-      importSource
-      plaidID
-      userData {
+      bank {
         id
-        max_import_batch
-        oldest_pending_time
+        plaid_access_token
+        institution_id
+        institution_name
+        institution_logo
+        last_touched_time
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
       }
-      transaction {
-        id
-        accountId
-        amount
-        isoCurrencyCode
-        unofficialCurrencyCode
-        categoryFolder
-        category
-        categoryId
-        date
-        exactTime
-        merchantName
-        name
-        originalDescription
-        pending
-        pendingTransactionId
-        transactionId
-        transactionType
-        accountOwner
-        authorizedDate
-        transactionCode
-        paymentChannel
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
+      max_import_batch
+      oldest_pending_time
+      accounts {
+        nextToken
+        startedAt
       }
-      overrideName
-      memo
+      transactions {
+        nextToken
+        startedAt
+      }
       _version
       _deleted
       _lastChangedAt
       createdAt
       updatedAt
     }
-    accountId
+    account
     amount
     isoCurrencyCode
     unofficialCurrencyCode
@@ -1065,7 +1104,13 @@ subscription OnUpdateTransaction {
       id
       transaction {
         id
-        accountId
+        overrideName
+        memo
+        importBatch
+        importDate
+        importSource
+        plaidID
+        account
         amount
         isoCurrencyCode
         unofficialCurrencyCode
@@ -1112,7 +1157,13 @@ subscription OnUpdateTransaction {
       id
       transaction {
         id
-        accountId
+        overrideName
+        memo
+        importBatch
+        importDate
+        importSource
+        plaidID
+        account
         amount
         isoCurrencyCode
         unofficialCurrencyCode
@@ -1170,59 +1221,44 @@ subscription OnUpdateTransaction {
 subscription OnDeleteTransaction {
   onDeleteTransaction {
     id
-    wrapper {
+    overrideName
+    memo
+    importBatch
+    importDate
+    importSource
+    plaidID
+    userData {
       id
-      importBatch
-      importDate
-      importSource
-      plaidID
-      userData {
+      bank {
         id
-        max_import_batch
-        oldest_pending_time
+        plaid_access_token
+        institution_id
+        institution_name
+        institution_logo
+        last_touched_time
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
       }
-      transaction {
-        id
-        accountId
-        amount
-        isoCurrencyCode
-        unofficialCurrencyCode
-        categoryFolder
-        category
-        categoryId
-        date
-        exactTime
-        merchantName
-        name
-        originalDescription
-        pending
-        pendingTransactionId
-        transactionId
-        transactionType
-        accountOwner
-        authorizedDate
-        transactionCode
-        paymentChannel
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
+      max_import_batch
+      oldest_pending_time
+      accounts {
+        nextToken
+        startedAt
       }
-      overrideName
-      memo
+      transactions {
+        nextToken
+        startedAt
+      }
       _version
       _deleted
       _lastChangedAt
       createdAt
       updatedAt
     }
-    accountId
+    account
     amount
     isoCurrencyCode
     unofficialCurrencyCode
@@ -1235,7 +1271,13 @@ subscription OnDeleteTransaction {
       id
       transaction {
         id
-        accountId
+        overrideName
+        memo
+        importBatch
+        importDate
+        importSource
+        plaidID
+        account
         amount
         isoCurrencyCode
         unofficialCurrencyCode
@@ -1282,7 +1324,13 @@ subscription OnDeleteTransaction {
       id
       transaction {
         id
-        accountId
+        overrideName
+        memo
+        importBatch
+        importDate
+        importSource
+        plaidID
+        account
         amount
         isoCurrencyCode
         unofficialCurrencyCode
@@ -1342,21 +1390,23 @@ subscription OnCreatePaymentMeta {
     id
     transaction {
       id
-      wrapper {
+      overrideName
+      memo
+      importBatch
+      importDate
+      importSource
+      plaidID
+      userData {
         id
-        importBatch
-        importDate
-        importSource
-        plaidID
-        overrideName
-        memo
+        max_import_batch
+        oldest_pending_time
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
       }
-      accountId
+      account
       amount
       isoCurrencyCode
       unofficialCurrencyCode
@@ -1434,21 +1484,23 @@ subscription OnUpdatePaymentMeta {
     id
     transaction {
       id
-      wrapper {
+      overrideName
+      memo
+      importBatch
+      importDate
+      importSource
+      plaidID
+      userData {
         id
-        importBatch
-        importDate
-        importSource
-        plaidID
-        overrideName
-        memo
+        max_import_batch
+        oldest_pending_time
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
       }
-      accountId
+      account
       amount
       isoCurrencyCode
       unofficialCurrencyCode
@@ -1526,21 +1578,23 @@ subscription OnDeletePaymentMeta {
     id
     transaction {
       id
-      wrapper {
+      overrideName
+      memo
+      importBatch
+      importDate
+      importSource
+      plaidID
+      userData {
         id
-        importBatch
-        importDate
-        importSource
-        plaidID
-        overrideName
-        memo
+        max_import_batch
+        oldest_pending_time
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
       }
-      accountId
+      account
       amount
       isoCurrencyCode
       unofficialCurrencyCode
@@ -1618,21 +1672,23 @@ subscription OnCreateLocation {
     id
     transaction {
       id
-      wrapper {
+      overrideName
+      memo
+      importBatch
+      importDate
+      importSource
+      plaidID
+      userData {
         id
-        importBatch
-        importDate
-        importSource
-        plaidID
-        overrideName
-        memo
+        max_import_batch
+        oldest_pending_time
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
       }
-      accountId
+      account
       amount
       isoCurrencyCode
       unofficialCurrencyCode
@@ -1710,21 +1766,23 @@ subscription OnUpdateLocation {
     id
     transaction {
       id
-      wrapper {
+      overrideName
+      memo
+      importBatch
+      importDate
+      importSource
+      plaidID
+      userData {
         id
-        importBatch
-        importDate
-        importSource
-        plaidID
-        overrideName
-        memo
+        max_import_batch
+        oldest_pending_time
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
       }
-      accountId
+      account
       amount
       isoCurrencyCode
       unofficialCurrencyCode
@@ -1802,21 +1860,23 @@ subscription OnDeleteLocation {
     id
     transaction {
       id
-      wrapper {
+      overrideName
+      memo
+      importBatch
+      importDate
+      importSource
+      plaidID
+      userData {
         id
-        importBatch
-        importDate
-        importSource
-        plaidID
-        overrideName
-        memo
+        max_import_batch
+        oldest_pending_time
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
       }
-      accountId
+      account
       amount
       isoCurrencyCode
       unofficialCurrencyCode

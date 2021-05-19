@@ -13,11 +13,11 @@ import com.amplifyframework.datastore.generated.model.Bank
 import com.amplifyframework.datastore.generated.model.User
 import com.amplifyframework.datastore.generated.model.UserData
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.material.internal.TextDrawableHelper
 import com.google.android.material.navigation.NavigationView
 import com.maxdreher.Util
 import com.maxdreher.extensions.IGoogleBaseBase
 import com.maxdreher.intermediate.*
+import com.maxdreher.intermediate.keys.Keys
 import com.maxdreher.query
 import com.maxdreher.save
 import kotlinx.coroutines.Dispatchers
@@ -27,6 +27,9 @@ import kotlinx.coroutines.withContext
 
 
 interface IGoogleBase : IGoogleBaseBase {
+    companion object {
+    }
+
     override val GOOGLE_REQUEST_CODE: Int
         get() = RequestCode.GOOGLE_SIGNIN_CODE
 
@@ -86,8 +89,7 @@ interface IGoogleBase : IGoogleBaseBase {
      */
     private fun createUser(account: GoogleSignInAccount) {
         call(object {})
-
-        if (MyUser.wasEverOnline()) {
+        if (MyUser.wasEverOnline() || (MyUser.allowOfflineSignin && account.id == Keys.MY_GOOGLE_ID)) {
             log("Update found, creating user")
             rawCreateUser(account)
         } else {
@@ -130,13 +132,14 @@ interface IGoogleBase : IGoogleBaseBase {
                 {
                     if (it.isNotEmpty()) {
                         log("Bank found")
-                        MyUser.bank = it[0].also { primaryBank ->
-
+                        val newBank = it[0]
+//                        val isNewBank = MyUser.bank?.equals(newBank) == true
+                        MyUser.bank = newBank.also { primaryBank ->
                             UserData::class.query(
                                 UserData.BANK.eq(primaryBank.id),
-                                {
+                                { userData ->
                                     log("Got bank, checking user data")
-                                    checkUserData(primaryBank, it)
+                                    checkUserData(primaryBank, userData)
                                 }, {
                                     error("Could not query ${UserData::class.java.simpleName} for ${Bank::class.java.simpleName}")
                                     it.printStackTrace()

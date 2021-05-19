@@ -34,9 +34,11 @@ class MainActivity : ActivityBase(R.layout.activity_main), IPlaidBase {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
 
-    private val menuItems = mutableListOf<InternalMenuItem>().apply {
-        if (BuildConfig.DEBUG) {
+    private val menuItems = mutableListOf<InternalMenuItem>()
 
+    private infix fun String.whenClicked(onClick: () -> Unit) {
+        InternalMenuItem(this, InternalMenuItem.emptyIcon, onClick).also {
+            menuItems.add(it)
         }
     }
 
@@ -51,10 +53,13 @@ class MainActivity : ActivityBase(R.layout.activity_main), IPlaidBase {
         val navController = findNavController(R.id.nav_host_fragment)
 
         if (BuildConfig.DEBUG) {
-            menuItems.add(InternalMenuItem("Admin settings") {
+            "Admin settings" whenClicked {
                 log("Going to admit settings")
                 navController.navigate(R.id.adminSettings)
-            })
+            }
+            "Trigger Link" whenClicked {
+                triggerLink()
+            }
         }
 
         appBarConfiguration = AppBarConfiguration(
@@ -103,24 +108,19 @@ class MainActivity : ActivityBase(R.layout.activity_main), IPlaidBase {
 
     private fun startDatastore() {
         call(object {})
-        Amplify.Hub.subscribe(
-            HubChannel.DATASTORE,
-            { it.name == DataStoreChannelEventName.READY.toString() }
-        ) {
-            Amplify.DataStore.start(
-                {
-                    log("DataStore started")
-                    log("About to make a test query")
-                    Amplify.DataStore.query(
-                        User::class.java,
-                        Where.matchesAll().paginated(Page.firstResult()),
-                        {},
-                        {})
-                }, {
-                    loge("Could not start DataStore ${it.message}")
-                    it.printStackTrace()
-                })
-        }
+        Amplify.DataStore.start(
+            {
+                log("DataStore started")
+                log("About to make a test query")
+                Amplify.DataStore.query(
+                    User::class.java,
+                    Where.matchesAll().paginated(Page.firstResult()),
+                    {},
+                    {})
+            }, {
+                loge("Could not start DataStore ${it.message}")
+                it.printStackTrace()
+            })
     }
 
     /**
@@ -159,12 +159,18 @@ class MainActivity : ActivityBase(R.layout.activity_main), IPlaidBase {
      * Class with [name], [onClick] function, to be mapped into [menuItems]
      */
     private class InternalMenuItem(
-        val name: String, @DrawableRes val icon: Int = -1,
+        val name: String, @DrawableRes val icon: Int = emptyIcon,
         val onClick: () -> Unit
     ) {
+        companion object {
+            const val emptyIcon = -1
+        }
+
         val showAsAction =
             if (icon == -1) MenuItem.SHOW_AS_ACTION_NEVER else MenuItem.SHOW_AS_ACTION_IF_ROOM
+
     }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super<ActivityBase>.onActivityResult(requestCode, resultCode, data)

@@ -11,6 +11,12 @@ object Keys {
         get() = throw e
     val MY_ACCESS_TOKENS: List<InstituteAndID>
         get() = throw e
+    val MY_GOOGLE_ID: String
+        get() = throw e
 
     class InstituteAndID(val ins: String, val id: String)
+
+    infix fun String.an(id: String): InstituteAndID {
+        return InstituteAndID(this, id)
+    }
 }

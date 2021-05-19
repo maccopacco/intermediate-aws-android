@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/default_margin"
+    android:clickable="false"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/transaction_date_background"
+        android:clickable="false">
+
+        <TextView
+            android:id="@+id/day_of_transaction_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_margin="@dimen/default_margin"
+            android:clickable="false"
+            android:hint="July 12"
+            android:textColor="@color/transaction_insignificant"
+            android:textSize="@dimen/transaction_date" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/transactions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:orientation="vertical" />
+</LinearLayout>

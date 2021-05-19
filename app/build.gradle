@@ -29,9 +29,9 @@ android {
         implementation 'com.plaid:plaid-java:8.1.0'
 
         // Amplify core dependency
-        implementation 'com.amplifyframework:core:1.17.2'
-        implementation 'com.amplifyframework:aws-datastore:1.17.2'
-        implementation 'com.amplifyframework:aws-api:1.17.1'
+        implementation 'com.amplifyframework:core:1.17.5'
+        implementation 'com.amplifyframework:aws-datastore:1.17.5'
+        implementation 'com.amplifyframework:aws-api:1.17.5'
 
         // Support for Java 8 features
         coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
