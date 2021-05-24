@@ -1,4 +1,4 @@
-package com.maxdreher.intermediate.ui
+package com.maxdreher.intermediate.uihelpers
 
 import android.view.LayoutInflater
 import android.view.View
@@ -69,7 +69,7 @@ class DayOfTransactionAdapter(private val cb: IContextBase) :
                 text = t.categoryFolder
             }
             findViewById<TextView>(R.id.spent_from).apply {
-//                text = t.
+//                text = t
             }
             findViewById<TextView>(R.id.pending).apply {
                 visibility =

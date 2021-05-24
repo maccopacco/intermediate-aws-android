@@ -32,6 +32,8 @@ import com.maxdreher.intermediate.R
 
 class MainActivity : ActivityBase(R.layout.activity_main), IPlaidBase {
 
+    override val activity: Activity = this
+
     private lateinit var appBarConfiguration: AppBarConfiguration
 
     private val menuItems = mutableListOf<InternalMenuItem>()
@@ -176,9 +178,6 @@ class MainActivity : ActivityBase(R.layout.activity_main), IPlaidBase {
         super<ActivityBase>.onActivityResult(requestCode, resultCode, data)
         super<IPlaidBase>.onActivityResult(requestCode, resultCode, data)
     }
-
-    override val activity: Activity = this
-
 
     override fun onUserDataFound(bank: Bank) {
         super.onUserDataFound(bank)

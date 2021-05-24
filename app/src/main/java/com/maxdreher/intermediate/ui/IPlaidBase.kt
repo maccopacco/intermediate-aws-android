@@ -7,7 +7,6 @@ import android.view.Gravity
 import android.view.View
 import android.widget.EditText
 import com.amplifyframework.core.model.Model
-import com.amplifyframework.datastore.DataStoreException
 import com.amplifyframework.datastore.generated.model.*
 import com.google.android.gms.tasks.Task
 import com.maxdreher.*

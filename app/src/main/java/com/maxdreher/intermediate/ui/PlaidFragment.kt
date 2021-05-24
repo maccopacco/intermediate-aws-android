@@ -4,15 +4,15 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.ListView
 import com.amplifyframework.core.model.query.Page
 import com.amplifyframework.core.model.query.Where
 import com.amplifyframework.datastore.generated.model.Bank
 import com.amplifyframework.datastore.generated.model.Transaction
-import com.maxdreher.Util
+import com.maxdreher.Util.Companion.buttonToListener
 import com.maxdreher.extensions.FragmentBase
 import com.maxdreher.intermediate.MyUser
 import com.maxdreher.intermediate.R
+import com.maxdreher.intermediate.uihelpers.TransactionViewer
 import com.maxdreher.query
 
 
@@ -22,7 +22,7 @@ class PlaidFragment : FragmentBase(R.layout.fragment_plaid), IPlaidBase {
     override val activity: Activity?
         get() = getActivity()
 
-    private var listView: ListView? = null
+    private var viewer: TransactionViewer? = null
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super<IPlaidBase>.onActivityResult(requestCode, resultCode, data)
@@ -32,12 +32,10 @@ class PlaidFragment : FragmentBase(R.layout.fragment_plaid), IPlaidBase {
         super.onViewCreated(view, savedInstanceState)
 
         view.apply {
-            listView = findViewById<ListView>(R.id.plaid_view_listview)?.apply {
-                adapter = DayOfTransactionAdapter(this@PlaidFragment)
-            }
+            viewer = TransactionViewer(findViewById(R.id.plaid_view_listview), this@PlaidFragment)
 
-            Util.buttonToListener(
-                this, mapOf(
+            buttonToListener(
+                mapOf(
                     R.id.add_items to {
                         update()
                     },
@@ -51,39 +49,26 @@ class PlaidFragment : FragmentBase(R.layout.fragment_plaid), IPlaidBase {
 
     private fun clear() {
         call(object {})
-        (listView?.adapter as DayOfTransactionAdapter).apply {
-            clear()
-        }
+        viewer?.clear()
     }
 
     private fun update() {
         call(object {})
         clear()
-        (listView?.adapter as DayOfTransactionAdapter).apply {
+        viewer?.let { viewer ->
             MyUser.data?.let { data ->
                 Transaction::class.query(
                     Where.matches(
                         Transaction.USER_DATA.eq(data.id)
                     ).paginated(Page.firstPage().withLimit(20)),
-                    { wrappers ->
-                        log("Got wrappers")
-                        val groupedByDate =
-                            wrappers.groupByTo(HashMap<String, MutableList<Transaction>>()) { it.date }
-                                .map {
-                                    it
-                                }.toList()
-                                .sortedByDescending { it.key }
-                                .onEach {
-                                    it.value.sortBy { it.exactTime ?: "" }
-                                }.toList()
-                        log("Adding items")
-                        addAll(groupedByDate)
+                    {
+                        viewer.add(it)
                     }, {
-                        loge("Could not get wrappers on update: ${it.message}")
+                        loge("Could not get transactions on update: ${it.message}")
                         it.printStackTrace()
                     })
             } ?: toast("Not signed in")
-        }
+        } ?: toast("Viewer could not be found")
     }
 
     override fun onUserDataFound(bank: Bank) {
