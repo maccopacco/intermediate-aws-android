@@ -29,8 +29,8 @@ public final class UserData implements Model {
   private final @ModelField(targetType="Bank", isRequired = true) @BelongsTo(targetName = "userDataBankId", type = Bank.class) Bank bank;
   private final @ModelField(targetType="Int", isRequired = true) Integer max_import_batch;
   private final @ModelField(targetType="String") String oldest_pending_time;
-  private final @ModelField(targetType="Account") @HasMany(associatedWith = "userData", type = Account.class) List<Account> accounts = null;
-  private final @ModelField(targetType="Transaction") @HasMany(associatedWith = "userData", type = Transaction.class) List<Transaction> transactions = null;
+  private final @ModelField(targetType="Account", isRequired = true) @HasMany(associatedWith = "userData", type = Account.class) List<Account> accounts = null;
+  private final @ModelField(targetType="Transaction", isRequired = true) @HasMany(associatedWith = "userData", type = Transaction.class) List<Transaction> transactions = null;
   public String getId() {
       return id;
   }

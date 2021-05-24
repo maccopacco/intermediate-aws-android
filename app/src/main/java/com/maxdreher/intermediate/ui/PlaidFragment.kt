@@ -67,7 +67,7 @@ class PlaidFragment : FragmentBase(R.layout.fragment_plaid), IPlaidBase {
                         loge("Could not get transactions on update: ${it.message}")
                         it.printStackTrace()
                     })
-            } ?: toast("Not signed in")
+            } ?: notSignedIn()
         } ?: toast("Viewer could not be found")
     }
 

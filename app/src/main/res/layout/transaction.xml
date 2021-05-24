@@ -2,22 +2,21 @@
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/src"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/default_margin"
     android:clickable="true">
-    
+
     <TextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/default_margin"
-        android:text="Store of funny"
+        android:hint="Store of funny"
         android:textSize="@dimen/transaction_top_row"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/src"
-        app:layout_constraintTop_toTopOf="@+id/src" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/spend_from_text"
@@ -27,20 +26,34 @@
         android:text="Spent from "
         android:textColor="@color/transaction_insignificant"
         android:textSize="@dimen/transaction_bottom_row"
-        app:layout_constraintBottom_toBottomOf="@+id/src"
-        app:layout_constraintStart_toStartOf="@+id/src"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/name" />
 
-    <TextView
-        android:id="@+id/spent_from"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Silly Savings"
-        android:textColor="@color/transaction_category_default"
-        android:textSize="@dimen/transaction_bottom_row"
+    <LinearLayout
+        android:id="@+id/spent_from_wrap"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="left"
+        android:layout_marginRight="@dimen/default_margin"
+        android:orientation="horizontal"
+        app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="@+id/spend_from_text"
+        app:layout_constraintEnd_toStartOf="@+id/spent_from_category_guideline"
         app:layout_constraintStart_toEndOf="@+id/spend_from_text"
-        app:layout_constraintTop_toTopOf="@+id/spend_from_text" />
+        app:layout_constraintTop_toTopOf="@+id/spend_from_text">
+
+        <TextView
+            android:id="@+id/spent_from"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:hint="Silly savings"
+            android:maxLines="1"
+            android:textColor="@color/transaction_category_default"
+            android:textSize="@dimen/transaction_bottom_row" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/pending"
@@ -68,20 +81,38 @@
         android:textColor="@color/transaction_credit"
         android:textSize="@dimen/transaction_top_row"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@id/src"
-        app:layout_constraintTop_toTopOf="@+id/src" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/category"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_gravity="end"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_margin="@dimen/default_margin"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:hint="Groceries"
-        android:textColor="@color/transaction_insignificant"
-        android:textSize="@dimen/transaction_bottom_row"
-        app:layout_constraintBottom_toBottomOf="@id/src"
-        app:layout_constraintEnd_toEndOf="@+id/src" />
+        android:gravity="center|end"
+        app:layout_constrainedHeight="true"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/spent_from_category_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/amount">
+
+        <TextView
+            android:id="@+id/category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:breakStrategy="high_quality"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:hint="Groceries"
+            android:maxLines="1"
+            android:textColor="@color/transaction_insignificant"
+            android:textSize="@dimen/transaction_bottom_row" />
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/spent_from_category_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.6" />
 </androidx.constraintlayout.widget.ConstraintLayout>

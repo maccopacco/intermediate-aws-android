@@ -7,7 +7,7 @@ type User @model {
     id: ID!
     googleID: String!
     originalEmail: String!
-    banks: [Bank] @connection(name: "User_Bank")
+    banks: [Bank!] @connection(name: "User_Bank")
 }
 
 type Bank @model {
@@ -26,8 +26,8 @@ type UserData @model {
     bank: Bank! @connection(name: "Bank_UserData")
     max_import_batch: Int!
     oldest_pending_time: String
-    accounts: [Account] @connection(name: "UserData_Account")
-    transactions: [Transaction] @connection(name: "UserData_Transaction")
+    accounts: [Account!] @connection(name: "UserData_Account")
+    transactions: [Transaction!] @connection(name: "UserData_Transaction")
 }
 
 type Account @model {
@@ -36,8 +36,8 @@ type Account @model {
     name: String!
     overrideName: String
     userData: UserData! @connection(name: "UserData_Account")
-    balances: [Balance] @connection(name: "Account_Balance")
-    #    transactions: [Transaction] @connection(name: "Account_Transaction")
+    balances: [Balance!] @connection(name: "Account_Balance")
+    #    transactions: [Transaction!] @connection(name: "Account_Transaction")
 }
 
 type Balance @model {

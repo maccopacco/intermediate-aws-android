@@ -5,6 +5,7 @@ import com.amplifyframework.core.model.Model
 import com.amplifyframework.datastore.generated.model.*
 import com.maxdreher.Util
 import com.maxdreher.extensions.IContextBase
+import com.maxdreher.toSaneDate
 import org.json.JSONObject
 import java.lang.Integer.min
 import java.util.*
@@ -65,7 +66,7 @@ object ParseSimpleToAmp {
                 return@map mutableListOf<Model>().apply {
                     val t = Transaction.Builder()
                         .userData(userData)
-                        .account(account.plaidId)
+                        .account(account.id)
                         //amount
                         .run {
                             val a = rawT.getJSONObject("amounts").getDouble("amount") / 10000
@@ -79,7 +80,7 @@ object ParseSimpleToAmp {
                                     .getLong("when_recorded")
                             )
                             date(Util.simpleDateFormat.format(date))
-                            exactTime(Util.saneDateFormat.format(date))
+                            exactTime(date.toSaneDate())
                         }
                         .importBatch(importBatch)
                         .importSource(importSource)

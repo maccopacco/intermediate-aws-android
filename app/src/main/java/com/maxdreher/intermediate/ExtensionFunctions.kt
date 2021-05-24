@@ -1,10 +1,13 @@
 package com.maxdreher.intermediate
 
 import com.amplifyframework.datastore.DataStoreException
-import com.amplifyframework.datastore.generated.model.*
+import com.amplifyframework.datastore.generated.model.Account
+import com.amplifyframework.datastore.generated.model.Location
+import com.amplifyframework.datastore.generated.model.Transaction
+import com.amplifyframework.datastore.generated.model.UserData
 import com.maxdreher.Util
+import com.maxdreher.extensions.IContextBase
 import com.maxdreher.intermediate.util.IAccount
-import com.plaid.client.response.Account
 import com.plaid.client.response.TransactionsGetResponse
 import java.text.SimpleDateFormat
 import java.util.*
@@ -14,6 +17,9 @@ import kotlin.math.abs
  * A file to store all extension functions
  */
 
+fun IContextBase.defaultMargin(): Int {
+    return Util.getDefaultMargin(getContext(), R.dimen.default_margin)
+}
 
 fun Location.isEmpty(): Boolean {
     val values = listOf(address, city, lat, lon, postalCode).map { it?.toString() ?: "" }
@@ -21,7 +27,11 @@ fun Location.isEmpty(): Boolean {
 }
 
 fun Transaction.getCombinedName(): String {
-    return this.overrideName ?: this.name
+    return overrideName ?: name
+}
+
+fun Account.getCombinedName(): String {
+    return overrideName ?: name
 }
 
 fun Transaction.amountAsString(): String {

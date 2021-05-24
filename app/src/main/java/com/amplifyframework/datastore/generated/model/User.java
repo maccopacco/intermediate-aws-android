@@ -26,7 +26,7 @@ public final class User implements Model {
   private final @ModelField(targetType="ID", isRequired = true) String id;
   private final @ModelField(targetType="String", isRequired = true) String googleID;
   private final @ModelField(targetType="String", isRequired = true) String originalEmail;
-  private final @ModelField(targetType="Bank") @HasMany(associatedWith = "user", type = Bank.class) List<Bank> banks = null;
+  private final @ModelField(targetType="Bank", isRequired = true) @HasMany(associatedWith = "user", type = Bank.class) List<Bank> banks = null;
   public String getId() {
       return id;
   }

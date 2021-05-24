@@ -10,6 +10,12 @@
         <SwitchPreference
             app:key="settingAllowOffline"
             app:title="Allow Offline (if you're me)" />
+        <SeekBarPreference
+            android:defaultValue="51"
+            android:max="51"
+            app:key="settingImportLimit"
+            app:min="0"
+            app:title="Import limit" />
     </PreferenceCategory>
     <PreferenceCategory app:title="Adds">
         <Preference

@@ -14,6 +14,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.navigation.fragment.findNavController
+import androidx.preference.SeekBarPreference
 import androidx.preference.SwitchPreference
 import com.amplifyframework.core.Amplify
 import com.amplifyframework.core.model.query.Where
@@ -25,7 +26,6 @@ import com.maxdreher.intermediate.*
 import com.maxdreher.intermediate.R
 import com.maxdreher.intermediate.keys.Keys
 import com.maxdreher.intermediate.ui.IPlaidBase.Companion.plaidClient
-import com.maxdreher.intermediate.util.Margin
 import com.maxdreher.intermediate.util.plaidcallbacks.PlaidCallback
 import com.maxdreher.table.TableEntry
 import com.maxdreher.table.TableHelper
@@ -75,6 +75,24 @@ class AdminSettingsFragment : PreferenceFragmentCompatBase(R.xml.admin_settings)
                 true
             }
             MyUser.allowOfflineSignin = isChecked
+        }
+        (findPreference("settingImportLimit") as SeekBarPreference).apply {
+            val print = {
+                toast("Import limit set to ${MyUser.importLimit}")
+            }
+            setOnPreferenceChangeListener { _, newValue: Any ->
+                if (newValue is Int) {
+                    if (newValue == 51) {
+                        MyUser.importLimit = null
+                    } else {
+                        MyUser.importLimit = newValue
+                    }
+                    print.invoke()
+                }
+                true
+            }
+            MyUser.importLimit = value
+            print.invoke()
         }
     }
 
@@ -219,7 +237,7 @@ class AdminSettingsFragment : PreferenceFragmentCompatBase(R.xml.admin_settings)
                                         setOnShowListener {
                                             TableHelper.updateTable(
                                                 context, table, insts,
-                                                TableEntry.from(Margin.get(context), mapOf(
+                                                TableEntry.from(defaultMargin(), mapOf(
                                                     "Name" to { it.name },
                                                     "ID" to { it.institutionId },
                                                     "URL" to { it.url }

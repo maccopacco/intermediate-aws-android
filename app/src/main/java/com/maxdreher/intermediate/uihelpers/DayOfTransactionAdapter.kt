@@ -66,7 +66,12 @@ class DayOfTransactionAdapter(private val cb: IContextBase) :
                 setTextColor(context.resources.getColor(color))
             }
             findViewById<TextView>(R.id.category).apply {
-                text = t.categoryFolder
+                text = t.categoryFolder.let { folder ->
+                    if (folder?.isNotEmpty() == true)
+                        folder
+                    else
+                        t.category?.joinToString(",") ?: ""
+                }
             }
             findViewById<TextView>(R.id.spent_from).apply {
 //                text = t

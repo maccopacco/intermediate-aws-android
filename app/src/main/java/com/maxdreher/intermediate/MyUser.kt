@@ -16,6 +16,7 @@ object MyUser {
     private val online = AtomicBoolean(false)
 
     var allowOfflineSignin = false
+    var importLimit: Int? = null
     var user: User? = null
     var bank: Bank? = null
     var data: UserData? = null

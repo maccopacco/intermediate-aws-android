@@ -205,14 +205,11 @@ interface IPlaidBase : IGoogleBase {
                             } else {
                                 log("Logo/Name already present")
                             }
-                        } ?: toast("No Plaid institution found... something's wrong", error = true)
+                        } ?: etoast("No Plaid institution found... something's wrong")
                     } else {
-                        toast(
-                            "Response to get Plaid Institution unsuccessful\n$response",
-                            error = true
-                        )
+                        etoast("Response to get Plaid Institution unsuccessful\n$response")
                     }
-                }, { toast("Plaid callback failed\n${it.message}", error = true) }))
+                }, { etoast("Plaid callback failed\n${it.message}") }))
         } ?: loge("No bank found")
     }
 

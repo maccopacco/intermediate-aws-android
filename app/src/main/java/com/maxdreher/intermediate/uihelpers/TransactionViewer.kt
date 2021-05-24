@@ -3,7 +3,6 @@ package com.maxdreher.intermediate.uihelpers
 import android.widget.ListView
 import com.amplifyframework.datastore.generated.model.Transaction
 import com.maxdreher.extensions.IContextBase
-import java.lang.Exception
 
 class TransactionViewer(
     val listView: ListView,
@@ -13,7 +12,7 @@ class TransactionViewer(
 
     init {
         if (listView.adapter != null) {
-            throw ImproperTransactionViewer("Adapter already configured for ListView!")
+            throw ImproperTransactionViewerException("Adapter already configured for ListView!")
         }
         listView.adapter = DayOfTransactionAdapter(cb).also {
             adapter = it

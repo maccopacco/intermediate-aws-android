@@ -276,4 +276,8 @@ interface IGoogleBase : IGoogleBaseBase {
         call(object {})
         return activity?.findViewById<NavigationView>(R.id.nav_view)?.getHeaderView(0)
     }
+
+    fun notSignedIn() {
+        notSignedIn()
+    }
 }

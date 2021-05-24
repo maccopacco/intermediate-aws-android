@@ -31,7 +31,7 @@ public final class Account implements Model {
   private final @ModelField(targetType="String", isRequired = true) String name;
   private final @ModelField(targetType="String") String overrideName;
   private final @ModelField(targetType="UserData", isRequired = true) @BelongsTo(targetName = "accountUserDataId", type = UserData.class) UserData userData;
-  private final @ModelField(targetType="Balance") @HasMany(associatedWith = "account", type = Balance.class) List<Balance> balances = null;
+  private final @ModelField(targetType="Balance", isRequired = true) @HasMany(associatedWith = "account", type = Balance.class) List<Balance> balances = null;
   public String getId() {
       return id;
   }
