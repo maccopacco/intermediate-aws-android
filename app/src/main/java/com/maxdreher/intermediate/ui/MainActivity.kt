@@ -82,11 +82,12 @@ class MainActivity : ActivityBase(R.layout.activity_main), IPlaidBase {
             Amplify.configure(this)
             toast("Initialized Amplify")
 
+            onNetwork()
+            startDatastore()
         } catch (error: AmplifyException) {
-            Log.e(getClassName(), "Could not initialize Amplify", error)
+            error("Could not initialize Amplify\n${error.message}")
+            error.printStackTrace()
         }
-        onNetwork()
-        startDatastore()
     }
 
     private fun onNetwork() {
@@ -100,9 +101,7 @@ class MainActivity : ActivityBase(R.layout.activity_main), IPlaidBase {
                 it.data.apply {
                     if (this is NetworkStatusEvent) {
                         log("Network status updated: $active")
-                        if (MyUser.setOnline(active)) {
-                            signin()
-                        }
+                        MyUser.setOnline(active)
                     }
                 }
             })
@@ -113,12 +112,7 @@ class MainActivity : ActivityBase(R.layout.activity_main), IPlaidBase {
         Amplify.DataStore.start(
             {
                 log("DataStore started")
-                log("About to make a test query")
-                Amplify.DataStore.query(
-                    User::class.java,
-                    Where.matchesAll().paginated(Page.firstResult()),
-                    {},
-                    {})
+                signin()
             }, {
                 loge("Could not start DataStore ${it.message}")
                 it.printStackTrace()

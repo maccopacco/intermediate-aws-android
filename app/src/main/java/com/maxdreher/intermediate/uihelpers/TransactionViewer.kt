@@ -6,7 +6,7 @@ import com.maxdreher.extensions.IContextBase
 
 class TransactionViewer(
     val listView: ListView,
-    val cb: IContextBase
+    cb: IContextBase
 ) {
     private val adapter: DayOfTransactionAdapter
 
