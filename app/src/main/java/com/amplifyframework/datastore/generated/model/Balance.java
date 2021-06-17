@@ -1,6 +1,7 @@
 package com.amplifyframework.datastore.generated.model;
 
 import com.amplifyframework.core.model.annotations.BelongsTo;
+import com.amplifyframework.core.model.temporal.Temporal;
 
 import java.util.List;
 import java.util.UUID;
@@ -29,7 +30,7 @@ public final class Balance implements Model {
   private final @ModelField(targetType="Account", isRequired = true) @BelongsTo(targetName = "balanceAccountId", type = Account.class) Account account;
   private final @ModelField(targetType="Float", isRequired = true) Double availableBalance;
   private final @ModelField(targetType="Float", isRequired = true) Double currentBalance;
-  private final @ModelField(targetType="String", isRequired = true) String time;
+  private final @ModelField(targetType="AWSDateTime", isRequired = true) Temporal.DateTime time;
   public String getId() {
       return id;
   }
@@ -46,11 +47,11 @@ public final class Balance implements Model {
       return currentBalance;
   }
   
-  public String getTime() {
+  public Temporal.DateTime getTime() {
       return time;
   }
   
-  private Balance(String id, Account account, Double availableBalance, Double currentBalance, String time) {
+  private Balance(String id, Account account, Double availableBalance, Double currentBalance, Temporal.DateTime time) {
     this.id = id;
     this.account = account;
     this.availableBalance = availableBalance;
@@ -154,7 +155,7 @@ public final class Balance implements Model {
   
 
   public interface TimeStep {
-    BuildStep time(String time);
+    BuildStep time(Temporal.DateTime time);
   }
   
 
@@ -169,7 +170,7 @@ public final class Balance implements Model {
     private Account account;
     private Double availableBalance;
     private Double currentBalance;
-    private String time;
+    private Temporal.DateTime time;
     @Override
      public Balance build() {
         String id = this.id != null ? this.id : UUID.randomUUID().toString();
@@ -204,7 +205,7 @@ public final class Balance implements Model {
     }
     
     @Override
-     public BuildStep time(String time) {
+     public BuildStep time(Temporal.DateTime time) {
         Objects.requireNonNull(time);
         this.time = time;
         return this;
@@ -233,7 +234,7 @@ public final class Balance implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, Account account, Double availableBalance, Double currentBalance, String time) {
+    private CopyOfBuilder(String id, Account account, Double availableBalance, Double currentBalance, Temporal.DateTime time) {
       super.id(id);
       super.account(account)
         .availableBalance(availableBalance)
@@ -257,7 +258,7 @@ public final class Balance implements Model {
     }
     
     @Override
-     public CopyOfBuilder time(String time) {
+     public CopyOfBuilder time(Temporal.DateTime time) {
       return (CopyOfBuilder) super.time(time);
     }
   }

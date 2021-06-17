@@ -17,7 +17,7 @@ type Bank @model {
     institution_id: String!
     institution_name: String
     institution_logo: String
-    last_touched_time: String!
+    last_touched_time: AWSDateTime!
     userData: UserData @connection(name: "Bank_UserData")
 }
 
@@ -25,7 +25,7 @@ type UserData @model {
     id: ID!
     bank: Bank! @connection(name: "Bank_UserData")
     max_import_batch: Int!
-    oldest_pending_time: String
+    oldest_pending_date: AWSDate
     accounts: [Account!] @connection(name: "UserData_Account")
     transactions: [Transaction!] @connection(name: "UserData_Transaction")
 }
@@ -45,7 +45,7 @@ type Balance @model {
     account: Account! @connection(name: "Account_Balance")
     availableBalance: Float!
     currentBalance: Float!
-    time: String!
+    time: AWSDateTime!
 }
 
 type Transaction @model {
@@ -57,7 +57,7 @@ type Transaction @model {
 
     #Imports
     importBatch: Int
-    importDate: String
+    importDate: AWSDateTime
     importSource: String
 
     plaidID: String # Plaids identifier for this transaction
@@ -72,8 +72,8 @@ type Transaction @model {
     categoryFolder: String
     category: [String]
     categoryId:    String
-    date:    String
-    exactTime: String
+    date:    AWSDate
+    exactTime: AWSDateTime
     location:    Location @connection(name: "Transaction_Location")
     merchantName:    String
     name:    String

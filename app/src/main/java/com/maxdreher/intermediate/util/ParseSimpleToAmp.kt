@@ -4,8 +4,11 @@ import android.net.Uri
 import com.amplifyframework.core.model.Model
 import com.amplifyframework.datastore.generated.model.*
 import com.maxdreher.Util
+import com.maxdreher.Util.Date.toAmplifyDate
+import com.maxdreher.Util.Date.toAmplifyDateTime
+import com.maxdreher.Util.Date.toDateTime
+import com.maxdreher.Util.Date.toSimpleDate
 import com.maxdreher.extensions.IContextBase
-import com.maxdreher.toSaneDate
 import org.json.JSONObject
 import java.lang.Integer.min
 import java.util.*
@@ -49,7 +52,7 @@ object ParseSimpleToAmp {
         maxAmount: Int?
     ): List<List<Model>> {
         val importBatch = userData.maxImportBatch + 1
-        val importDate = Util.getSaneDate()
+        val importDate = Date().toAmplifyDateTime()
         val importSource = "Simple_JSON"
 
         val json = JSONObject(text)
@@ -79,8 +82,8 @@ object ParseSimpleToAmp {
                                 rawT.getJSONObject("times")
                                     .getLong("when_recorded")
                             )
-                            date(Util.simpleDateFormat.format(date))
-                            exactTime(date.toSaneDate())
+                            date(date.toAmplifyDate())
+                            exactTime(date.toAmplifyDateTime())
                         }
                         .importBatch(importBatch)
                         .importSource(importSource)

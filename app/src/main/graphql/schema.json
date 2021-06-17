@@ -2472,7 +2472,7 @@
                             "name": null,
                             "ofType": {
                                 "kind": "SCALAR",
-                                "name": "String",
+                                "name": "AWSDateTime",
                                 "ofType": null
                             }
                         },
@@ -2627,12 +2627,12 @@
                         "deprecationReason": null
                     },
                     {
-                        "name": "oldest_pending_time",
+                        "name": "oldest_pending_date",
                         "description": null,
                         "args": [],
                         "type": {
                             "kind": "SCALAR",
-                            "name": "String",
+                            "name": "AWSDate",
                             "ofType": null
                         },
                         "isDeprecated": false,
@@ -2823,6 +2823,16 @@
                 ],
                 "inputFields": null,
                 "interfaces": [],
+                "enumValues": null,
+                "possibleTypes": null
+            },
+            {
+                "kind": "SCALAR",
+                "name": "AWSDate",
+                "description": null,
+                "fields": null,
+                "inputFields": null,
+                "interfaces": null,
                 "enumValues": null,
                 "possibleTypes": null
             },
@@ -3515,7 +3525,7 @@
                             "name": null,
                             "ofType": {
                                 "kind": "SCALAR",
-                                "name": "String",
+                                "name": "AWSDateTime",
                                 "ofType": null
                             }
                         },
@@ -4193,7 +4203,7 @@
                         "args": [],
                         "type": {
                             "kind": "SCALAR",
-                            "name": "String",
+                            "name": "AWSDateTime",
                             "ofType": null
                         },
                         "isDeprecated": false,
@@ -4341,7 +4351,7 @@
                         "args": [],
                         "type": {
                             "kind": "SCALAR",
-                            "name": "String",
+                            "name": "AWSDate",
                             "ofType": null
                         },
                         "isDeprecated": false,
@@ -4353,7 +4363,7 @@
                         "args": [],
                         "type": {
                             "kind": "SCALAR",
-                            "name": "String",
+                            "name": "AWSDateTime",
                             "ofType": null
                         },
                         "isDeprecated": false,
@@ -5054,7 +5064,7 @@
                         "defaultValue": null
                     },
                     {
-                        "name": "oldest_pending_time",
+                        "name": "oldest_pending_date",
                         "description": null,
                         "type": {
                             "kind": "INPUT_OBJECT",
@@ -7009,7 +7019,7 @@
                             "name": null,
                             "ofType": {
                                 "kind": "SCALAR",
-                                "name": "String",
+                                "name": "AWSDateTime",
                                 "ofType": null
                             }
                         },
@@ -7218,7 +7228,7 @@
                         "description": null,
                         "type": {
                             "kind": "SCALAR",
-                            "name": "String",
+                            "name": "AWSDateTime",
                             "ofType": null
                         },
                         "defaultValue": null
@@ -7320,11 +7330,11 @@
                         "defaultValue": null
                     },
                     {
-                        "name": "oldest_pending_time",
+                        "name": "oldest_pending_date",
                         "description": null,
                         "type": {
                             "kind": "SCALAR",
-                            "name": "String",
+                            "name": "AWSDate",
                             "ofType": null
                         },
                         "defaultValue": null
@@ -7375,7 +7385,7 @@
                         "defaultValue": null
                     },
                     {
-                        "name": "oldest_pending_time",
+                        "name": "oldest_pending_date",
                         "description": null,
                         "type": {
                             "kind": "INPUT_OBJECT",
@@ -7458,11 +7468,11 @@
                         "defaultValue": null
                     },
                     {
-                        "name": "oldest_pending_time",
+                        "name": "oldest_pending_date",
                         "description": null,
                         "type": {
                             "kind": "SCALAR",
-                            "name": "String",
+                            "name": "AWSDate",
                             "ofType": null
                         },
                         "defaultValue": null
@@ -7843,7 +7853,7 @@
                             "name": null,
                             "ofType": {
                                 "kind": "SCALAR",
-                                "name": "String",
+                                "name": "AWSDateTime",
                                 "ofType": null
                             }
                         },
@@ -8002,7 +8012,7 @@
                         "description": null,
                         "type": {
                             "kind": "SCALAR",
-                            "name": "String",
+                            "name": "AWSDateTime",
                             "ofType": null
                         },
                         "defaultValue": null
@@ -8114,7 +8124,7 @@
                         "description": null,
                         "type": {
                             "kind": "SCALAR",
-                            "name": "String",
+                            "name": "AWSDateTime",
                             "ofType": null
                         },
                         "defaultValue": null
@@ -8226,7 +8236,7 @@
                         "description": null,
                         "type": {
                             "kind": "SCALAR",
-                            "name": "String",
+                            "name": "AWSDate",
                             "ofType": null
                         },
                         "defaultValue": null
@@ -8236,7 +8246,7 @@
                         "description": null,
                         "type": {
                             "kind": "SCALAR",
-                            "name": "String",
+                            "name": "AWSDateTime",
                             "ofType": null
                         },
                         "defaultValue": null
@@ -8764,7 +8774,7 @@
                         "description": null,
                         "type": {
                             "kind": "SCALAR",
-                            "name": "String",
+                            "name": "AWSDateTime",
                             "ofType": null
                         },
                         "defaultValue": null
@@ -8868,7 +8878,7 @@
                         "description": null,
                         "type": {
                             "kind": "SCALAR",
-                            "name": "String",
+                            "name": "AWSDate",
                             "ofType": null
                         },
                         "defaultValue": null
@@ -8878,7 +8888,7 @@
                         "description": null,
                         "type": {
                             "kind": "SCALAR",
-                            "name": "String",
+                            "name": "AWSDateTime",
                             "ofType": null
                         },
                         "defaultValue": null
@@ -11018,16 +11028,6 @@
                         "deprecationReason": null
                     }
                 ],
-                "possibleTypes": null
-            },
-            {
-                "kind": "SCALAR",
-                "name": "AWSDate",
-                "description": null,
-                "fields": null,
-                "inputFields": null,
-                "interfaces": null,
-                "enumValues": null,
                 "possibleTypes": null
             },
             {

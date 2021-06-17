@@ -9,16 +9,41 @@
         android:id="@+id/plaidFragment"
         android:name="com.maxdreher.intermediate.ui.PlaidFragment"
         android:label="Intermediate"
-        tools:layout="@layout/fragment_plaid"/>
+        tools:layout="@layout/fragment_plaid">
+        <action
+            android:id="@+id/action_plaidFragment_to_transactionFragment"
+            app:destination="@id/transactionFragment" />
+        <action
+            android:id="@+id/action_plaidFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_plaidFragment_to_adminSettings"
+            app:destination="@id/adminSettings" />
+    </fragment>
 
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.maxdreher.intermediate.ui.SettingsFragment"
-        android:label="Settings" />
+        android:label="Settings" >
+        <action
+            android:id="@+id/action_settingsFragment_to_plaidFragment"
+            app:destination="@id/plaidFragment" />
+    </fragment>
     <fragment
         android:id="@+id/adminSettings"
         android:name="com.maxdreher.intermediate.ui.AdminSettingsFragment"
-        android:label="Admin Settings" />
+        android:label="Admin Settings" >
+        <action
+            android:id="@+id/action_adminSettings_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_adminSettings_to_plaidFragment"
+            app:destination="@id/plaidFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/transactionFragment"
+        android:name="com.maxdreher.intermediate.ui.TransactionFragment"
+        android:label="TransactionFragment" />
 
 
 </navigation>

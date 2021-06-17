@@ -1,12 +1,13 @@
 package com.maxdreher.intermediate
 
 import com.maxdreher.Util
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import com.maxdreher.Util.safeSublist
+import com.maxdreher.intermediate.ExtensionFunctions.Date.toTime
+import kotlinx.coroutines.*
 import org.junit.Test
+import java.util.*
 import kotlin.math.pow
+import kotlin.system.measureTimeMillis
 
 class test {
     @Test
@@ -29,7 +30,7 @@ class test {
     fun minTest() {
         val a = (0..4).toList()
         println(a.minByOrNull { it })
-        println((0..-1).toList().minByOrNull { it })
+        println(listOf<Int>().minByOrNull { it })
     }
 
     @Test
@@ -43,7 +44,7 @@ class test {
 
     @Test
     fun printDate() {
-        println(Util.getSaneDate())
+        println(Util.Date.getDateTime())
     }
 
     @Test
@@ -117,6 +118,46 @@ class test {
     fun testInfix() {
         println(2 toPowerOf 3)
         mapOf(1 to 3, 4 to 5)
+    }
+
+    @Test
+    fun testListSublist() {
+        val list = listOf(1, 2, 3, 4, 5, 6, 7, 8)
+        println(list.safeSublist(5, -5))
+    }
+
+    @Test
+    fun testDate() {
+        println(Date().toTime())
+    }
+
+    @Test
+    fun testCoroutine() {
+        val q = 1_000_000
+        val delay: Long = 5000
+        measureTimeMillis {
+            runBlocking {
+                (0..q).map {
+                    GlobalScope.async {
+                        delay(delay)
+                    }
+                }.awaitAll()
+            }
+        }.also {
+            println("Took ${it}ms (${it - delay}ms overhead)")
+        }
+    }
+
+    @Test
+    fun testDelay() {
+        val q: Long = 1000
+        measureTimeMillis {
+            runBlocking {
+                delay(q)
+            }
+        }.also {
+            println("Took ${it}ms to wait ${q}ms")
+        }
     }
 
 }

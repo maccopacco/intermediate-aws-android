@@ -169,7 +169,7 @@ query SyncBanks(
       userData {
         id
         max_import_batch
-        oldest_pending_time
+        oldest_pending_date
         _version
         _deleted
         _lastChangedAt
@@ -224,7 +224,7 @@ query GetBank($id: ID!) {
         updatedAt
       }
       max_import_batch
-      oldest_pending_time
+      oldest_pending_date
       accounts {
         nextToken
         startedAt
@@ -272,7 +272,7 @@ query ListBanks(
       userData {
         id
         max_import_batch
-        oldest_pending_time
+        oldest_pending_date
         _version
         _deleted
         _lastChangedAt
@@ -317,7 +317,7 @@ query SyncUserData(
         updatedAt
       }
       max_import_batch
-      oldest_pending_time
+      oldest_pending_date
       accounts {
         nextToken
         startedAt
@@ -359,7 +359,7 @@ query GetUserData($id: ID!) {
       userData {
         id
         max_import_batch
-        oldest_pending_time
+        oldest_pending_date
         _version
         _deleted
         _lastChangedAt
@@ -373,7 +373,7 @@ query GetUserData($id: ID!) {
       updatedAt
     }
     max_import_batch
-    oldest_pending_time
+    oldest_pending_date
     accounts {
       items {
         id
@@ -456,7 +456,7 @@ query ListUserDatas(
         updatedAt
       }
       max_import_batch
-      oldest_pending_time
+      oldest_pending_date
       accounts {
         nextToken
         startedAt
@@ -495,7 +495,7 @@ query SyncAccounts(
       userData {
         id
         max_import_batch
-        oldest_pending_time
+        oldest_pending_date
         _version
         _deleted
         _lastChangedAt
@@ -538,7 +538,7 @@ query GetAccount($id: ID!) {
         updatedAt
       }
       max_import_batch
-      oldest_pending_time
+      oldest_pending_date
       accounts {
         nextToken
         startedAt
@@ -589,7 +589,7 @@ query ListAccounts(
       userData {
         id
         max_import_batch
-        oldest_pending_time
+        oldest_pending_date
         _version
         _deleted
         _lastChangedAt
@@ -659,7 +659,7 @@ query GetBalance($id: ID!) {
       userData {
         id
         max_import_batch
-        oldest_pending_time
+        oldest_pending_date
         _version
         _deleted
         _lastChangedAt
@@ -741,7 +741,7 @@ query SyncTransactions(
       userData {
         id
         max_import_batch
-        oldest_pending_time
+        oldest_pending_date
         _version
         _deleted
         _lastChangedAt
@@ -835,7 +835,7 @@ query GetTransaction($id: ID!) {
         updatedAt
       }
       max_import_batch
-      oldest_pending_time
+      oldest_pending_date
       accounts {
         nextToken
         startedAt
@@ -994,7 +994,7 @@ query ListTransactions(
       userData {
         id
         max_import_batch
-        oldest_pending_time
+        oldest_pending_date
         _version
         _deleted
         _lastChangedAt
@@ -1143,7 +1143,7 @@ query GetPaymentMeta($id: ID!) {
       userData {
         id
         max_import_batch
-        oldest_pending_time
+        oldest_pending_date
         _version
         _deleted
         _lastChangedAt
@@ -1363,7 +1363,7 @@ query GetLocation($id: ID!) {
       userData {
         id
         max_import_batch
-        oldest_pending_time
+        oldest_pending_date
         _version
         _deleted
         _lastChangedAt

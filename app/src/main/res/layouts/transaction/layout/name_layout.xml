@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/name_ll"
+    style="@style/ConstrainedLinearLayout.Start"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/name"
+        style="@style/ConstrainedTextView.Start"
+        android:hint="Store of funny"
+        android:textSize="@dimen/transaction_top_row"
+        android:textStyle="bold" />
+</LinearLayout>

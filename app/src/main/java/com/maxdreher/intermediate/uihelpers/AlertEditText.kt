@@ -2,9 +2,9 @@ package com.maxdreher.intermediate.uihelpers
 
 import android.view.Gravity
 import android.view.inputmethod.EditorInfo
+import com.maxdreher.Util.setMargin
 import com.maxdreher.extensions.IContextBase
-import com.maxdreher.intermediate.defaultMargin
-import com.maxdreher.setMargin
+import com.maxdreher.intermediate.ExtensionFunctions.defaultMargin
 
 class AlertEditText(
     cb: IContextBase, hint: String? = null,

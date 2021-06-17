@@ -23,6 +23,9 @@
             app:key="appDelete"
             app:title="Delete all Intermediate Data" />
         <Preference
+            app:key="appDeleteBank"
+            app:title="Delete one bank" />
+        <Preference
             app:key="appEditAccounts"
             app:title="Edit accounts" />
         <Preference

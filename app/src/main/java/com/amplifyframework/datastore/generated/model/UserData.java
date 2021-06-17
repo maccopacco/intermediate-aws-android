@@ -1,6 +1,7 @@
 package com.amplifyframework.datastore.generated.model;
 
 import com.amplifyframework.core.model.annotations.BelongsTo;
+import com.amplifyframework.core.model.temporal.Temporal;
 import com.amplifyframework.core.model.annotations.HasMany;
 
 import java.util.List;
@@ -24,11 +25,11 @@ public final class UserData implements Model {
   public static final QueryField ID = field("UserData", "id");
   public static final QueryField BANK = field("UserData", "userDataBankId");
   public static final QueryField MAX_IMPORT_BATCH = field("UserData", "max_import_batch");
-  public static final QueryField OLDEST_PENDING_TIME = field("UserData", "oldest_pending_time");
+  public static final QueryField OLDEST_PENDING_DATE = field("UserData", "oldest_pending_date");
   private final @ModelField(targetType="ID", isRequired = true) String id;
   private final @ModelField(targetType="Bank", isRequired = true) @BelongsTo(targetName = "userDataBankId", type = Bank.class) Bank bank;
   private final @ModelField(targetType="Int", isRequired = true) Integer max_import_batch;
-  private final @ModelField(targetType="String") String oldest_pending_time;
+  private final @ModelField(targetType="AWSDate") Temporal.Date oldest_pending_date;
   private final @ModelField(targetType="Account", isRequired = true) @HasMany(associatedWith = "userData", type = Account.class) List<Account> accounts = null;
   private final @ModelField(targetType="Transaction", isRequired = true) @HasMany(associatedWith = "userData", type = Transaction.class) List<Transaction> transactions = null;
   public String getId() {
@@ -43,8 +44,8 @@ public final class UserData implements Model {
       return max_import_batch;
   }
   
-  public String getOldestPendingTime() {
-      return oldest_pending_time;
+  public Temporal.Date getOldestPendingDate() {
+      return oldest_pending_date;
   }
   
   public List<Account> getAccounts() {
@@ -55,11 +56,11 @@ public final class UserData implements Model {
       return transactions;
   }
   
-  private UserData(String id, Bank bank, Integer max_import_batch, String oldest_pending_time) {
+  private UserData(String id, Bank bank, Integer max_import_batch, Temporal.Date oldest_pending_date) {
     this.id = id;
     this.bank = bank;
     this.max_import_batch = max_import_batch;
-    this.oldest_pending_time = oldest_pending_time;
+    this.oldest_pending_date = oldest_pending_date;
   }
   
   @Override
@@ -73,7 +74,7 @@ public final class UserData implements Model {
       return ObjectsCompat.equals(getId(), userData.getId()) &&
               ObjectsCompat.equals(getBank(), userData.getBank()) &&
               ObjectsCompat.equals(getMaxImportBatch(), userData.getMaxImportBatch()) &&
-              ObjectsCompat.equals(getOldestPendingTime(), userData.getOldestPendingTime());
+              ObjectsCompat.equals(getOldestPendingDate(), userData.getOldestPendingDate());
       }
   }
   
@@ -83,7 +84,7 @@ public final class UserData implements Model {
       .append(getId())
       .append(getBank())
       .append(getMaxImportBatch())
-      .append(getOldestPendingTime())
+      .append(getOldestPendingDate())
       .toString()
       .hashCode();
   }
@@ -95,7 +96,7 @@ public final class UserData implements Model {
       .append("id=" + String.valueOf(getId()) + ", ")
       .append("bank=" + String.valueOf(getBank()) + ", ")
       .append("max_import_batch=" + String.valueOf(getMaxImportBatch()) + ", ")
-      .append("oldest_pending_time=" + String.valueOf(getOldestPendingTime()))
+      .append("oldest_pending_date=" + String.valueOf(getOldestPendingDate()))
       .append("}")
       .toString();
   }
@@ -135,7 +136,7 @@ public final class UserData implements Model {
     return new CopyOfBuilder(id,
       bank,
       max_import_batch,
-      oldest_pending_time);
+      oldest_pending_date);
   }
   public interface BankStep {
     MaxImportBatchStep bank(Bank bank);
@@ -150,7 +151,7 @@ public final class UserData implements Model {
   public interface BuildStep {
     UserData build();
     BuildStep id(String id) throws IllegalArgumentException;
-    BuildStep oldestPendingTime(String oldestPendingTime);
+    BuildStep oldestPendingDate(Temporal.Date oldestPendingDate);
   }
   
 
@@ -158,7 +159,7 @@ public final class UserData implements Model {
     private String id;
     private Bank bank;
     private Integer max_import_batch;
-    private String oldest_pending_time;
+    private Temporal.Date oldest_pending_date;
     @Override
      public UserData build() {
         String id = this.id != null ? this.id : UUID.randomUUID().toString();
@@ -167,7 +168,7 @@ public final class UserData implements Model {
           id,
           bank,
           max_import_batch,
-          oldest_pending_time);
+          oldest_pending_date);
     }
     
     @Override
@@ -185,8 +186,8 @@ public final class UserData implements Model {
     }
     
     @Override
-     public BuildStep oldestPendingTime(String oldestPendingTime) {
-        this.oldest_pending_time = oldestPendingTime;
+     public BuildStep oldestPendingDate(Temporal.Date oldestPendingDate) {
+        this.oldest_pending_date = oldestPendingDate;
         return this;
     }
     
@@ -213,11 +214,11 @@ public final class UserData implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, Bank bank, Integer maxImportBatch, String oldestPendingTime) {
+    private CopyOfBuilder(String id, Bank bank, Integer maxImportBatch, Temporal.Date oldestPendingDate) {
       super.id(id);
       super.bank(bank)
         .maxImportBatch(maxImportBatch)
-        .oldestPendingTime(oldestPendingTime);
+        .oldestPendingDate(oldestPendingDate);
     }
     
     @Override
@@ -231,8 +232,8 @@ public final class UserData implements Model {
     }
     
     @Override
-     public CopyOfBuilder oldestPendingTime(String oldestPendingTime) {
-      return (CopyOfBuilder) super.oldestPendingTime(oldestPendingTime);
+     public CopyOfBuilder oldestPendingDate(Temporal.Date oldestPendingDate) {
+      return (CopyOfBuilder) super.oldestPendingDate(oldestPendingDate);
     }
   }
   

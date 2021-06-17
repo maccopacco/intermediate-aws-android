@@ -1,9 +1,11 @@
 package com.maxdreher.intermediate.util
 
 import com.amplifyframework.core.model.Model
+import com.amplifyframework.core.model.temporal.Temporal
 import com.amplifyframework.datastore.generated.model.*
-import com.maxdreher.Util
-import com.maxdreher.intermediate.toAmpDate
+import com.maxdreher.Util.Date.toAmplifyDate
+import com.maxdreher.extensions.IContextBase
+import com.maxdreher.intermediate.ExtensionFunctions.Models.isEmpty
 import com.plaid.client.response.TransactionsGetResponse
 import java.text.SimpleDateFormat
 
@@ -12,10 +14,12 @@ import java.text.SimpleDateFormat
  * [List] of [Model]s for save later
  */
 object PlaidToAmp {
-    private val plaidDateFormat = SimpleDateFormat("yyyy-MM-dd")
+    private val plaidDateFormat
+        get() = SimpleDateFormat("yyyy-MM-dd")
 
-    fun convertDate(text: String): String {
-        return plaidDateFormat.parse(text).toAmpDate()
+    private fun convertDate(text: String): Temporal.Date {
+        //plaid is already in UTC
+        return plaidDateFormat.parse(text).toAmplifyDate(offset = 0)
     }
 
     fun convert(
@@ -35,6 +39,7 @@ object PlaidToAmp {
                     .category(category)
                     .categoryId(categoryId)
                     .date(convertDate(date))
+//                    .exactTime(convertTime)
                     .merchantName(merchantName)
                     .name(name)
                     .originalDescription(originalDescription)
@@ -46,10 +51,10 @@ object PlaidToAmp {
                     .authorizedDate(authorizedDate)
                     .transactionCode(transactionCode)
                     .paymentChannel(paymentChannel)
-                    .build().also {
-                        add(it)
-                        add(convert(location, it))
-                        add(convert(paymentMeta, it))
+                    .build().also { trans ->
+                        add(trans)
+                        convert(location, trans)?.also { l -> add(l) }
+                        convert(paymentMeta, trans)?.also { p -> add(p) }
                     }
             }
         }
@@ -58,9 +63,9 @@ object PlaidToAmp {
     private fun convert(
         inputLocation: TransactionsGetResponse.Transaction.Location,
         transaction: Transaction
-    ): Location {
+    ): Location? {
         with(inputLocation) {
-            return Location.Builder()
+            val l = Location.Builder()
                 .transaction(transaction)
                 .address(address)
                 .city(city)
@@ -71,15 +76,16 @@ object PlaidToAmp {
                 .postalCode(postalCode)
                 .country(country)
                 .build()
+            return if (l.isEmpty()) null else l
         }
     }
 
     private fun convert(
         inputPaymentMeta: TransactionsGetResponse.Transaction.PaymentMeta,
         transaction: Transaction
-    ): PaymentMeta {
+    ): PaymentMeta? {
         with(inputPaymentMeta) {
-            return PaymentMeta.Builder()
+            val p = PaymentMeta.Builder()
                 .transaction(transaction)
                 .byOrderOf(byOrderOf)
                 .payee(payee)
@@ -90,6 +96,7 @@ object PlaidToAmp {
                 .reason(reason)
                 .referenceNumber(referenceNumber)
                 .build()
+            return if (p.isEmpty()) null else p
         }
     }
 }

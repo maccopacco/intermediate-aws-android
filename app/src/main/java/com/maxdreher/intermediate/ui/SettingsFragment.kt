@@ -14,12 +14,19 @@ import androidx.preference.ListPreference
 import com.amplifyframework.core.model.Model
 import com.amplifyframework.core.model.query.Page
 import com.amplifyframework.core.model.query.Where
-import com.amplifyframework.core.model.query.predicate.QueryPredicate
 import com.amplifyframework.datastore.generated.model.*
 import com.maxdreher.*
+import com.maxdreher.Util.Date.toAmplifyDateTime
+import com.maxdreher.Util.Date.toDateTime
+import com.maxdreher.Util.Date.toSimpleDate
+import com.maxdreher.Util.get
+import com.maxdreher.Util.safeSublist
+import com.maxdreher.Util.setMargin
 import com.maxdreher.extensions.IGoogleBaseBase
 import com.maxdreher.extensions.PreferenceFragmentCompatBase
 import com.maxdreher.intermediate.*
+import com.maxdreher.intermediate.ExtensionFunctions.Models.getCombinedName
+import com.maxdreher.intermediate.ExtensionFunctions.defaultMargin
 import com.maxdreher.intermediate.R
 import com.maxdreher.intermediate.ui.IPlaidBase.Companion.plaidClient
 import com.maxdreher.intermediate.uihelpers.AlertEditText
@@ -30,6 +37,7 @@ import com.maxdreher.table.TableHelper
 import com.plaid.client.request.AuthGetRequest
 import de.codecrafters.tableview.SortableTableView
 import kotlinx.coroutines.*
+import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicReference
 
@@ -145,8 +153,7 @@ class SettingsFragment : PreferenceFragmentCompatBase(R.xml.preferences), IPlaid
                         }
                     }
                 }, {
-                    error("Could not find banks for you\n{${it.message}}")
-                    it.printStackTrace()
+                    error("Could not find banks for you\n${it.get()}")
                 })
             } ?: notSignedIn()
         }
@@ -161,6 +168,12 @@ class SettingsFragment : PreferenceFragmentCompatBase(R.xml.preferences), IPlaid
             } ?: badSignin()
         }
 
+        findPreference("appDeleteBank") {
+            MyUser.user?.let { user ->
+                deleteSingleBank(user)
+            } ?: badSignin()
+        }
+
         findPreference("appEditAccounts") {
             editAccounts()
         }
@@ -168,6 +181,35 @@ class SettingsFragment : PreferenceFragmentCompatBase(R.xml.preferences), IPlaid
         findPreference("appMoveTransactions") {
             moveTransactions()
         }
+    }
+
+    private fun deleteSingleBank(user: User) {
+        Bank::class.query(Bank.USER.eq(user), { banks ->
+            alertBuilder("Chose bank to delete")
+                .setView(SortableTableView<Bank>(context).also { table ->
+                    table.addDataClickListener { _, bank -> onDeleteSingleBank(bank) }
+                    TableHelper.updateTable(
+                        requireContext(), table, banks, TableEntry.from(
+                            defaultMargin(),
+                            mapOf("Bank name" to { it.institutionName })
+                        )
+                    )
+                })
+                .show()
+        }, {
+            error("Could not query Banks for deletion\n${it.get()}")
+        })
+    }
+
+    private fun onDeleteSingleBank(bank: Bank) {
+        call(object {})
+        val name = bank.institutionName
+        UserData::class.delete(UserData.BANK.eq(bank.id),
+            {
+                toast("Data for $name deleted");
+                findBankAndUserData()
+            },
+            { ex -> error("Could not delete data for $name\n${ex.get()}") })
     }
 
     private fun editAccounts() {
@@ -199,8 +241,7 @@ class SettingsFragment : PreferenceFragmentCompatBase(R.xml.preferences), IPlaid
                     table.addDataLongClickListener { _, acc ->
                         if (acc.plaidId != null) {
                             acc.delete({ toast("Account deleted") }, {
-                                error("Account could not be deleted\n${it.message}")
-                                it.printStackTrace()
+                                error("Account could not be deleted\n${it.get()}")
                             })
                             dialog.dismiss()
                         } else {
@@ -239,8 +280,7 @@ class SettingsFragment : PreferenceFragmentCompatBase(R.xml.preferences), IPlaid
                         toast("New account created")
                         onSuccess?.invoke()
                     }, {
-                        error("New account could not be created\n${it.message}")
-                        it.printStackTrace()
+                        error("New account could not be created\n${it.get()}")
                     })
             }.show().also {
                 ref.set(it)
@@ -299,14 +339,12 @@ class SettingsFragment : PreferenceFragmentCompatBase(R.xml.preferences), IPlaid
                         val groups: Map<List<String>, List<Transaction>> = transactions.groupBy {
                             listOf(
                                 it.importSource,
-                                it.importDate,
+                                it.importDate.toDate().toSimpleDate(),
                                 it.importBatch.toString()
                             )
                         }.map { entry ->
-                            val newkey =
-                                listOf(*entry.key.toTypedArray(), entry.value.size.toString())
-                            entry.value
-                            Pair(newkey, entry.value)
+                            val newKey = entry.key.toMutableList() + entry.value.size.toString()
+                            Pair(newKey, entry.value)
                         }.toMap()
                         val ref = AtomicReference<Dialog>()
                         alertBuilder("Select batch to move (hold to view)")
@@ -320,7 +358,7 @@ class SettingsFragment : PreferenceFragmentCompatBase(R.xml.preferences), IPlaid
                                         mapOf("Source" to { it[0] },
                                             "Date" to {
                                                 it[1].let { date ->
-                                                    date.toSaneDate()?.toSimpleDate() ?: date
+                                                    date.toDateTime()?.toSimpleDate() ?: date
                                                 }
                                             },
                                             "Batch" to { it[2] },
@@ -332,19 +370,24 @@ class SettingsFragment : PreferenceFragmentCompatBase(R.xml.preferences), IPlaid
                                     ref.get()?.dismiss()
                                 }
                                 table.addDataLongClickListener { _, clickedData ->
+                                    val clickedTransactions = groups[clickedData]!!
                                     alertBuilder("Transactions")
                                         .setView(
                                             TransactionViewer(
                                                 ListView(context),
-                                                this@SettingsFragment
-                                            ).apply {
-                                                add(groups[clickedData]!!)
-                                            }.listView
+                                                this@SettingsFragment, { page ->
+                                                    val b = TransactionViewer.DEFAULT_BATCH_SIZE
+                                                    clickedTransactions.safeSublist(
+                                                        page * b, page * b + b
+                                                    )
+                                                }, {}).listView
                                         )
                                         .show()
                                     true
                                 }
-                            }).show().also { ref.set(it) }
+                            }).show().also { dialog ->
+                                ref.set(dialog)
+                            }
                     },
                     {
                         etoast("Could not get transactions right now... sorry about that")
@@ -392,8 +435,7 @@ class SettingsFragment : PreferenceFragmentCompatBase(R.xml.preferences), IPlaid
             }
         },
             {
-                error("Could not get banks\n${it.message}")
-                it.printStackTrace()
+                error("Could not get banks\n${it.get()}")
             })
     }
 
@@ -432,7 +474,7 @@ class SettingsFragment : PreferenceFragmentCompatBase(R.xml.preferences), IPlaid
                     updateBankFailure()
                 } else {
                     it[0].copyOfBuilder()
-                        .lastTouchedTime(Util.getSaneDate())
+                        .lastTouchedTime(Date().toAmplifyDateTime())
                         .build()
                         .save(this@SettingsFragment) {
                             findBankAndUserData()
@@ -443,8 +485,7 @@ class SettingsFragment : PreferenceFragmentCompatBase(R.xml.preferences), IPlaid
             },
             {
                 updateBankFailure()
-                error("Bank could not be found\n${it.message}")
-                it.printStackTrace()
+                error("Bank could not be found\n${it.get()}")
             })
     }
 
@@ -578,7 +619,7 @@ class SettingsFragment : PreferenceFragmentCompatBase(R.xml.preferences), IPlaid
             runBlocking {
                 parseResult.forEachIndexed { index, list ->
                     launch {
-                        Util.saveModels(this@SettingsFragment, list, index, errorConsumer)
+                        saveModels(this@SettingsFragment, list, index, errorConsumer)
                     }
                 }
             }

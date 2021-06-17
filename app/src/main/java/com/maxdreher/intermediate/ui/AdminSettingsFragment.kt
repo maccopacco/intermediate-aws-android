@@ -17,12 +17,19 @@ import androidx.navigation.fragment.findNavController
 import androidx.preference.SeekBarPreference
 import androidx.preference.SwitchPreference
 import com.amplifyframework.core.Amplify
+import com.amplifyframework.core.model.query.Page
 import com.amplifyframework.core.model.query.Where
-import com.amplifyframework.datastore.DataStoreException
 import com.amplifyframework.datastore.generated.model.*
 import com.maxdreher.*
+import com.maxdreher.Util.Date.toAmplifyDate
+import com.maxdreher.Util.Date.toSimpleDate
+import com.maxdreher.Util.Date.unit
+import com.maxdreher.Util.get
+import com.maxdreher.Util.getDate
 import com.maxdreher.extensions.PreferenceFragmentCompatBase
 import com.maxdreher.intermediate.*
+import com.maxdreher.intermediate.ExtensionFunctions.Models.getLastDate
+import com.maxdreher.intermediate.ExtensionFunctions.defaultMargin
 import com.maxdreher.intermediate.R
 import com.maxdreher.intermediate.keys.Keys
 import com.maxdreher.intermediate.ui.IPlaidBase.Companion.plaidClient
@@ -37,8 +44,7 @@ import com.plaid.client.response.InstitutionsSearchResponse
 import de.codecrafters.tableview.SortableTableView
 import kotlinx.coroutines.*
 import java.util.*
-import java.util.concurrent.TimeUnit
-import java.util.concurrent.atomic.AtomicReference
+import java.util.concurrent.TimeUnit.*
 
 class AdminSettingsFragment : PreferenceFragmentCompatBase(R.xml.admin_settings), IPlaidBase {
 
@@ -77,22 +83,21 @@ class AdminSettingsFragment : PreferenceFragmentCompatBase(R.xml.admin_settings)
             MyUser.allowOfflineSignin = isChecked
         }
         (findPreference("settingImportLimit") as SeekBarPreference).apply {
-            val print = {
+            val setVal = { newValue: Int ->
+                if (newValue == 51) {
+                    MyUser.importLimit = null
+                } else {
+                    MyUser.importLimit = newValue
+                }
                 toast("Import limit set to ${MyUser.importLimit}")
             }
             setOnPreferenceChangeListener { _, newValue: Any ->
                 if (newValue is Int) {
-                    if (newValue == 51) {
-                        MyUser.importLimit = null
-                    } else {
-                        MyUser.importLimit = newValue
-                    }
-                    print.invoke()
+                    setVal.invoke(newValue)
                 }
                 true
             }
-            MyUser.importLimit = value
-            print.invoke()
+            setVal.invoke(value)
         }
     }
 
@@ -101,22 +106,28 @@ class AdminSettingsFragment : PreferenceFragmentCompatBase(R.xml.admin_settings)
             getDataFromPlaid()
         }
         findPreference("test2") {
-            updateBalancies()
+            Transaction::class.query(
+                Where.matchesAll().sorted(Transaction.DATE.descending())
+                    .paginated(Page.firstPage().withLimit(5)),
+                {
+                    alert("Item dates", it.joinToString("\n") { it.date.toString() })
+                },
+                { error("Could not get!!!!!!!!\n${it.get()}") })
+//            updateBalances()
         }
         findPreference("test3") {
             MyUser.data?.let { data ->
-                val oldestDate = data.getLastDate() ?: return@let
+                val oldestDate = data.getLastDate()
                 plaidClient.service().transactionsGet(
                     TransactionsGetRequest(
                         data.bank.plaidAccessToken,
                         oldestDate,
-                        Date(Date().time + TimeUnit.DAYS.toMillis(3))
+                        (3 unit DAYS).fromNow()
                     )
                 ).enqueue(PlaidCallback({
                     toast("Total of ${it.body()?.totalTransactions} from Plaid")
                 }, {
-                    error("Could not do plaid\n${it.message}")
-                    it.printStackTrace()
+                    error("Could not do plaid\n${it.get()}")
                 }))
             }
         }
@@ -140,11 +151,10 @@ class AdminSettingsFragment : PreferenceFragmentCompatBase(R.xml.admin_settings)
                 val datePicker = DatePicker(context)
                 val set = { date: Date? ->
                     data.copyOfBuilder()
-                        .oldestPendingTime(
-                            date?.toAmpDate()
+                        .oldestPendingDate(
+                            date?.toAmplifyDate()
                         ).build().save({ toast("Should be saved"); findBankAndUserData() }, {
-                            alert("Could not set date", it.message.toString())
-                            it.printStackTrace()
+                            alert("Could not set date", it.get() ?: "Unknown cause")
                         })
                 }
                 alertBuilder("Pick a date")
@@ -159,13 +169,16 @@ class AdminSettingsFragment : PreferenceFragmentCompatBase(R.xml.admin_settings)
                     .show()
             } ?: toast("No data")
         }
+        findPreference("forceUpdate") {
+//            Amplify.DataStore.
+        }
     }
 
     private fun deletes() {
         findPreference("deleteAllUsers") {
             User::class.deleteAll(
                 { toast("Should be gone");signout() },
-                { error("It ain't gone\n${it.message}"); it.printStackTrace() })
+                { error("It ain't gone\n${it.get()}") })
         }
 
         findPreference("deleteMyBanks") {
@@ -173,8 +186,7 @@ class AdminSettingsFragment : PreferenceFragmentCompatBase(R.xml.admin_settings)
                 Bank::class.delete(
                     Bank.USER.eq(it.id),
                     { toast("Should be gone") },
-                    { error("Not gone\n${it.message}") })
-
+                    { ex -> error("Not gone\n${ex.get()}") })
             } ?: toast("Uhh, not signed in")
         }
         findPreference("deleteAll") {
@@ -185,16 +197,72 @@ class AdminSettingsFragment : PreferenceFragmentCompatBase(R.xml.admin_settings)
                     }
                 }
             }, {
-                error("Could not clear datastore ${it.message}")
-                it.printStackTrace()
+                error("Could not clear datastore ${it.get()}")
             })
         }
 
         findPreference("deleteTransactions") {
             Transaction::class.deleteAll(
-                { toast("Bye transactions") },
-                { ex -> error("Transactions not gone\n${ex.message}");ex.printStackTrace() })
+                {
+                    GlobalScope.launch {
+                        withContext(Dispatchers.Main) {
+                            toast("Bye transactions")
+                        }
+                    }
+                },
+                { ex ->
+                    GlobalScope.launch {
+                        withContext(Dispatchers.Main) {
+                            error("Transactions not gone\n${ex.get()}")
+                        }
+                    }
+                })
+        }
 
+        findPreference("deleteUser") {
+            User::class.query(Where.matchesAll(), { users ->
+                GlobalScope.launch {
+                    val usersWithBanks = users.map { user ->
+                        GlobalScope.async {
+                            user to (Bank::class.query(
+                                Bank.USER.eq(user.id)
+                            ).getOr { error("Could not get a bank info ${it.get()}") }?.size ?: -1)
+                        }
+                    }.awaitAll()
+                    withContext(Dispatchers.Main) {
+                        deleteUsersDialog(usersWithBanks)
+                    }
+                }
+            }, {})
+        }
+
+        findPreference("deleteDatas") {
+            UserData::class.deleteAll(
+                { toast("Deleted datas") },
+                { error("Transactions not gone\n${it.get()}") })
+        }
+    }
+
+    private fun deleteUsersDialog(usersWithBanks: List<Pair<User, Int>>) {
+        alertBuilder("Delete users").apply {
+            val t = SortableTableView<Pair<User, Int>>(context).apply {
+                addDataClickListener { _, clickedData ->
+                    clickedData.first.delete(
+                        { toast("Deleted") },
+                        { error("Nah couldn't delete ${it.get()}") })
+                }
+            }
+            setView(t)
+            TableHelper.updateTable(
+                context, t, usersWithBanks, TableEntry.from(
+                    defaultMargin(),
+                    mapOf("User" to { it.first.originalEmail },
+                        "ID" to { it.first.googleId },
+                        "Count" to { it.second.toString() }
+                    )
+                )
+            )
+            show()
         }
     }
 
@@ -275,19 +343,11 @@ class AdminSettingsFragment : PreferenceFragmentCompatBase(R.xml.admin_settings)
         }
 
         findPreference("showTransactionCount") {
-            GlobalScope.launch {
-                val error = AtomicReference<DataStoreException?>(null)
-                val options = Where.matchesAll()
-                val amountOfTransactions = Transaction::class.query(options).getOr {
-                    error.set(it)
-                }?.size ?: -1
-                withContext(Dispatchers.Main) {
-                    val e = error.get()
-                    alert(e?.let { "Error" } ?: "Success",
-                        e?.message
-                            ?: "Transactions: ${amountOfTransactions}")
-                }
-            }
+            Transaction::class.query(Where.matchesAll(), {
+                alert("Success", "Transactions: ${it.size}")
+            }, {
+                alert("Error", it.message ?: "Idk")
+            })
         }
 
         findPreference("showAccounts") {
@@ -303,11 +363,24 @@ class AdminSettingsFragment : PreferenceFragmentCompatBase(R.xml.admin_settings)
                                 } ?: toast("Bad response seems")
                             }
                         }, {
-                            error("Nah summ wrong: \n${it.message}")
-                            it.printStackTrace()
+                            error("Nah summ wrong: \n${it.get()}")
                         })
                     )
             }
+        }
+
+        findPreference("showTransactionDates") {
+            Transaction::class.query(
+                Where.matchesAll().paginated(
+                    Page.firstPage().withLimit(5)
+                ), {
+                    alert(
+                        "Transaction dates",
+                        it.joinToString("\n") { "${it.date}\n${it.date.toDate().toSimpleDate()}" })
+                }, {
+                    error("Could not load\n${it.get()}")
+                }
+            )
         }
     }
 }

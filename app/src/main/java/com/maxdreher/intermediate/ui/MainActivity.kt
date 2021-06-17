@@ -3,7 +3,6 @@ package com.maxdreher.intermediate.ui
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.annotation.DrawableRes
@@ -16,15 +15,13 @@ import androidx.navigation.ui.setupWithNavController
 import com.amplifyframework.AmplifyException
 import com.amplifyframework.api.aws.AWSApiPlugin
 import com.amplifyframework.core.Amplify
-import com.amplifyframework.core.model.query.Page
-import com.amplifyframework.core.model.query.Where
 import com.amplifyframework.datastore.AWSDataStorePlugin
 import com.amplifyframework.datastore.DataStoreChannelEventName
 import com.amplifyframework.datastore.events.NetworkStatusEvent
 import com.amplifyframework.datastore.generated.model.Bank
-import com.amplifyframework.datastore.generated.model.User
 import com.amplifyframework.hub.HubChannel
 import com.google.android.material.navigation.NavigationView
+import com.maxdreher.Util.get
 import com.maxdreher.extensions.ActivityBase
 import com.maxdreher.intermediate.BuildConfig
 import com.maxdreher.intermediate.MyUser
@@ -84,6 +81,7 @@ class MainActivity : ActivityBase(R.layout.activity_main), IPlaidBase {
 
             onNetwork()
             startDatastore()
+        } catch (ignored: Amplify.AlreadyConfiguredException) {
         } catch (error: AmplifyException) {
             error("Could not initialize Amplify\n${error.message}")
             error.printStackTrace()
@@ -114,8 +112,7 @@ class MainActivity : ActivityBase(R.layout.activity_main), IPlaidBase {
                 log("DataStore started")
                 signin()
             }, {
-                loge("Could not start DataStore ${it.message}")
-                it.printStackTrace()
+                loge("Could not start DataStore ${it.get()}")
             })
     }
 

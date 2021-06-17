@@ -50,6 +50,16 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    sourceSets {
+        main {
+            res.srcDirs =
+                    [
+                            file("src/main/res/layouts/").listFiles(),
+                            'src/main/res/layouts',
+                            'src/main/res'
+                    ]
+        }
+    }
 }
 
 dependencies {
@@ -62,4 +72,5 @@ dependencies {
     implementation('com.google.api-client:google-api-client-android:1.30.10') {
         exclude group: 'org.apache.httpcomponents'
     }
+    implementation 'com.google.android.gms:play-services-maps:17.0.1'
 }

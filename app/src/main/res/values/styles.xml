@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ConstrainedLinearLayout">
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginTop">@dimen/default_margin</item>
+        <item name="android:layout_marginBottom">@dimen/default_margin</item>
+        <item name="android:layout_marginStart">@dimen/default_margin</item>
+        <item name="android:layout_marginEnd">@dimen/default_margin</item>
+        <item name="layout_constrainedHeight">true</item>
+        <item name="layout_constrainedWidth">true</item>
+    </style>
+
+    <style name="ConstrainedLinearLayout.Start" parent="ConstrainedLinearLayout">
+        <item name="android:gravity">center|start</item>
+    </style>
+
+    <style name="ConstrainedLinearLayout.End" parent="ConstrainedLinearLayout">
+        <item name="android:gravity">center|end</item>
+    </style>
+
+    <style name="ConstrainedTextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:breakStrategy">high_quality</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:hint">Empty</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="ConstrainedTextView.Start">
+        <item name="android:gravity">start</item>
+    </style>
+
+    <style name="ConstrainedTextView.End">
+        <item name="android:gravity">end</item>
+    </style>
+
+    <style name="RefreshButton">
+        <item name="android:clickable">true</item>
+        <item name="android:textColor">#0277BD</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">@dimen/default_margin</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:text">Load more</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+
+    <style name="Amount">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center|end</item>
+        <item name="android:layout_margin">@dimen/default_margin</item>
+        <item name="android:hint">$1800.40</item>
+        <item name="android:textColor">@color/transaction_credit</item>
+        <item name="android:textSize">@dimen/transaction_top_row</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Pending">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/border</item>
+        <item name="android:gravity">center|start</item>
+        <item name="android:text">Pending</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">@dimen/transaction_pending_text</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:visibility">visible</item>
+    </style>
+
+    <style name="SpentFromText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:text">"Spent from "</item>
+        <item name="android:textColor">@color/transaction_insignificant</item>
+        <item name="android:textSize">@dimen/transaction_bottom_row</item>
+    </style>
+
+    <style name="ConstrainedTextView.Category">
+        <item name="android:gravity">center</item>
+        <item name="android:text">Default category</item>
+        <item name="android:textColor">@color/transaction_insignificant</item>
+        <item name="android:textSize">@dimen/transaction_bottom_row</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+</resources>

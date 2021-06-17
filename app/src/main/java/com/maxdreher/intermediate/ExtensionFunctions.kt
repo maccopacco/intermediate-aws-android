@@ -1,10 +1,6 @@
 package com.maxdreher.intermediate
 
-import com.amplifyframework.datastore.DataStoreException
-import com.amplifyframework.datastore.generated.model.Account
-import com.amplifyframework.datastore.generated.model.Location
-import com.amplifyframework.datastore.generated.model.Transaction
-import com.amplifyframework.datastore.generated.model.UserData
+import com.amplifyframework.datastore.generated.model.*
 import com.maxdreher.Util
 import com.maxdreher.extensions.IContextBase
 import com.maxdreher.intermediate.util.IAccount
@@ -17,80 +13,84 @@ import kotlin.math.abs
  * A file to store all extension functions
  */
 
-fun IContextBase.defaultMargin(): Int {
-    return Util.getDefaultMargin(getContext(), R.dimen.default_margin)
-}
+object ExtensionFunctions {
 
-fun Location.isEmpty(): Boolean {
-    val values = listOf(address, city, lat, lon, postalCode).map { it?.toString() ?: "" }
-    return !values.any { it != "" }
-}
+    fun IContextBase.defaultMargin(): Int {
+        return Util.getDefaultMargin(getContext(), R.dimen.default_margin)
+    }
 
-fun Transaction.getCombinedName(): String {
-    return overrideName ?: name
-}
+    object Models {
+        fun PaymentMeta.isEmpty(): Boolean {
+            return lacking(
+                payee,
+                payer,
+                paymentMethod,
+                paymentProcessor,
+                ppdId,
+                reason,
+                referenceNumber
+            )
+        }
 
-fun Account.getCombinedName(): String {
-    return overrideName ?: name
-}
+        fun Location.isEmpty(): Boolean {
+            return lacking(address, city, lat, lon, postalCode)
+        }
 
-fun Transaction.amountAsString(): String {
-    return "$%4.2f".format(abs(amount))
-}
+        private fun lacking(vararg items: Any?): Boolean {
+            val values = items.map { it?.toString() ?: "" }
+            return values.all { it == "" }
+        }
 
-fun UserData.getLastDate(): Date? {
-    return oldestPendingTime.let { date ->
-        if (date == null || date.isEmpty()) {
-            Date(0)
-        } else {
-            date.toAmpDate()
+        fun Transaction.getCombinedName(): String {
+            return overrideName ?: name
+        }
+
+        fun Account.getCombinedName(): String {
+            return overrideName ?: name
+        }
+
+        fun Transaction.amountAsString(): String {
+            return "$%4.2f".format(abs(amount))
+        }
+
+        fun UserData.getLastDate(): java.util.Date {
+            return oldestPendingDate?.toDate() ?: Date(0)
+        }
+
+        fun Transaction.matches(
+            plaid: TransactionsGetResponse.Transaction
+        ): Boolean {
+            return plaidId == plaid.transactionId
+        }
+
+        fun Transaction.basicData(): String {
+            return "${this.plaidId} ${this.date} ${this.amount} ${this.getCombinedName()}"
+        }
+
+        fun TransactionsGetResponse.Transaction.basicData(): String {
+            return "${this.transactionId} ${this.date} ${this.amount} ${this.name} ${this.merchantName}"
+        }
+
+        fun Account.toIAccount(): IAccount {
+            return IAccount.from(name, plaidId)
+        }
+
+        fun com.plaid.client.response.Account.toIAccount(): IAccount {
+            return IAccount.from(officialName, accountId)
         }
     }
-}
 
-fun Transaction.matches(
-    plaid: TransactionsGetResponse.Transaction
-): Boolean {
-    return plaidId == plaid.transactionId
-}
+    object Date {
+        private val timeFormat = SimpleDateFormat("h:mm a")
+        private val viewFormat = SimpleDateFormat("MMMM d")
 
-fun Transaction.basicData(): String {
-    return "${this.plaidId} ${this.date} ${this.amount} ${this.getCombinedName()}"
-}
 
-fun TransactionsGetResponse.Transaction.basicData(): String {
-    return "${this.transactionId} ${this.date} ${this.amount} ${this.name} ${this.merchantName}"
-}
+        fun java.util.Date.toView(): String {
+            return viewFormat.format(this)
+        }
 
-fun com.amplifyframework.datastore.generated.model.Account.toIAccount(): IAccount {
-    return IAccount.from(name, plaidId)
-}
-
-fun com.plaid.client.response.Account.toIAccount(): IAccount {
-    return IAccount.from(officialName, accountId)
-}
-
-fun DataStoreException.get(): String? {
-    printStackTrace()
-    return this.message
-}
-
-private val ampFormat = Util.simpleDateFormat
-private val viewFormat = SimpleDateFormat("MMMM d")
-
-fun Date.toAmpDate(): String {
-    return ampFormat.format(this)
-}
-
-fun String.toAmpDate(): Date? {
-    return try {
-        ampFormat.parse(this)
-    } catch (e: Exception) {
-        e.printStackTrace()
-        null
+        fun java.util.Date.toTime(): String {
+            return timeFormat.format(this)
+        }
     }
-}
-
-fun Date.toView(): String {
-    return viewFormat.format(this)
 }

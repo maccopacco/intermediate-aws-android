@@ -24,6 +24,9 @@
         <Preference
             app:key="setDate"
             app:title="Set oldest pending time" />
+        <Preference
+            app:key="forceUpdate"
+            app:title="Force update" />
     </PreferenceCategory>
     <PreferenceCategory app:title="Shows">
         <Preference
@@ -41,6 +44,9 @@
         <Preference
             app:key="showAccounts"
             app:title="Show accounts" />
+        <Preference
+            app:key="showTransactionDates"
+            app:title="Show dates" />
     </PreferenceCategory>
     <PreferenceCategory app:title="Deletes">
         <Preference
@@ -55,6 +61,12 @@
         <Preference
             app:key="deleteTransactions"
             app:title="Delete transactions" />
+        <Preference
+            app:key="deleteUser"
+            app:title="Delete user" />
+        <Preference
+            app:key="deleteDatas"
+            app:title="Delete User Datas" />
     </PreferenceCategory>
 
     <PreferenceCategory app:title="Testing">

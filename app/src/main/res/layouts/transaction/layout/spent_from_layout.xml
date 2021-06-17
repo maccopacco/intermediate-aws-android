@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/ConstrainedLinearLayout.Start"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/spend_from_text"
+        style="@style/SpentFromText" />
+
+    <LinearLayout
+        android:id="@+id/spent_from_value_ll"
+        style="@style/ConstrainedLinearLayout.Start"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp">
+
+        <TextView
+            android:id="@+id/spent_from_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Default account"
+            android:textColor="@color/transaction_category_default"
+            android:textSize="@dimen/transaction_bottom_row"
+            android:textStyle="italic" />
+    </LinearLayout>
+</LinearLayout>

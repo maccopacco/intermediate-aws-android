@@ -1,0 +1,26 @@
+Weird dates from PlaidToAmp multithread issue
+
+* Slap a synchro on PlaidToAmp, hasn't failed a few times. Calling it
+  good
+* Maybe try creating a new date format object each call to avoid the
+  synchro and keep things multithreading and fast? If its the date
+  formatter thats not handling the multithreading as opposed to the
+  method, that will fix it. Time both
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# Date:      Fri Jun 4 12:12:40 2021 -0400
+#
+# On branch view_one_transaction
+# Your branch is ahead of 'origin/view_one_transaction' by 1 commit.
+#   (use "git push" to publish your local commits)
+#
+# Changes to be committed:
+#	modified:   app/src/main/graphql/com/amazonaws/amplify/generated/graphql/mutations.graphql
+#	modified:   app/src/main/graphql/com/amazonaws/amplify/generated/graphql/queries.graphql
+#	modified:   app/src/main/graphql/com/amazonaws/amplify/generated/graphql/subscriptions.graphql
+#	modified:   app/src/main/graphql/schema.json
+#	modified:   app/src/main/java/com/maxdreher/intermediate/ui/IPlaidBase.kt
+#	modified:   app/src/main/java/com/maxdreher/intermediate/util/PlaidToAmp.kt
+#

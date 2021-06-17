@@ -1,5 +1,6 @@
 package com.amplifyframework.datastore.generated.model;
 
+import com.amplifyframework.core.model.temporal.Temporal;
 import com.amplifyframework.core.model.annotations.BelongsTo;
 import com.amplifyframework.core.model.annotations.HasOne;
 
@@ -53,7 +54,7 @@ public final class Transaction implements Model {
   private final @ModelField(targetType="String") String overrideName;
   private final @ModelField(targetType="String") String memo;
   private final @ModelField(targetType="Int") Integer importBatch;
-  private final @ModelField(targetType="String") String importDate;
+  private final @ModelField(targetType="AWSDateTime") Temporal.DateTime importDate;
   private final @ModelField(targetType="String") String importSource;
   private final @ModelField(targetType="String") String plaidID;
   private final @ModelField(targetType="UserData", isRequired = true) @BelongsTo(targetName = "transactionUserDataId", type = UserData.class) UserData userData;
@@ -64,8 +65,8 @@ public final class Transaction implements Model {
   private final @ModelField(targetType="String") String categoryFolder;
   private final @ModelField(targetType="String") List<String> category;
   private final @ModelField(targetType="String") String categoryId;
-  private final @ModelField(targetType="String") String date;
-  private final @ModelField(targetType="String") String exactTime;
+  private final @ModelField(targetType="AWSDate") Temporal.Date date;
+  private final @ModelField(targetType="AWSDateTime") Temporal.DateTime exactTime;
   private final @ModelField(targetType="Location") @HasOne(associatedWith = "transaction", type = Location.class) Location location = null;
   private final @ModelField(targetType="String") String merchantName;
   private final @ModelField(targetType="String") String name;
@@ -95,7 +96,7 @@ public final class Transaction implements Model {
       return importBatch;
   }
   
-  public String getImportDate() {
+  public Temporal.DateTime getImportDate() {
       return importDate;
   }
   
@@ -139,11 +140,11 @@ public final class Transaction implements Model {
       return categoryId;
   }
   
-  public String getDate() {
+  public Temporal.Date getDate() {
       return date;
   }
   
-  public String getExactTime() {
+  public Temporal.DateTime getExactTime() {
       return exactTime;
   }
   
@@ -199,7 +200,7 @@ public final class Transaction implements Model {
       return paymentChannel;
   }
   
-  private Transaction(String id, String overrideName, String memo, Integer importBatch, String importDate, String importSource, String plaidID, UserData userData, String account, Double amount, String isoCurrencyCode, String unofficialCurrencyCode, String categoryFolder, List<String> category, String categoryId, String date, String exactTime, String merchantName, String name, String originalDescription, Boolean pending, String pendingTransactionId, String transactionId, String transactionType, String accountOwner, String authorizedDate, String transactionCode, String paymentChannel) {
+  private Transaction(String id, String overrideName, String memo, Integer importBatch, Temporal.DateTime importDate, String importSource, String plaidID, UserData userData, String account, Double amount, String isoCurrencyCode, String unofficialCurrencyCode, String categoryFolder, List<String> category, String categoryId, Temporal.Date date, Temporal.DateTime exactTime, String merchantName, String name, String originalDescription, Boolean pending, String pendingTransactionId, String transactionId, String transactionType, String accountOwner, String authorizedDate, String transactionCode, String paymentChannel) {
     this.id = id;
     this.overrideName = overrideName;
     this.memo = memo;
@@ -446,7 +447,7 @@ public final class Transaction implements Model {
     BuildStep overrideName(String overrideName);
     BuildStep memo(String memo);
     BuildStep importBatch(Integer importBatch);
-    BuildStep importDate(String importDate);
+    BuildStep importDate(Temporal.DateTime importDate);
     BuildStep importSource(String importSource);
     BuildStep plaidId(String plaidId);
     BuildStep isoCurrencyCode(String isoCurrencyCode);
@@ -454,8 +455,8 @@ public final class Transaction implements Model {
     BuildStep categoryFolder(String categoryFolder);
     BuildStep category(List<String> category);
     BuildStep categoryId(String categoryId);
-    BuildStep date(String date);
-    BuildStep exactTime(String exactTime);
+    BuildStep date(Temporal.Date date);
+    BuildStep exactTime(Temporal.DateTime exactTime);
     BuildStep merchantName(String merchantName);
     BuildStep name(String name);
     BuildStep originalDescription(String originalDescription);
@@ -478,7 +479,7 @@ public final class Transaction implements Model {
     private String overrideName;
     private String memo;
     private Integer importBatch;
-    private String importDate;
+    private Temporal.DateTime importDate;
     private String importSource;
     private String plaidID;
     private String isoCurrencyCode;
@@ -486,8 +487,8 @@ public final class Transaction implements Model {
     private String categoryFolder;
     private List<String> category;
     private String categoryId;
-    private String date;
-    private String exactTime;
+    private Temporal.Date date;
+    private Temporal.DateTime exactTime;
     private String merchantName;
     private String name;
     private String originalDescription;
@@ -574,7 +575,7 @@ public final class Transaction implements Model {
     }
     
     @Override
-     public BuildStep importDate(String importDate) {
+     public BuildStep importDate(Temporal.DateTime importDate) {
         this.importDate = importDate;
         return this;
     }
@@ -622,13 +623,13 @@ public final class Transaction implements Model {
     }
     
     @Override
-     public BuildStep date(String date) {
+     public BuildStep date(Temporal.Date date) {
         this.date = date;
         return this;
     }
     
     @Override
-     public BuildStep exactTime(String exactTime) {
+     public BuildStep exactTime(Temporal.DateTime exactTime) {
         this.exactTime = exactTime;
         return this;
     }
@@ -722,7 +723,7 @@ public final class Transaction implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String overrideName, String memo, Integer importBatch, String importDate, String importSource, String plaidId, UserData userData, String account, Double amount, String isoCurrencyCode, String unofficialCurrencyCode, String categoryFolder, List<String> category, String categoryId, String date, String exactTime, String merchantName, String name, String originalDescription, Boolean pending, String pendingTransactionId, String transactionId, String transactionType, String accountOwner, String authorizedDate, String transactionCode, String paymentChannel) {
+    private CopyOfBuilder(String id, String overrideName, String memo, Integer importBatch, Temporal.DateTime importDate, String importSource, String plaidId, UserData userData, String account, Double amount, String isoCurrencyCode, String unofficialCurrencyCode, String categoryFolder, List<String> category, String categoryId, Temporal.Date date, Temporal.DateTime exactTime, String merchantName, String name, String originalDescription, Boolean pending, String pendingTransactionId, String transactionId, String transactionType, String accountOwner, String authorizedDate, String transactionCode, String paymentChannel) {
       super.id(id);
       super.userData(userData)
         .account(account)
@@ -784,7 +785,7 @@ public final class Transaction implements Model {
     }
     
     @Override
-     public CopyOfBuilder importDate(String importDate) {
+     public CopyOfBuilder importDate(Temporal.DateTime importDate) {
       return (CopyOfBuilder) super.importDate(importDate);
     }
     
@@ -824,12 +825,12 @@ public final class Transaction implements Model {
     }
     
     @Override
-     public CopyOfBuilder date(String date) {
+     public CopyOfBuilder date(Temporal.Date date) {
       return (CopyOfBuilder) super.date(date);
     }
     
     @Override
-     public CopyOfBuilder exactTime(String exactTime) {
+     public CopyOfBuilder exactTime(Temporal.DateTime exactTime) {
       return (CopyOfBuilder) super.exactTime(exactTime);
     }
     

@@ -4,32 +4,94 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.view.get
 import androidx.core.view.size
+import com.amplifyframework.core.model.temporal.Temporal
 import com.amplifyframework.datastore.generated.model.Transaction
 import com.maxdreher.ArrayAdapterBase
 import com.maxdreher.extensions.IContextBase
 import com.maxdreher.intermediate.*
+import com.maxdreher.intermediate.ExtensionFunctions.Date.toView
+import kotlinx.coroutines.*
 
-class DayOfTransactionAdapter(private val cb: IContextBase) :
-    ArrayAdapterBase<Map.Entry<String, List<Transaction>>>(
+class DayOfTransactionAdapter(
+    private val cb: IContextBase,
+    private val loadAnotherBatch: () -> Unit,
+    private val onTransactionClick: (Transaction) -> Unit
+) :
+    ArrayAdapterBase<Map.Entry<Temporal.Date, MutableList<Transaction>>?>(
         cb.getContext()!!,
         R.layout.day_of_transactions
-    ) {
+    ), IContextBase {
+
+    var showLoadMore = true
+        set(value) {
+            if (field != value) {
+                if (value) addNull()
+                else remove(null)
+                field = value
+            }
+        }
+
+    override fun add(`object`: Map.Entry<Temporal.Date, MutableList<Transaction>>?) {
+        call(object {})
+        throw UnsupportedOperationException("Cannot add only one item")
+    }
+
+    override fun addAll(collection: Collection<Map.Entry<Temporal.Date, MutableList<Transaction>>?>) {
+        call(object {})
+        super.addAll(collection)
+        if (showLoadMore) {
+            addNull()
+        }
+        notifyDataSetChanged()
+    }
+
+    override fun addAll(vararg items: Map.Entry<Temporal.Date, MutableList<Transaction>>?) {
+        call(object {})
+        addAll(items.toCollection(mutableListOf()))
+    }
+
+    private fun addNull() {
+        call(object {})
+        GlobalScope.launch {
+            withContext(Dispatchers.Main) {
+                remove(null)
+                super.add(null)
+            }
+        }
+    }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         return super.getView(position, convertView, parent).apply {
             isClickable = false
 
-            val item = getItem(position)
-            findViewById<TextView>(R.id.day_of_transaction_date).text =
-                item?.key?.toAmpDate()?.toView()
-
+            val item: Map.Entry<Temporal.Date, List<Transaction>>? = getItem(position)
+            val date = findViewById<RelativeLayout>(R.id.date)
             val linearLayout = findViewById<LinearLayout>(R.id.transactions)
+            val loadMore = findViewById<TextView>(R.id.load_more)
 
-            item?.value?.let { transactions ->
-                for ((i, transaction) in transactions.withIndex()) {
+            fun setVis(visibility: Int) {
+                listOf(date, linearLayout).forEach { it.visibility = visibility }
+            }
+
+            if (item == null) {
+                setVis(View.GONE)
+                loadMore.visibility = View.VISIBLE
+                setupListener(loadMore)
+                return@apply
+            } else {
+                loadMore.visibility = View.GONE
+                setVis(View.VISIBLE)
+            }
+
+            val dateValue = item.key.toDate().toView()
+            TransactionLoader.loadDate(date, dateValue)
+
+            item.value.let { transactions ->
+                for ((i, t) in transactions.withIndex()) {
                     val transactionView: View =
                         if (i < linearLayout.size) {
                             linearLayout[i]
@@ -40,46 +102,18 @@ class DayOfTransactionAdapter(private val cb: IContextBase) :
                                     linearLayout.addView(it)
                                 }
                         }
-                    updateTransaction(cb, transactionView, transaction)
+                    TransactionLoader.loadTransaction(transactionView, t)
+                    transactionView.setOnClickListener {
+                        onTransactionClick(t)
+                    }
                 }
             }
         }
     }
 
-    private fun updateTransaction(
-        cb: IContextBase,
-        v: View,
-        t: Transaction
-    ) {
-        v.apply {
-            setOnClickListener {
-                cb.toast("Clicked ${t.getCombinedName()}")
-            }
-            findViewById<TextView>(R.id.name).apply {
-                text = t.getCombinedName()
-            }
-            findViewById<TextView>(R.id.amount).apply {
-                text = t.amountAsString()
-                val color =
-                    if (t.amount <= 0) R.color.transaction_credit
-                    else R.color.transaction_debit
-                setTextColor(context.resources.getColor(color))
-            }
-            findViewById<TextView>(R.id.category).apply {
-                text = t.categoryFolder.let { folder ->
-                    if (folder?.isNotEmpty() == true)
-                        folder
-                    else
-                        t.category?.joinToString(",") ?: ""
-                }
-            }
-            findViewById<TextView>(R.id.spent_from).apply {
-//                text = t
-            }
-            findViewById<TextView>(R.id.pending).apply {
-                visibility =
-                    if (t.pending) View.VISIBLE else View.INVISIBLE
-            }
+    private fun setupListener(textView: TextView) {
+        textView.setOnClickListener {
+            loadAnotherBatch()
         }
     }
 }

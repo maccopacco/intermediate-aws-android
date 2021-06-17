@@ -7,11 +7,21 @@ import android.view.Gravity
 import android.view.View
 import android.widget.EditText
 import com.amplifyframework.core.model.Model
+import com.amplifyframework.core.model.query.Where
+import com.amplifyframework.core.model.temporal.Temporal
+import com.amplifyframework.datastore.DataStoreException
 import com.amplifyframework.datastore.generated.model.*
 import com.google.android.gms.tasks.Task
 import com.maxdreher.*
+import com.maxdreher.Util.Date.toAmplifyDate
+import com.maxdreher.Util.Date.toAmplifyDateTime
+import com.maxdreher.Util.Date.unit
+import com.maxdreher.Util.get
 import com.maxdreher.amphelper.suspense.Suspend
 import com.maxdreher.intermediate.*
+import com.maxdreher.intermediate.ExtensionFunctions.Models.basicData
+import com.maxdreher.intermediate.ExtensionFunctions.Models.getLastDate
+import com.maxdreher.intermediate.ExtensionFunctions.Models.toIAccount
 import com.maxdreher.intermediate.keys.Keys
 import com.maxdreher.intermediate.util.IAccount
 import com.maxdreher.intermediate.util.PlaidToAmp
@@ -29,8 +39,9 @@ import com.plaid.link.result.LinkSuccess
 import kotlinx.coroutines.*
 import retrofit2.Response
 import java.util.*
-import java.util.concurrent.TimeUnit
+import java.util.concurrent.TimeUnit.DAYS
 import java.util.concurrent.atomic.AtomicInteger
+import kotlin.system.measureTimeMillis
 
 interface IPlaidBase : IGoogleBase {
 
@@ -167,7 +178,7 @@ interface IPlaidBase : IGoogleBase {
                 .user(user)
                 .plaidAccessToken(token)
                 .institutionId(institutionID)
-                .lastTouchedTime(Util.getSaneDate())
+                .lastTouchedTime(Date().toAmplifyDateTime())
                 .build().save(this) {
                     log("Bank created/saved")
                     MyUser.bank = it
@@ -209,7 +220,7 @@ interface IPlaidBase : IGoogleBase {
                     } else {
                         etoast("Response to get Plaid Institution unsuccessful\n$response")
                     }
-                }, { etoast("Plaid callback failed\n${it.message}") }))
+                }, { ex -> etoast("Plaid callback failed\n${ex.get()}") }))
         } ?: loge("No bank found")
     }
 
@@ -268,10 +279,11 @@ interface IPlaidBase : IGoogleBase {
             Transaction::class.query(
                 Transaction.USER_DATA.eq(data.id),
                 { list: List<Transaction> ->
-                    val opt: String? = userData.oldestPendingTime
+                    val opt: Temporal.Date? = userData.oldestPendingDate
                     val ob: Int? = userData.maxImportBatch
-                    val nopt: String? = list.filter { it.pending }
+                    val nopt: Temporal.Date? = list.filter { it.pending }
                         .minWithOrNull { a, b -> a.date.compareTo(b.date) }?.date
+
                     val nob: Int? = list.filter { it.importBatch != null }.maxWithOrNull { a, b ->
                         a.importBatch.compareTo(b.importBatch)
                     }?.importBatch
@@ -285,7 +297,7 @@ interface IPlaidBase : IGoogleBase {
                     if (updateBatch || updateMinPendingTime) {
                         data.copyOfBuilder().run {
                             if (updateMinPendingTime) {
-                                oldestPendingTime(nopt)
+                                oldestPendingDate(nopt)
                             } else this
                         }.run {
                             if (updateBatch) {
@@ -295,14 +307,13 @@ interface IPlaidBase : IGoogleBase {
                             log("Saved ${UserData::class.simpleName} from $src")
                             findBankAndUserData()
                         }, {
-                            loge("Could not save new UserData!${it.message}")
-                            it.printStackTrace()
+                            loge("Could not save new UserData! ${it.get()}")
                         })
                     } else {
                         log("Found nothing new")
                     }
                 },
-                { error("Could not get TransactionWrappers");it.printStackTrace() }
+                { error("Could not get Transactions ${it.get()}") }
             )
         }
     }
@@ -314,15 +325,38 @@ interface IPlaidBase : IGoogleBase {
             return
         }
         GlobalScope.launch {
-            val accounts = getAccounts(userData)
+
+            val accountsJob = async {
+                timeSuspend("get accounts") {
+                    getAccounts(userData)
+                }
+            }
+
+            //Gotta pay for dis one
+//            val refreshJob = async {
+//                timeSuspend("Plaid Refresh") {
+//                    val plaidAccessToken = userData.bank.plaidAccessToken
+//                    log("Refreshing for $plaidAccessToken")
+//                    plaidClient.service()
+//                        .transactionsRefresh(TransactionsRefreshRequest(plaidAccessToken))
+//                        .execute()
+//                }
+//            }
+
+            val accounts = accountsJob.await()
             if (accounts == null) {
                 loge("Could not get accounts")
                 return@launch
             } else {
                 log("Got accounts")
             }
+//            val refresh = refreshJob.await()
+//            log("Refresh successful: ${refresh.isSuccessful} ${refresh.errorBody()?.string() ?: ""}")
+
             launch {
-                updateTransactions(userData, accounts)
+                timeSuspend("update transactions") {
+                    updateTransactions(userData, accounts)
+                }
             }
             launch {
                 updateBalances(userData, accounts)
@@ -330,27 +364,21 @@ interface IPlaidBase : IGoogleBase {
         }
     }
 
-    suspend fun getAccounts(userData: UserData? = MyUser.data): List<Account>? {
+    suspend fun getAccounts(userData: UserData): List<Account>? {
         call(object {})
-        if (userData == null) {
-            loge("No user data")
-            return null
-        }
         return Account::class.query(Account.USER_DATA.eq(userData.id))
             .getOr {
-                loge("Could not get accounts")
-                it.printStackTrace()
+                loge("Could not get accounts\n${it.get()}")
             }
     }
 
-    fun updateBalancies() {
+    fun updateBalances() {
         call(object {})
         MyUser.data?.let { data ->
             Account::class.query(Account.USER_DATA.eq(data.id), {
                 updateBalances(data, it)
             }, {
-                log("Could not update balances: ${it.message}")
-                it.printStackTrace()
+                log("Could not update balances: ${it.get()}")
             })
         } ?: toast("No user data?")
     }
@@ -358,7 +386,7 @@ interface IPlaidBase : IGoogleBase {
 
     private fun updateBalances(userData: UserData, myAccounts: List<Account>) {
         call(object {})
-        val time = Util.getSaneDate()
+        val time = Date().toAmplifyDateTime()
         plaidClient.service()
             .accountsBalanceGet(AccountsBalanceGetRequest(userData.bank.plaidAccessToken))
             .enqueue(PlaidCallback({ response ->
@@ -377,8 +405,7 @@ interface IPlaidBase : IGoogleBase {
                                 .time(time).build()
 
                             bal.save({ log("Balance ${it.account.name} saved") }, {
-                                loge("Balance for ${bal.account.name} not saved")
-                                it.printStackTrace()
+                                loge("Balance for ${bal.account.name} not saved ${it.get()}")
                             })
                         }
                     }
@@ -386,41 +413,39 @@ interface IPlaidBase : IGoogleBase {
                     loge("Response not successful\n${response.message()}")
                 }
             }, {
-                loge("No response from Plaid\n${it.message}")
-                it.printStackTrace()
+                loge("No response from Plaid\n${it.get()}")
             }))
     }
 
     private suspend fun updateTransactions(userData: UserData, accounts: List<Account>) {
         call(object {})
-        val oldestDate: Date = userData.getLastDate() ?: let {
-            loge("Oldest date not valid!")
-            return
-        }
+        val oldestDate: Date = userData.getLastDate()
         val responseJob = GlobalScope.async {
             log("Getting Plaid response")
-            plaidClient.service().transactionsGet(
-                TransactionsGetRequest(
-                    userData.bank.plaidAccessToken,
-                    oldestDate,
-                    Date(Date().time + TimeUnit.DAYS.toMillis(3))
-                )
-            ).execute().apply {
-                log("Got Plaid response")
+            time("get Plaid response") {
+                plaidClient.service().transactionsGet(
+                    TransactionsGetRequest(
+                        userData.bank.plaidAccessToken,
+                        oldestDate,
+                        (3 unit DAYS).fromNow()
+                    )
+                ).execute()
             }
         }
 
         val transactionJob: Deferred<List<Transaction>?> = GlobalScope.async {
-            return@async Transaction::class.query(
-                Transaction.USER_DATA.eq(userData.id)
-                    .and(Transaction.DATE.ge(oldestDate.toAmpDate()))
-            ).getOr {
-                loge("Could not get transactions: ${it.message}\n${it.cause?.message}")
-                it.printStackTrace()
+            timeSuspend("get transactions") {
+                Transaction::class.query(
+                    Transaction.USER_DATA.eq(userData.id)
+                        .and(Transaction.DATE.ge(oldestDate.toAmplifyDate()))
+                ).getOr {
+                    loge("Could not get transactions: ${it.get()}")
+                }
             }
         }
         val response = responseJob.await()
         val transactions = transactionJob.await()
+
         if (!response.isSuccessful) {
             loge("Plaid response not successful ${response.errorBody()?.toString()}")
         } else if (transactions == null) {
@@ -429,43 +454,57 @@ interface IPlaidBase : IGoogleBase {
             log("Responses for update transactions looks good")
             val plaidTrans = response.body()!!.transactions
             val plaidAccounts = response.body()!!.accounts
-            if (plaidTrans == null) {
-                loge("Plaid transactions null")
-                return
+
+            log("Plaid transactions\n" +
+                    plaidTrans.joinToString("\n") {
+                        it.basicData()
+                    })
+            log("Transactions\n" +
+                    transactions.joinToString("\n") {
+                        it.basicData()
+                    })
+
+            val partition = plaidTrans.partition { plaidT ->
+                accounts.any { acc -> acc.plaidId == plaidT.accountId }
             }
-            log("Plaid transactions")
-            plaidTrans.forEach { log(it.basicData()) }
-            log("Transactions")
-            transactions.forEach { log(it.basicData()) }
 
-            val partition = plaidTrans.partition { pt ->
-                accounts.any { it.plaidId == pt.accountId }
+            val transactionsWithAccounts = partition.first
+            val transactionsNoAccount = partition.second
+
+            log("${transactionsWithAccounts.size} transactions with account already")
+            val assignValidAccounts = GlobalScope.async {
+                timeSuspend("assign transactions") {
+                    assign(transactionsWithAccounts, transactions, userData, accounts)
+                }
             }
 
-            val withAccountTransactions = partition.first
-            log("${withAccountTransactions.size} transactions with account already")
-            assign(withAccountTransactions, transactions, userData, accounts)
-
-            val noAccountTransactions = partition.second
-            log("${noAccountTransactions.size} transactions with no account")
-            val badAccountIDs = noAccountTransactions.map { it.accountId }
+            log("${transactionsNoAccount.size} transactions with no account")
+            val badAccountIDs = transactionsNoAccount.map { it.accountId }
             val accountsToCreate = plaidAccounts.filter { p -> badAccountIDs.contains(p.accountId) }
             log("${accountsToCreate.size} accounts to create")
 
-            val newAccounts =
-                createAccounts(userData, accountsToCreate.map { it.toIAccount() }) ?: return
-            listOf(
-                GlobalScope.async {
-                    assign(noAccountTransactions, transactions, userData, newAccounts)
-                },
-                GlobalScope.async {
-                    updateBalances(userData, newAccounts)
-                }
-            ).awaitAll()
+            val thingsToWaitFor = mutableListOf(assignValidAccounts)
+            if (accountsToCreate.isNotEmpty()) {
+                val newAccounts =
+                    timeSuspend("create new accounts") {
+                        createAccounts(
+                            userData,
+                            accountsToCreate.map { it.toIAccount() })
+                    } ?: return
+
+                thingsToWaitFor.addAll(
+                    listOf(GlobalScope.async {
+                        updateBalances(userData, newAccounts)
+                    }, GlobalScope.async {
+                        assign(transactionsNoAccount, transactions, userData, newAccounts)
+                    })
+                )
+            }
+            thingsToWaitFor.awaitAll()
         }
     }
 
-    private fun assign(
+    private suspend fun assign(
         plaidTransactions: List<TransactionsGetResponse.Transaction>,
         transactions: List<Transaction>,
         userData: UserData,
@@ -473,15 +512,17 @@ interface IPlaidBase : IGoogleBase {
     ) {
         call(object {})
         val count = AtomicInteger(0)
-        plaidTransactions.forEach { plaidT ->
-            updateTransactionFromPlaid(
-                transactions.find { it.plaidId == plaidT.transactionId },
-                plaidT,
-                userData,
-                accounts.find { plaidT.accountId == it.plaidId }!!,
-                count
-            )
-        }
+        plaidTransactions.map { plaidT ->
+            GlobalScope.async {
+                updateTransactionFromPlaid(
+                    transactions.find { it.plaidId == plaidT.transactionId },
+                    plaidT,
+                    userData,
+                    accounts.find { plaidT.accountId == it.plaidId }!!,
+                    count
+                )
+            }
+        }.awaitAll()
     }
 
     suspend fun createAccounts(
@@ -526,10 +567,10 @@ interface IPlaidBase : IGoogleBase {
     ) {
         call(object {})
         if (t == null) {
-            loge("New transaction found for ${plaid.basicData()}")
+            loge("New transaction fond for ${plaid.basicData()}")
             val list: List<Model> = PlaidToAmp.convert(plaid, account, userData)
             GlobalScope.launch {
-                Util.saveModels(this@IPlaidBase, list, saveCount.getAndIncrement())
+                saveModels(this@IPlaidBase, list, saveCount.getAndIncrement())
             }
         } else {
             val print = { res: String, error: Boolean ->
@@ -539,11 +580,9 @@ interface IPlaidBase : IGoogleBase {
                 print.invoke("Update required, pending status now ${plaid.pending}", true)
                 val newT = t.copyOfBuilder().pending(plaid.pending)
                     .build()
-                newT.save({},
-                    {
-                        loge("Could not update transaction ${newT.id}\n${it.message}")
-                        it.printStackTrace()
-                    })
+                newT.save({}, {
+                    loge("Could not update transaction ${newT.id}\n${it.get()}")
+                })
             } else {
                 print.invoke("Update not required", false)
             }

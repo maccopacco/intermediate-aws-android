@@ -178,7 +178,7 @@ mutation CreateBank(
         updatedAt
       }
       max_import_batch
-      oldest_pending_time
+      oldest_pending_date
       accounts {
         nextToken
         startedAt
@@ -241,7 +241,7 @@ mutation UpdateBank(
         updatedAt
       }
       max_import_batch
-      oldest_pending_time
+      oldest_pending_date
       accounts {
         nextToken
         startedAt
@@ -304,7 +304,7 @@ mutation DeleteBank(
         updatedAt
       }
       max_import_batch
-      oldest_pending_time
+      oldest_pending_date
       accounts {
         nextToken
         startedAt
@@ -352,7 +352,7 @@ mutation CreateUserData(
       userData {
         id
         max_import_batch
-        oldest_pending_time
+        oldest_pending_date
         _version
         _deleted
         _lastChangedAt
@@ -366,7 +366,7 @@ mutation CreateUserData(
       updatedAt
     }
     max_import_batch
-    oldest_pending_time
+    oldest_pending_date
     accounts {
       items {
         id
@@ -453,7 +453,7 @@ mutation UpdateUserData(
       userData {
         id
         max_import_batch
-        oldest_pending_time
+        oldest_pending_date
         _version
         _deleted
         _lastChangedAt
@@ -467,7 +467,7 @@ mutation UpdateUserData(
       updatedAt
     }
     max_import_batch
-    oldest_pending_time
+    oldest_pending_date
     accounts {
       items {
         id
@@ -554,7 +554,7 @@ mutation DeleteUserData(
       userData {
         id
         max_import_batch
-        oldest_pending_time
+        oldest_pending_date
         _version
         _deleted
         _lastChangedAt
@@ -568,7 +568,7 @@ mutation DeleteUserData(
       updatedAt
     }
     max_import_batch
-    oldest_pending_time
+    oldest_pending_date
     accounts {
       items {
         id
@@ -654,7 +654,7 @@ mutation CreateAccount(
         updatedAt
       }
       max_import_batch
-      oldest_pending_time
+      oldest_pending_date
       accounts {
         nextToken
         startedAt
@@ -716,7 +716,7 @@ mutation UpdateAccount(
         updatedAt
       }
       max_import_batch
-      oldest_pending_time
+      oldest_pending_date
       accounts {
         nextToken
         startedAt
@@ -778,7 +778,7 @@ mutation DeleteAccount(
         updatedAt
       }
       max_import_batch
-      oldest_pending_time
+      oldest_pending_date
       accounts {
         nextToken
         startedAt
@@ -829,7 +829,7 @@ mutation CreateBalance(
       userData {
         id
         max_import_batch
-        oldest_pending_time
+        oldest_pending_date
         _version
         _deleted
         _lastChangedAt
@@ -870,7 +870,7 @@ mutation UpdateBalance(
       userData {
         id
         max_import_batch
-        oldest_pending_time
+        oldest_pending_date
         _version
         _deleted
         _lastChangedAt
@@ -911,7 +911,7 @@ mutation DeleteBalance(
       userData {
         id
         max_import_batch
-        oldest_pending_time
+        oldest_pending_date
         _version
         _deleted
         _lastChangedAt
@@ -966,7 +966,7 @@ mutation CreateTransaction(
         updatedAt
       }
       max_import_batch
-      oldest_pending_time
+      oldest_pending_date
       accounts {
         nextToken
         startedAt
@@ -1136,7 +1136,7 @@ mutation UpdateTransaction(
         updatedAt
       }
       max_import_batch
-      oldest_pending_time
+      oldest_pending_date
       accounts {
         nextToken
         startedAt
@@ -1306,7 +1306,7 @@ mutation DeleteTransaction(
         updatedAt
       }
       max_import_batch
-      oldest_pending_time
+      oldest_pending_date
       accounts {
         nextToken
         startedAt
@@ -1465,7 +1465,7 @@ mutation CreatePaymentMeta(
       userData {
         id
         max_import_batch
-        oldest_pending_time
+        oldest_pending_date
         _version
         _deleted
         _lastChangedAt
@@ -1562,7 +1562,7 @@ mutation UpdatePaymentMeta(
       userData {
         id
         max_import_batch
-        oldest_pending_time
+        oldest_pending_date
         _version
         _deleted
         _lastChangedAt
@@ -1659,7 +1659,7 @@ mutation DeletePaymentMeta(
       userData {
         id
         max_import_batch
-        oldest_pending_time
+        oldest_pending_date
         _version
         _deleted
         _lastChangedAt
@@ -1756,7 +1756,7 @@ mutation CreateLocation(
       userData {
         id
         max_import_batch
-        oldest_pending_time
+        oldest_pending_date
         _version
         _deleted
         _lastChangedAt
@@ -1853,7 +1853,7 @@ mutation UpdateLocation(
       userData {
         id
         max_import_batch
-        oldest_pending_time
+        oldest_pending_date
         _version
         _deleted
         _lastChangedAt
@@ -1950,7 +1950,7 @@ mutation DeleteLocation(
       userData {
         id
         max_import_batch
-        oldest_pending_time
+        oldest_pending_date
         _version
         _deleted
         _lastChangedAt

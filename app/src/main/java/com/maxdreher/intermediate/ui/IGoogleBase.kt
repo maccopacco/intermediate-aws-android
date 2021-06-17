@@ -15,6 +15,7 @@ import com.amplifyframework.datastore.generated.model.UserData
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.material.navigation.NavigationView
 import com.maxdreher.Util
+import com.maxdreher.Util.get
 import com.maxdreher.extensions.IGoogleBaseBase
 import com.maxdreher.intermediate.*
 import com.maxdreher.intermediate.keys.Keys
@@ -77,8 +78,7 @@ interface IGoogleBase : IGoogleBaseBase {
                         }
                     }
                 }, {
-                    error("Cannot get ${User::class.java.simpleName}s from Amplify\n${it.message}")
-                    it.printStackTrace()
+                    error("Cannot get ${User::class.java.simpleName}s from Amplify\n${it.get()}")
                 })
         } ?: run { MyUser.setNull(); loge("Account null") }
     }
@@ -140,9 +140,11 @@ interface IGoogleBase : IGoogleBaseBase {
                                 { userData ->
                                     log("Got bank, checking user data")
                                     checkUserData(primaryBank, userData)
-                                }, {
-                                    error("Could not query ${UserData::class.java.simpleName} for ${Bank::class.java.simpleName}")
-                                    it.printStackTrace()
+                                }, { ex ->
+                                    error(
+                                        ("Could not query ${UserData::class.java.simpleName} for " +
+                                                "${Bank::class.java.simpleName}\n${ex.get()}")
+                                    )
                                 })
                         }
                     } else {
@@ -210,8 +212,7 @@ interface IGoogleBase : IGoogleBaseBase {
             onUserDataFound(bank)
             log("New ${UserData::class.java.simpleName} saved")
         }, {
-            error("Could not save new ${UserData::class.java.simpleName}\n${it.message}")
-            it.printStackTrace()
+            error("Could not save new ${UserData::class.java.simpleName}\n${it.get()}")
             MyUser.setNull()
             signout()
         })
@@ -278,6 +279,6 @@ interface IGoogleBase : IGoogleBaseBase {
     }
 
     fun notSignedIn() {
-        notSignedIn()
+        toast("Not signed in")
     }
 }

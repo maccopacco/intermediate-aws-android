@@ -157,7 +157,7 @@ subscription OnCreateBank {
         updatedAt
       }
       max_import_batch
-      oldest_pending_time
+      oldest_pending_date
       accounts {
         nextToken
         startedAt
@@ -217,7 +217,7 @@ subscription OnUpdateBank {
         updatedAt
       }
       max_import_batch
-      oldest_pending_time
+      oldest_pending_date
       accounts {
         nextToken
         startedAt
@@ -277,7 +277,7 @@ subscription OnDeleteBank {
         updatedAt
       }
       max_import_batch
-      oldest_pending_time
+      oldest_pending_date
       accounts {
         nextToken
         startedAt
@@ -322,7 +322,7 @@ subscription OnCreateUserData {
       userData {
         id
         max_import_batch
-        oldest_pending_time
+        oldest_pending_date
         _version
         _deleted
         _lastChangedAt
@@ -336,7 +336,7 @@ subscription OnCreateUserData {
       updatedAt
     }
     max_import_batch
-    oldest_pending_time
+    oldest_pending_date
     accounts {
       items {
         id
@@ -420,7 +420,7 @@ subscription OnUpdateUserData {
       userData {
         id
         max_import_batch
-        oldest_pending_time
+        oldest_pending_date
         _version
         _deleted
         _lastChangedAt
@@ -434,7 +434,7 @@ subscription OnUpdateUserData {
       updatedAt
     }
     max_import_batch
-    oldest_pending_time
+    oldest_pending_date
     accounts {
       items {
         id
@@ -518,7 +518,7 @@ subscription OnDeleteUserData {
       userData {
         id
         max_import_batch
-        oldest_pending_time
+        oldest_pending_date
         _version
         _deleted
         _lastChangedAt
@@ -532,7 +532,7 @@ subscription OnDeleteUserData {
       updatedAt
     }
     max_import_batch
-    oldest_pending_time
+    oldest_pending_date
     accounts {
       items {
         id
@@ -615,7 +615,7 @@ subscription OnCreateAccount {
         updatedAt
       }
       max_import_batch
-      oldest_pending_time
+      oldest_pending_date
       accounts {
         nextToken
         startedAt
@@ -674,7 +674,7 @@ subscription OnUpdateAccount {
         updatedAt
       }
       max_import_batch
-      oldest_pending_time
+      oldest_pending_date
       accounts {
         nextToken
         startedAt
@@ -733,7 +733,7 @@ subscription OnDeleteAccount {
         updatedAt
       }
       max_import_batch
-      oldest_pending_time
+      oldest_pending_date
       accounts {
         nextToken
         startedAt
@@ -781,7 +781,7 @@ subscription OnCreateBalance {
       userData {
         id
         max_import_batch
-        oldest_pending_time
+        oldest_pending_date
         _version
         _deleted
         _lastChangedAt
@@ -819,7 +819,7 @@ subscription OnUpdateBalance {
       userData {
         id
         max_import_batch
-        oldest_pending_time
+        oldest_pending_date
         _version
         _deleted
         _lastChangedAt
@@ -857,7 +857,7 @@ subscription OnDeleteBalance {
       userData {
         id
         max_import_batch
-        oldest_pending_time
+        oldest_pending_date
         _version
         _deleted
         _lastChangedAt
@@ -909,7 +909,7 @@ subscription OnCreateTransaction {
         updatedAt
       }
       max_import_batch
-      oldest_pending_time
+      oldest_pending_date
       accounts {
         nextToken
         startedAt
@@ -1076,7 +1076,7 @@ subscription OnUpdateTransaction {
         updatedAt
       }
       max_import_batch
-      oldest_pending_time
+      oldest_pending_date
       accounts {
         nextToken
         startedAt
@@ -1243,7 +1243,7 @@ subscription OnDeleteTransaction {
         updatedAt
       }
       max_import_batch
-      oldest_pending_time
+      oldest_pending_date
       accounts {
         nextToken
         startedAt
@@ -1399,7 +1399,7 @@ subscription OnCreatePaymentMeta {
       userData {
         id
         max_import_batch
-        oldest_pending_time
+        oldest_pending_date
         _version
         _deleted
         _lastChangedAt
@@ -1493,7 +1493,7 @@ subscription OnUpdatePaymentMeta {
       userData {
         id
         max_import_batch
-        oldest_pending_time
+        oldest_pending_date
         _version
         _deleted
         _lastChangedAt
@@ -1587,7 +1587,7 @@ subscription OnDeletePaymentMeta {
       userData {
         id
         max_import_batch
-        oldest_pending_time
+        oldest_pending_date
         _version
         _deleted
         _lastChangedAt
@@ -1681,7 +1681,7 @@ subscription OnCreateLocation {
       userData {
         id
         max_import_batch
-        oldest_pending_time
+        oldest_pending_date
         _version
         _deleted
         _lastChangedAt
@@ -1775,7 +1775,7 @@ subscription OnUpdateLocation {
       userData {
         id
         max_import_batch
-        oldest_pending_time
+        oldest_pending_date
         _version
         _deleted
         _lastChangedAt
@@ -1869,7 +1869,7 @@ subscription OnDeleteLocation {
       userData {
         id
         max_import_batch
-        oldest_pending_time
+        oldest_pending_date
         _version
         _deleted
         _lastChangedAt

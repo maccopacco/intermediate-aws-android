@@ -1,6 +1,7 @@
 package com.amplifyframework.datastore.generated.model;
 
 import com.amplifyframework.core.model.annotations.BelongsTo;
+import com.amplifyframework.core.model.temporal.Temporal;
 import com.amplifyframework.core.model.annotations.HasOne;
 
 import java.util.List;
@@ -34,7 +35,7 @@ public final class Bank implements Model {
   private final @ModelField(targetType="String", isRequired = true) String institution_id;
   private final @ModelField(targetType="String") String institution_name;
   private final @ModelField(targetType="String") String institution_logo;
-  private final @ModelField(targetType="String", isRequired = true) String last_touched_time;
+  private final @ModelField(targetType="AWSDateTime", isRequired = true) Temporal.DateTime last_touched_time;
   private final @ModelField(targetType="UserData") @HasOne(associatedWith = "bank", type = UserData.class) UserData userData = null;
   public String getId() {
       return id;
@@ -60,7 +61,7 @@ public final class Bank implements Model {
       return institution_logo;
   }
   
-  public String getLastTouchedTime() {
+  public Temporal.DateTime getLastTouchedTime() {
       return last_touched_time;
   }
   
@@ -68,7 +69,7 @@ public final class Bank implements Model {
       return userData;
   }
   
-  private Bank(String id, User user, String plaid_access_token, String institution_id, String institution_name, String institution_logo, String last_touched_time) {
+  private Bank(String id, User user, String plaid_access_token, String institution_id, String institution_name, String institution_logo, Temporal.DateTime last_touched_time) {
     this.id = id;
     this.user = user;
     this.plaid_access_token = plaid_access_token;
@@ -184,7 +185,7 @@ public final class Bank implements Model {
   
 
   public interface LastTouchedTimeStep {
-    BuildStep lastTouchedTime(String lastTouchedTime);
+    BuildStep lastTouchedTime(Temporal.DateTime lastTouchedTime);
   }
   
 
@@ -201,7 +202,7 @@ public final class Bank implements Model {
     private User user;
     private String plaid_access_token;
     private String institution_id;
-    private String last_touched_time;
+    private Temporal.DateTime last_touched_time;
     private String institution_name;
     private String institution_logo;
     @Override
@@ -240,7 +241,7 @@ public final class Bank implements Model {
     }
     
     @Override
-     public BuildStep lastTouchedTime(String lastTouchedTime) {
+     public BuildStep lastTouchedTime(Temporal.DateTime lastTouchedTime) {
         Objects.requireNonNull(lastTouchedTime);
         this.last_touched_time = lastTouchedTime;
         return this;
@@ -281,7 +282,7 @@ public final class Bank implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, User user, String plaidAccessToken, String institutionId, String institutionName, String institutionLogo, String lastTouchedTime) {
+    private CopyOfBuilder(String id, User user, String plaidAccessToken, String institutionId, String institutionName, String institutionLogo, Temporal.DateTime lastTouchedTime) {
       super.id(id);
       super.user(user)
         .plaidAccessToken(plaidAccessToken)
@@ -307,7 +308,7 @@ public final class Bank implements Model {
     }
     
     @Override
-     public CopyOfBuilder lastTouchedTime(String lastTouchedTime) {
+     public CopyOfBuilder lastTouchedTime(Temporal.DateTime lastTouchedTime) {
       return (CopyOfBuilder) super.lastTouchedTime(lastTouchedTime);
     }
     
