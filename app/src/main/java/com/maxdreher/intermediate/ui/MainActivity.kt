@@ -26,8 +26,11 @@ import com.maxdreher.extensions.ActivityBase
 import com.maxdreher.intermediate.BuildConfig
 import com.maxdreher.intermediate.MyUser
 import com.maxdreher.intermediate.R
+import com.maxdreher.intermediate.databinding.ActivityMainBinding
 
-class MainActivity : ActivityBase(R.layout.activity_main), IPlaidBase {
+class MainActivity :
+    ActivityBase<ActivityMainBinding>(ActivityMainBinding::class.java),
+    IPlaidBase {
 
     override val activity: Activity = this
 

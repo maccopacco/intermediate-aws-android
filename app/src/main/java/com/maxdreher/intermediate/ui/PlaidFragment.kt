@@ -14,12 +14,12 @@ import com.amplifyframework.datastore.generated.model.Transaction
 import com.maxdreher.AmpGson
 import com.maxdreher.Util.Date.toAmplifyDate
 import com.maxdreher.Util.Date.unit
-import com.maxdreher.Util.buttonToListener
 import com.maxdreher.Util.get
 import com.maxdreher.extensions.FragmentBase
 import com.maxdreher.intermediate.ExtensionFunctions.Models.basicData
 import com.maxdreher.intermediate.MyUser
 import com.maxdreher.intermediate.R
+import com.maxdreher.intermediate.databinding.FragmentPlaidBinding
 import com.maxdreher.intermediate.uihelpers.TransactionViewer
 import com.maxdreher.query
 import kotlinx.coroutines.*
@@ -27,7 +27,9 @@ import java.util.*
 import java.util.concurrent.TimeUnit.*
 
 
-class PlaidFragment : FragmentBase(R.layout.fragment_plaid), IPlaidBase {
+class PlaidFragment :
+    FragmentBase<FragmentPlaidBinding>(FragmentPlaidBinding::class.java),
+    IPlaidBase {
 
     companion object {
         private var data: Bundle? = null
@@ -74,6 +76,7 @@ class PlaidFragment : FragmentBase(R.layout.fragment_plaid), IPlaidBase {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         view.apply {
             viewer = TransactionViewer(
                 listView = findViewById(R.id.plaid_view_listview),
@@ -95,15 +98,13 @@ class PlaidFragment : FragmentBase(R.layout.fragment_plaid), IPlaidBase {
                     loadFromBundle(it)
                 }
             }
+            binding.addItems.setOnClickListener {
+                update()
+            }
 
-            buttonToListener(
-                R.id.add_items to {
-                    update()
-                },
-                R.id.remove_items to {
-                    clear()
-                }
-            )
+            binding.removeItems.setOnClickListener {
+                clear()
+            }
         }
     }
 

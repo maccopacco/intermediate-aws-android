@@ -28,8 +28,6 @@ import kotlinx.coroutines.withContext
 
 
 interface IGoogleBase : IGoogleBaseBase {
-    companion object {
-    }
 
     override val GOOGLE_REQUEST_CODE: Int
         get() = RequestCode.GOOGLE_SIGNIN_CODE

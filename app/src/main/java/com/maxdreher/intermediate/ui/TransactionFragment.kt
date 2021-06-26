@@ -8,17 +8,22 @@ import com.maxdreher.Util.Date.toDateTime
 import com.maxdreher.Util.Date.toSimpleDate
 import com.maxdreher.extensions.FragmentBase
 import com.maxdreher.intermediate.R
+import com.maxdreher.intermediate.databinding.TransactionFragmentBinding
 import com.maxdreher.intermediate.uihelpers.TransactionLoader
 
-class TransactionFragment : FragmentBase(R.layout.transaction_fragment) {
+class TransactionFragment :
+    FragmentBase<TransactionFragmentBinding>(TransactionFragmentBinding::class.java) {
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.getString("Transaction")?.let { string ->
 
             val t = AmpGson.deserialize().fromJson(string, Transaction::class.java)
-            alert("Debug",
+            alert(
+                "Debug",
                 "Raw: ${t.date}" +
-                        "\nMy: ${t.date.toDate().toDateTime()}")
+                        "\nMy: ${t.date.toDate().toDateTime()}"
+            )
             TransactionLoader.loadTransaction(view, t)
             TransactionLoader.loadDate(view.findViewById(R.id.date), t)
             TransactionLoader.wrapTitle(view)
