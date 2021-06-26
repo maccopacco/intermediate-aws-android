@@ -7,20 +7,16 @@ import android.view.Gravity
 import android.view.View
 import android.widget.EditText
 import com.amplifyframework.core.model.Model
-import com.amplifyframework.core.model.query.Where
 import com.amplifyframework.core.model.temporal.Temporal
-import com.amplifyframework.datastore.DataStoreException
 import com.amplifyframework.datastore.generated.model.*
 import com.google.android.gms.tasks.Task
 import com.maxdreher.*
-import com.maxdreher.Util.Date.toAmplifyDate
 import com.maxdreher.Util.Date.toAmplifyDateTime
 import com.maxdreher.Util.Date.unit
 import com.maxdreher.Util.get
 import com.maxdreher.amphelper.suspense.Suspend
 import com.maxdreher.intermediate.*
 import com.maxdreher.intermediate.ExtensionFunctions.Models.basicData
-import com.maxdreher.intermediate.ExtensionFunctions.Models.getLastDate
 import com.maxdreher.intermediate.ExtensionFunctions.Models.toIAccount
 import com.maxdreher.intermediate.keys.Keys
 import com.maxdreher.intermediate.util.IAccount
@@ -41,7 +37,6 @@ import retrofit2.Response
 import java.util.*
 import java.util.concurrent.TimeUnit.DAYS
 import java.util.concurrent.atomic.AtomicInteger
-import kotlin.system.measureTimeMillis
 
 interface IPlaidBase : IGoogleBase {
 
@@ -325,7 +320,6 @@ interface IPlaidBase : IGoogleBase {
             return
         }
         GlobalScope.launch {
-
             val accountsJob = async {
                 timeSuspend("get accounts") {
                     getAccounts(userData)
@@ -419,14 +413,16 @@ interface IPlaidBase : IGoogleBase {
 
     private suspend fun updateTransactions(userData: UserData, accounts: List<Account>) {
         call(object {})
-        val oldestDate: Date = userData.getLastDate()
+//        val oldestDate: Date = userData.getLastDate()
+//        log("Oldest date: $oldestDate")
         val responseJob = GlobalScope.async {
             log("Getting Plaid response")
             time("get Plaid response") {
                 plaidClient.service().transactionsGet(
                     TransactionsGetRequest(
                         userData.bank.plaidAccessToken,
-                        oldestDate,
+                        Date(0),
+//                        oldestDate + ((3 * 7) unit DAYS)
                         (3 unit DAYS).fromNow()
                     )
                 ).execute()
@@ -437,7 +433,7 @@ interface IPlaidBase : IGoogleBase {
             timeSuspend("get transactions") {
                 Transaction::class.query(
                     Transaction.USER_DATA.eq(userData.id)
-                        .and(Transaction.DATE.ge(oldestDate.toAmplifyDate()))
+//                        .and(Transaction.DATE.ge(oldestDate.toAmplifyDate()))
                 ).getOr {
                     loge("Could not get transactions: ${it.get()}")
                 }
@@ -455,11 +451,11 @@ interface IPlaidBase : IGoogleBase {
             val plaidTrans = response.body()!!.transactions
             val plaidAccounts = response.body()!!.accounts
 
-            log("Plaid transactions\n" +
+            log("Plaid transactions (${plaidTrans.size})\n" +
                     plaidTrans.joinToString("\n") {
                         it.basicData()
                     })
-            log("Transactions\n" +
+            log("Transactions (${transactions.size})\n" +
                     transactions.joinToString("\n") {
                         it.basicData()
                     })
@@ -569,9 +565,9 @@ interface IPlaidBase : IGoogleBase {
         if (t == null) {
             loge("New transaction fond for ${plaid.basicData()}")
             val list: List<Model> = PlaidToAmp.convert(plaid, account, userData)
-            GlobalScope.launch {
-                saveModels(this@IPlaidBase, list, saveCount.getAndIncrement())
-            }
+//            GlobalScope.launch {
+//                saveModels(this@IPlaidBase, list, saveCount.getAndIncrement())
+//            }
         } else {
             val print = { res: String, error: Boolean ->
                 log("Match found for ${plaid.basicData()}, $res", error)
