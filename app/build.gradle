@@ -3,6 +3,8 @@ plugins {
     id 'kotlin-android'
 }
 
+ apply plugin: 'com.google.gms.google-services'  // Google Services plugin
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
@@ -34,9 +36,18 @@ android {
         implementation 'com.plaid:plaid-java:8.1.0'
 
         // Amplify core dependency
-        implementation 'com.amplifyframework:core:1.17.5'
-        implementation 'com.amplifyframework:aws-datastore:1.17.5'
-        implementation 'com.amplifyframework:aws-api:1.17.5'
+        //implementation 'com.amplifyframework:core:1.17.5'
+        //implementation 'com.amplifyframework:aws-datastore:1.17.5'
+        //implementation 'com.amplifyframework:aws-api:1.17.5'
+
+        // Import the BoM for the Firebase platform
+        implementation platform('com.google.firebase:firebase-bom:28.1.0')
+
+        // Declare the dependency for the Cloud Firestore library
+        // When using the BoM, you don't specify versions in Firebase library dependencies
+        implementation 'com.google.firebase:firebase-auth-ktx'
+        implementation 'com.google.firebase:firebase-firestore-ktx'
+        implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
 
         // Support for Java 8 features
         coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'

@@ -7,9 +7,6 @@
             app:title="Settings" />
     </PreferenceCategory>
     <PreferenceCategory app:title="Settings">
-        <SwitchPreference
-            app:key="settingAllowOffline"
-            app:title="Allow Offline (if you're me)" />
         <SeekBarPreference
             android:defaultValue="51"
             android:max="51"
