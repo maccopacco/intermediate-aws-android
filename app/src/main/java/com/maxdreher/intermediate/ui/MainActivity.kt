@@ -44,7 +44,7 @@ class MainActivity :
 
         setSupportActionBar(findViewById(R.id.toolbar))
 
-        FbEmulators.setup()
+//        FbEmulators.setup()
         FirebaseApp.initializeApp(applicationContext)
 
         val drawerLayout: DrawerLayout = binding.drawerLayout

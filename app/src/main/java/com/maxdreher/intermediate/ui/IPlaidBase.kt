@@ -15,9 +15,11 @@ import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.maxdreher.Util
+import com.maxdreher.Util.get
 import com.maxdreher.extensions.IContextBase
 import com.maxdreher.intermediate.R
 import com.maxdreher.intermediate.keys.Keys
@@ -92,7 +94,16 @@ interface IPlaidBase : IContextBase {
         }
 
         updateUI(user)
-//        Firebase.firestore.
+        Firebase.firestore.collection("signins").add(
+            mapOf(
+                "time" to FieldValue.serverTimestamp(),
+                "user" to user.uid
+            )
+        ).addOnSuccessListener {
+            log("Created signin")
+        }.addOnFailureListener {
+            loge("Failed to create signin: ${it.get()}")
+        }
     }
 
     fun signIn() {
