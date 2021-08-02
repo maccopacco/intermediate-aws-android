@@ -2,16 +2,24 @@ package com.maxdreher.intermediate.ui
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.result.ActivityResultCaller
 import androidx.activity.result.ActivityResultLauncher
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.maxdreher.Util
 import com.maxdreher.extensions.IContextBase
+import com.maxdreher.intermediate.R
 import com.maxdreher.intermediate.keys.Keys
 import com.maxdreher.intermediate.util.plaidcallbacks.PlaidCallback
 import com.plaid.client.PlaidClient
@@ -75,31 +83,25 @@ interface IPlaidBase : IContextBase {
 
 
     fun onSignIn(firebaseAuthUIAuthenticationResult: FirebaseAuthUIAuthenticationResult) {
-        val u = FirebaseAuth.getInstance().currentUser
-        if (u == null) {
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user == null) {
             toast("User not found")
             return
+        } else {
+            toast("User found")
         }
 
-        GlobalScope.launch {
-
-            val drawable = Util.uriToDrawable(u.photoUrl)
-
-            withContext(Dispatchers.Main) {
-                alertBuilder("Hey ${u.displayName}", null)
-                    .setView(ImageView(getContext()).apply {
-                        setImageDrawable(drawable)
-                    })
-                    .show()
-            }
-        }
-
+        updateUI(user)
+//        Firebase.firestore.
     }
 
     fun signIn() {
         if (FirebaseAuth.getInstance().currentUser != null) {
             AuthUI.getInstance().signOut(getContext()!!)
-                .addOnSuccessListener { toast("Signed out") }
+                .addOnSuccessListener {
+                    toast("Signed out")
+                    updateUI()
+                }
                 .addOnFailureListener { toast("Not signed out") }
         } else {
             latestLauncher?.launch(signInIntent)
@@ -163,16 +165,6 @@ interface IPlaidBase : IContextBase {
         inProgress = false
     }
 
-    //    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        call(object {})
-//        if (!linkResultHandler.onActivityResult(requestCode, resultCode, data)) {
-//            log("linkResultHandler did not handle...")
-//        } else {
-//            log("linkResultHandler did handle results")
-//        }
-//    }
-//
     private fun onLinkSuccess(linkSuccess: LinkSuccess) {
         call(object {})
         log("Link success public token: ${linkSuccess.publicToken}")
@@ -627,4 +619,82 @@ interface IPlaidBase : IContextBase {
 //            }
 //        }
 //    }
+
+
+    /**
+     * [setName], [setEmail], and [setImage] with
+     * @param account [FirebaseUser]
+     */
+    private fun updateUI(account: FirebaseUser? = null) {
+        call(object {})
+        val v = getHeader()
+        setEmail(account?.email, v)
+        setName(account?.displayName, v)
+        GlobalScope.launch {
+            if (account != null) {
+                val drawable = account.photoUrl?.let { uri ->
+                    Util.urlToDrawable(uri.toString())
+                }
+                withContext(Dispatchers.Main) {
+                    setImage(Image(drawable), v)
+                }
+            } else {
+                withContext(Dispatchers.Main) {
+                    setImage(Image(R.mipmap.ic_launcher_round), v)
+                }
+            }
+        }
+
+    }
+
+    /**
+     * @param name to update name [TextView] with
+     */
+    private fun setName(name: String?, headerView: View? = getHeader()) {
+        call(object {})
+        headerView?.findViewById<TextView>(R.id.nav_header_name)?.text = name ?: ""
+    }
+
+    /**
+     * @param email to update email [TextView] with
+     */
+    private fun setEmail(email: String?, headerView: View? = getHeader()) {
+        call(object {})
+        headerView?.findViewById<TextView>(R.id.nav_header_email)?.text = email ?: ""
+    }
+
+    /**
+     * @param image to update profile picture view with
+     */
+    private fun setImage(image: Image, headerView: View? = getHeader()) {
+        call(object {})
+        headerView?.findViewById<ImageView>(R.id.nav_header_image)?.apply {
+            image.apply {
+                when {
+                    imageResource != null -> {
+                        setImageResource(imageResource)
+                    }
+                    drawable != null -> {
+                        setImageDrawable(drawable)
+                    }
+                    else -> {
+                        setImageResource(R.drawable.pog)
+                    }
+                }
+            }
+        }
+    }
+
+    class Image(val drawable: Drawable?, val imageResource: Int? = null) {
+        constructor(imageResource: Int?) : this(null, imageResource)
+    }
+
+    /**
+     * Get [View] of header from source [Activity]
+     * @return [View]
+     */
+    private fun getHeader(): View? {
+        call(object {})
+        return activity?.findViewById<NavigationView>(R.id.nav_view)?.getHeaderView(0)
+    }
 }
