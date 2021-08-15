@@ -93,7 +93,6 @@ interface IPlaidBase : IContextBase {
             toast("User found")
         }
 
-        updateUI(user)
         Firebase.firestore.collection("signins").add(
             mapOf(
                 "time" to FieldValue.serverTimestamp(),
@@ -104,6 +103,7 @@ interface IPlaidBase : IContextBase {
         }.addOnFailureListener {
             loge("Failed to create signin: ${it.get()}")
         }
+        updateUI(user)
     }
 
     fun signIn() {
