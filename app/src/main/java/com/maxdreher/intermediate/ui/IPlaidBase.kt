@@ -1,10 +1,14 @@
 package com.maxdreher.intermediate.ui
 
 import android.app.Activity
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.text.InputType
+import android.view.Gravity
 import android.view.View
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.ActivityResultCaller
@@ -15,7 +19,6 @@ import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.maxdreher.Util
@@ -25,8 +28,7 @@ import com.maxdreher.intermediate.R
 import com.maxdreher.intermediate.keys.Keys
 import com.maxdreher.intermediate.util.plaidcallbacks.PlaidCallback
 import com.plaid.client.PlaidClient
-import com.plaid.client.request.ItemPublicTokenExchangeRequest
-import com.plaid.client.request.LinkTokenCreateRequest
+import com.plaid.client.request.*
 import com.plaid.client.response.ItemPublicTokenExchangeResponse
 import com.plaid.client.response.LinkTokenCreateResponse
 import com.plaid.link.Plaid
@@ -34,10 +36,7 @@ import com.plaid.link.configuration.LinkTokenConfiguration
 import com.plaid.link.result.LinkExit
 import com.plaid.link.result.LinkResultHandler
 import com.plaid.link.result.LinkSuccess
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import retrofit2.Response
 
 interface IPlaidBase : IContextBase {
@@ -63,6 +62,7 @@ interface IPlaidBase : IContextBase {
                         .setRequireName(true).build(),
                     AuthUI.IdpConfig.GoogleBuilder()
                         .build(),
+                    AuthUI.IdpConfig.PhoneBuilder().build(),
                 )
             )
             .build()
@@ -93,16 +93,6 @@ interface IPlaidBase : IContextBase {
             toast("User found")
         }
 
-        Firebase.firestore.collection("signins").add(
-            mapOf(
-                "time" to FieldValue.serverTimestamp(),
-                "user" to user.uid
-            )
-        ).addOnSuccessListener {
-            log("Created signin")
-        }.addOnFailureListener {
-            loge("Failed to create signin: ${it.get()}")
-        }
         updateUI(user)
     }
 
@@ -213,23 +203,87 @@ interface IPlaidBase : IContextBase {
         inProgress = false
     }
 
-    fun onPublicTokenExchangeSuccess(userId: String?, institutionID: String, token: String?) {
+    fun onPublicTokenExchangeSuccess(
+        userId: String?,
+        institutionID: String,
+        token: String?,
+        populateData: Boolean = true
+    ) {
         call(object {})
         userId?.let {
-//            Bank.builder()
-//                .user(userId)
-//                .plaidAccessToken(token)
-//                .institutionId(institutionID)
-//                .lastTouchedTime(Date().toAmplifyDateTime())
-//                .build().save(this) {
-//                    log("Bank created/saved")
-//                    MyUser.bank = it
-//                    populateInstitutionLogo(it)
-//                }
-        } //?: tokenButNoUser(token)
+            Firebase.firestore.collection("banks").add(
+                mapOf(
+                    "user" to userId,
+                    "institutionID" to institutionID,
+                    "token" to token,
+                    "populated" to false,
+                )
+            ).addOnSuccessListener {
+                log("Public token exchange success")
+                if (populateData) {
+                    populateBankDatasForUser(userId)
+                }
+            }.addOnFailureListener {
+                tokenButNoUser(token)
+            }
+        } ?: tokenButNoUser(token)
     }
-//
-//    fun populateInstitutionLogo(bank: Bank?, onSave: ((Bank) -> Unit)? = null) {
+
+    fun populateBankDatasForUser(userId: String) {
+        call(object {})
+        Firebase.firestore.collection("banks")
+            .whereEqualTo("user", userId)
+            .whereNotEqualTo("populated", true)
+            .get()
+            .addOnSuccessListener { result ->
+                log("Unpopulated banks for user $userId = ${result.documents.size}")
+                GlobalScope.launch {
+                    val institutes = result.documents.map { doc ->
+                        return@map GlobalScope.async {
+                            val id = doc["institutionID"] as String
+                            doc to plaidClient.service()
+                                .institutionsGetById(
+                                    InstitutionsGetByIdRequest(
+                                        id,
+                                        listOf("US")
+                                    ).withIncludeOptionalMetadata(true)
+                                )
+                                .execute()
+                        }
+                    }.awaitAll()
+                    log("Got ${institutes.size} institutes")
+
+                    val batch = Firebase.firestore.batch()
+                    for (doc_and_institute in institutes.filter { it.second.isSuccessful }) {
+                        val ref = doc_and_institute.first.reference
+                        val institute =
+                            doc_and_institute.second.body()?.institution
+                        if (institute == null) {
+                            loge("Institute for document ${doc_and_institute.first.id} is null")
+                            return@launch
+                        }
+                        batch.update(
+                            ref,
+                            mutableMapOf(
+                                "name" to institute.name,
+                                "logo" to institute.logo,
+                                "populated" to true,
+                            ) as Map<String, Any>
+                        )
+                    }
+                    batch.commit().addOnSuccessListener {
+                        toast("Institutes updated")
+                    }.addOnFailureListener { ex ->
+                        error("Could not update institutions ${ex.get()}")
+                    }
+                }
+            }.addOnFailureListener {
+                toast("Couldn't get tokens")
+                loge(it.get() ?: "No message")
+            }
+    }
+
+    //    fun populateInstitutionLogo(bank: Bank?, onSave: ((Bank) -> Unit)? = null) {
 //        call(object {})
 //        bank?.let {
 //            plaidClient.service()
@@ -276,44 +330,44 @@ interface IPlaidBase : IContextBase {
 //    }
 //
 //
-//    private fun tokenButNoUser(token: String?) {
-//        call(object {})
-//        val textEdit = EditText(getContext()).apply {
-//            inputType = InputType.TYPE_CLASS_NUMBER
-//            gravity = Gravity.CENTER
-//            hint = "Enter the specified value"
-//        }
-//        val rand = Util.getRandInt(1000, 9999)
-//        alertBuilder(
-//            "DO NOT CLOSE THIS POPUP",
-//            "I don't know how you did this, but theres an ID made for you but " +
-//                    "it couldn't be saved to your user." +
-//                    "\nWe've got a limited number of these IDs (100)," +
-//                    " so please let send a screenshot so Max fix this manually." +
-//                    "\nID is:\n${token}" +
-//                    "\nTo clear this screen, enter\n$rand"
-//        ).run {
-//            setPositiveButton("Close window", null)
-//            setView(textEdit)
-//            create()
-//        }.apply {
-//            setOnShowListener { dialog ->
-//                getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener {
-//                    if (textEdit.text.toString() == rand.toString()) {
-//                        dialog.dismiss()
-//                        inProgress = false
-//                    } else {
-//                        textEdit.text.clear()
-//                        alert(
-//                            "Wrong number",
-//                            "Sorry, can't let you leave. Really need that number"
-//                        )
-//                    }
-//                }
-//            }
-//            show()
-//        }
-//    }
+    private fun tokenButNoUser(token: String?) {
+        call(object {})
+        val textEdit = EditText(getContext()).apply {
+            inputType = InputType.TYPE_CLASS_NUMBER
+            gravity = Gravity.CENTER
+            hint = "Enter the specified value"
+        }
+        val rand = Util.getRandInt(1000, 9999)
+        alertBuilder(
+            "DO NOT CLOSE THIS POPUP",
+            "I don't know how you did this, but theres an ID made for you but " +
+                    "it couldn't be saved to your user." +
+                    "\nWe've got a limited number of these IDs (100)," +
+                    " so please let send a screenshot so Max fix this manually." +
+                    "\nID is:\n${token}" +
+                    "\nTo clear this screen, enter\n$rand"
+        ).run {
+            setPositiveButton("Close window", null)
+            setView(textEdit)
+            create()
+        }.apply {
+            setOnShowListener { dialog ->
+                getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener {
+                    if (textEdit.text.toString() == rand.toString()) {
+                        dialog.dismiss()
+                        inProgress = false
+                    } else {
+                        textEdit.text.clear()
+                        alert(
+                            "Wrong number",
+                            "Sorry, can't let you leave. Really need that number"
+                        )
+                    }
+                }
+            }
+            show()
+        }
+    }
 //
 //    fun updateLastItem(userData: UserData? = MyUser.data) {
 //        val src = call(object {})
@@ -638,20 +692,20 @@ interface IPlaidBase : IContextBase {
      */
     private fun updateUI(account: FirebaseUser? = null) {
         call(object {})
-        val v = getHeader()
-        setEmail(account?.email, v)
-        setName(account?.displayName, v)
+        val view = getHeader()
+        setEmail(account?.email, view)
+        setName(account?.displayName, view)
         GlobalScope.launch {
             if (account != null) {
                 val drawable = account.photoUrl?.let { uri ->
                     Util.urlToDrawable(uri.toString())
                 }
                 withContext(Dispatchers.Main) {
-                    setImage(Image(drawable), v)
+                    setImage(Image(drawable), view)
                 }
             } else {
                 withContext(Dispatchers.Main) {
-                    setImage(Image(R.mipmap.ic_launcher_round), v)
+                    setImage(Image(R.mipmap.ic_launcher_round), view)
                 }
             }
         }

@@ -1,6 +1,7 @@
 package com.maxdreher.intermediate
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.firebase.auth.FirebaseAuth
 import com.maxdreher.extensions.IGoogleBaseBase
 
 /**
@@ -9,4 +10,6 @@ import com.maxdreher.extensions.IGoogleBaseBase
  */
 object MyUser {
     var importLimit: Int? = null
+
+    fun getUserUid() = FirebaseAuth.getInstance().currentUser?.uid
 }

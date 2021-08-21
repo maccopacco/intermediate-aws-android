@@ -6,65 +6,19 @@
             app:key="gotoSettings"
             app:title="Settings" />
     </PreferenceCategory>
-    <PreferenceCategory app:title="Settings">
-        <SeekBarPreference
-            android:defaultValue="51"
-            android:max="51"
-            app:key="settingImportLimit"
-            app:min="0"
-            app:title="Import limit" />
-    </PreferenceCategory>
+    <PreferenceCategory app:title="Settings"></PreferenceCategory>
     <PreferenceCategory app:title="Adds">
         <Preference
             app:key="addMyself"
             app:title="Add myself" />
-        <Preference
-            app:key="setDate"
-            app:title="Set oldest pending time" />
-        <Preference
-            app:key="forceUpdate"
-            app:title="Force update" />
     </PreferenceCategory>
     <PreferenceCategory app:title="Shows">
+
         <Preference
-            app:key="showInstitution"
-            app:title="Show my institution ID" />
-        <Preference
-            app:key="institutionSearch"
-            app:title="Search for Institution" />
-        <Preference
-            app:key="showLogo"
-            app:title="Show current banks logo" />
-        <Preference
-            app:key="showTransactionCount"
-            app:title="Show amount of transactions" />
-        <Preference
-            app:key="showAccounts"
-            app:title="Show accounts" />
-        <Preference
-            app:key="showTransactionDates"
-            app:title="Show dates" />
+            app:key="showLogos"
+            app:title="Show logos" />
     </PreferenceCategory>
-    <PreferenceCategory app:title="Deletes">
-        <Preference
-            app:key="deleteAllUsers"
-            app:title="Delete all users" />
-        <Preference
-            app:key="deleteMyBanks"
-            app:title="Delete all my banks" />
-        <Preference
-            app:key="deleteAll"
-            app:title="Delete everything" />
-        <Preference
-            app:key="deleteTransactions"
-            app:title="Delete transactions" />
-        <Preference
-            app:key="deleteUser"
-            app:title="Delete user" />
-        <Preference
-            app:key="deleteDatas"
-            app:title="Delete User Datas" />
-    </PreferenceCategory>
+    <PreferenceCategory app:title="Deletes"></PreferenceCategory>
 
     <PreferenceCategory app:title="Testing">
         <Preference

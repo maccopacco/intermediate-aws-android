@@ -1,8 +1,12 @@
 package com.maxdreher.intermediate.ui
 
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Base64
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultCaller
 import androidx.annotation.DrawableRes
@@ -14,8 +18,11 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.FirebaseApp
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.maxdreher.BuildConfig
 import com.maxdreher.extensions.ActivityBase
+import com.maxdreher.intermediate.MyUser.getUserUid
 import com.maxdreher.intermediate.R
 import com.maxdreher.intermediate.databinding.ActivityMainBinding
 import com.maxdreher.intermediate.util.FbEmulators
