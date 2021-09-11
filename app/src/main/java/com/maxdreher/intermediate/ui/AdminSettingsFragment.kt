@@ -11,12 +11,16 @@ import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.maxdreher.Util.get
 import com.maxdreher.extensions.PreferenceFragmentCompatBase
+import com.maxdreher.intermediate.Bank
 import com.maxdreher.intermediate.R
 import com.maxdreher.intermediate.keys.Keys
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.lang.StringBuilder
+
 class AdminSettingsFragment : PreferenceFragmentCompatBase(R.xml.admin_settings), IPlaidBase {
 
     override val activity: ComponentActivity? = getActivity()
@@ -32,6 +36,7 @@ class AdminSettingsFragment : PreferenceFragmentCompatBase(R.xml.admin_settings)
         goto()
         shows()
         adds()
+        tests()
     }
 
     private fun goto() {
@@ -89,6 +94,38 @@ class AdminSettingsFragment : PreferenceFragmentCompatBase(R.xml.admin_settings)
 
                 }.addOnFailureListener {
                     error("Bad")
+                }
+        }
+    }
+
+    private fun tests() {
+        findPreference("test1") {
+            alert(
+                "Yeah yeah",
+                Bank(
+                    "IDFORTNITE",
+                    "LOGOFORTNITE",
+                    "namefortniet",
+                    true,
+                    "tokenMoment",
+                    "userMoment"
+                ).toString()
+            )
+        }
+
+        findPreference("test2") {
+            Firebase.firestore.collection("banks").get()
+                .addOnSuccessListener { res ->
+                    val docs = res.documents
+                    val things = StringBuilder()
+                    for (doc in docs) {
+                        val thing = doc.toObject(Bank::class.java)
+                        things.append("$thing\n\n")
+                    }
+                    alert("Yeah id say so", things.toString())
+                }
+                .addOnFailureListener {
+                    error("Nah chief ${it.get()}")
                 }
         }
     }
