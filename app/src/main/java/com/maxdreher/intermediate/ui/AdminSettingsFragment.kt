@@ -75,7 +75,8 @@ class AdminSettingsFragment : PreferenceFragmentCompatBase(R.xml.admin_settings)
                 .get().addOnSuccessListener { res ->
                     val ll = LinearLayout(getContext())
                     res.documents
-                        .map { it["logo"] as String }
+                        .map { it.toObject(Bank::class.java)?.logo }
+                        .filterNotNull()
                         .forEach { logo ->
                             val iv = ImageView(getContext())
                             val decode = Base64.decode(logo, Base64.DEFAULT)
@@ -100,20 +101,6 @@ class AdminSettingsFragment : PreferenceFragmentCompatBase(R.xml.admin_settings)
 
     private fun tests() {
         findPreference("test1") {
-            alert(
-                "Yeah yeah",
-                Bank(
-                    "IDFORTNITE",
-                    "LOGOFORTNITE",
-                    "namefortniet",
-                    true,
-                    "tokenMoment",
-                    "userMoment"
-                ).toString()
-            )
-        }
-
-        findPreference("test2") {
             Firebase.firestore.collection("banks").get()
                 .addOnSuccessListener { res ->
                     val docs = res.documents
@@ -122,7 +109,7 @@ class AdminSettingsFragment : PreferenceFragmentCompatBase(R.xml.admin_settings)
                         val thing = doc.toObject(Bank::class.java)
                         things.append("$thing\n\n")
                     }
-                    alert("Yeah id say so", things.toString())
+                    alert("Yeah id say so (${docs.size})", things.toString())
                 }
                 .addOnFailureListener {
                     error("Nah chief ${it.get()}")

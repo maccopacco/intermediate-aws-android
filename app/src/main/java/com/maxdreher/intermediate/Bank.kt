@@ -1,26 +1,23 @@
 package com.maxdreher.intermediate
 
-import com.google.gson.Gson
-
-class Bank(
-    var institutionID: String?,
-    var logo: String?,
-    var name: String?,
-    var populated: Boolean?,
-    var token: String?,
-    var user: String?
+data class Bank(
+    var userId: String? = null,
+    var institutionID: String? = null,
+    var logo: String? = null,
+    var name: String? = null,
+    var populated: Boolean? = null,
+    var token: String? = null,
 ) {
     override fun toString(): String {
-        return "id: $institutionID" +
-//                "\nlogo: $logo" +
-                "\nname: $name" +
-                "\npopuylated: $populated"
-//                "\ntoken: $token" +
-//                "\nuser: $user"
+        return "{name=$name}, {institutionID=$institutionID}, {populated=$populated}"
     }
 
-    constructor() : this(
-        null, null, null,
-        null, null, null
-    )
+    enum class Fields(val value: String) {
+        USER_ID("userId"),
+        INSTITUTION_ID("institutionID"),
+        LOGO("logo"),
+        NAME("name"),
+        POPULATED("populated"),
+        TOKEN("token")
+    }
 }

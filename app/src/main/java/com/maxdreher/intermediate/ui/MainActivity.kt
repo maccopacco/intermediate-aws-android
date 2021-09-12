@@ -51,8 +51,16 @@ class MainActivity :
 
         setSupportActionBar(findViewById(R.id.toolbar))
 
+        Firebase.firestore.clearPersistence()
+            .addOnFailureListener {
+                toast("Could not clear Firestore persistence")
+            }.addOnSuccessListener {
+                log("Firestore persistence cleared")
+            }
+
         FbEmulators.setup()
         FirebaseApp.initializeApp(applicationContext)
+
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView

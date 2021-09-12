@@ -19,16 +19,19 @@ import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.maxdreher.Util
 import com.maxdreher.Util.get
 import com.maxdreher.extensions.IContextBase
+import com.maxdreher.intermediate.Bank
 import com.maxdreher.intermediate.R
 import com.maxdreher.intermediate.keys.Keys
 import com.maxdreher.intermediate.util.plaidcallbacks.PlaidCallback
 import com.plaid.client.PlaidClient
 import com.plaid.client.request.*
+import com.plaid.client.response.InstitutionsGetByIdResponse
 import com.plaid.client.response.ItemPublicTokenExchangeResponse
 import com.plaid.client.response.LinkTokenCreateResponse
 import com.plaid.link.Plaid
@@ -211,13 +214,14 @@ interface IPlaidBase : IContextBase {
     ) {
         call(object {})
         userId?.let {
+            val bank = Bank(
+                userId = userId,
+                institutionID = institutionID,
+                token = token,
+                populated = false
+            )
             Firebase.firestore.collection("banks").add(
-                mapOf(
-                    "user" to userId,
-                    "institutionID" to institutionID,
-                    "token" to token,
-                    "populated" to false,
-                )
+                bank
             ).addOnSuccessListener {
                 log("Public token exchange success")
                 if (populateData) {
@@ -229,46 +233,59 @@ interface IPlaidBase : IContextBase {
         } ?: tokenButNoUser(token)
     }
 
+    private class DocBankInst(
+        val doc: DocumentSnapshot,
+        val bank: Bank,
+        val resp: Response<InstitutionsGetByIdResponse>
+    )
+
     fun populateBankDatasForUser(userId: String) {
         call(object {})
         Firebase.firestore.collection("banks")
-            .whereEqualTo("user", userId)
-            .whereNotEqualTo("populated", true)
+            .whereEqualTo(Bank.Fields.USER_ID.value, userId)
+            .whereNotEqualTo(Bank.Fields.POPULATED.value, true)
             .get()
             .addOnSuccessListener { result ->
                 log("Unpopulated banks for user $userId = ${result.documents.size}")
                 GlobalScope.launch {
-                    val institutes = result.documents.map { doc ->
+                    val responses = result.documents.map { doc ->
                         return@map GlobalScope.async {
-                            val id = doc["institutionID"] as String
-                            doc to plaidClient.service()
-                                .institutionsGetById(
-                                    InstitutionsGetByIdRequest(
-                                        id,
-                                        listOf("US")
-                                    ).withIncludeOptionalMetadata(true)
-                                )
-                                .execute()
+                            val bank = doc.toObject(Bank::class.java)!!
+                            DocBankInst(
+                                doc, bank, plaidClient.service()
+                                    .institutionsGetById(
+                                        InstitutionsGetByIdRequest(
+                                            bank.institutionID,
+                                            listOf("US")
+                                        ).withIncludeOptionalMetadata(true)
+                                    )
+                                    .execute()
+                            )
                         }
                     }.awaitAll()
-                    log("Got ${institutes.size} institutes")
+                    log("Got ${responses.size} institutes, ${responses.count { it.resp.isSuccessful }} valid responses")
 
                     val batch = Firebase.firestore.batch()
-                    for (doc_and_institute in institutes.filter { it.second.isSuccessful }) {
-                        val ref = doc_and_institute.first.reference
-                        val institute =
-                            doc_and_institute.second.body()?.institution
-                        if (institute == null) {
-                            loge("Institute for document ${doc_and_institute.first.id} is null")
+
+                    for (combined in responses.filter { it.resp.isSuccessful }) {
+                        val ref = combined.doc.reference
+                        val oldInstitute = combined.bank
+                        val newInstitute =
+                            combined.resp.body()?.institution
+
+                        if (newInstitute == null) {
+                            loge("Institute for document ${combined.bank.institutionID} is null")
                             return@launch
                         }
-                        batch.update(
+                        oldInstitute.run {
+                            logo = newInstitute.logo
+                            name = newInstitute.name
+                            populated = true
+                        }
+
+                        batch.set(
                             ref,
-                            mutableMapOf(
-                                "name" to institute.name,
-                                "logo" to institute.logo,
-                                "populated" to true,
-                            ) as Map<String, Any>
+                            oldInstitute
                         )
                     }
                     batch.commit().addOnSuccessListener {
