@@ -64,7 +64,7 @@ class AdminSettingsFragment : PreferenceFragmentCompatBase(R.xml.admin_settings)
             }
             GlobalScope.launch {
                 delay(5000)
-                populateBankDatasForUser(userId)
+                populateBankDatasForUser()
             }
         }
     }

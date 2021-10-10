@@ -86,6 +86,9 @@ class MainActivity :
             ), drawerLayout
         )
 
+
+        signIn()
+
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }

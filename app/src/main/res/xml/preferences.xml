@@ -16,21 +16,6 @@
             app:entryValues="@array/chooseBankValues"
             app:key="appChooseBank"
             app:title="Chose bank" />
-        <Preference
-            app:key="appShowAccountNumbers"
-            app:title="Show account numbers" />
-        <Preference
-            app:key="appDelete"
-            app:title="Delete all Intermediate Data" />
-        <Preference
-            app:key="appDeleteBank"
-            app:title="Delete one bank" />
-        <Preference
-            app:key="appEditAccounts"
-            app:title="Edit accounts" />
-        <Preference
-            app:key="appMoveTransactions"
-            app:title="Move imported transactions" />
     </PreferenceCategory>
     <PreferenceCategory app:title="Import Data">
         <Preference
